@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { LenisProvider } from "@/components/layout/LenisProvider";
 import type { Metadata } from "next";
 
 const inter = Inter({
@@ -44,9 +45,11 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen">
         <NextIntlClientProvider messages={messages}>
-          <Header />
-          <div className="pt-16">{children}</div>
-          <Footer />
+          <LenisProvider>
+            <Header />
+            <div className="pt-16">{children}</div>
+            <Footer />
+          </LenisProvider>
         </NextIntlClientProvider>
       </body>
     </html>
