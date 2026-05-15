@@ -1,12 +1,10 @@
 import type { NextConfig } from "next";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig: NextConfig = {
+  // Pin Turbopack root so it doesn't infer the workspace from a sibling
+  // package's lockfile up the tree.
   turbopack: {
-    root: __dirname,
+    root: process.cwd(),
   },
 };
 
