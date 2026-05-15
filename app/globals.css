@@ -48,13 +48,11 @@
   --radius-lg: 32px;
   --radius-full: 9999px;
 
-  /* --- Spacing scale (in addition to Tailwind defaults) --- */
+  /* --- Spacing (DESIGN.md names that do NOT collide with Tailwind's
+       default sizing keys xs/sm/md/lg/xl). Use Tailwind's numeric scale
+       for everything else: p-1=4px, p-1.5=6px, p-2=8px, p-3=12px,
+       p-4=16px, p-6=24px, p-8=32px, p-16=64px. --- */
   --spacing-xxs: 4px;
-  --spacing-xs: 6px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 16px;
-  --spacing-xl: 24px;
   --spacing-xxl: 32px;
   --spacing-section: 64px;
 
