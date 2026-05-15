@@ -32,7 +32,9 @@
     }
   },
   "about": {
-    "title": "About"
+    "title": "About",
+    "subtitle": "What we do",
+    "body": "H3 builds the next scene with technology and product. (Replace this placeholder with real company copy.)"
   },
   "products": {
     "title": "Products",
