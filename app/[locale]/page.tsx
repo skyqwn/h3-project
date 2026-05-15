@@ -1,10 +1,27 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { Hero } from "@/components/sections/Hero";
 import { FeatureCardRow } from "@/components/sections/FeatureCardRow";
 import { ProductShowcase } from "@/components/sections/ProductShowcase";
 import { CtaStrip } from "@/components/sections/CtaStrip";
 import { getAllProducts } from "@/lib/mdx";
 import type { Locale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "home.hero" });
+  return pageMetadata({
+    locale: locale as Locale,
+    path: "/",
+    title: t("headline"),
+    description: t("eyebrow"),
+  });
+}
 
 export default async function Home({
   params,

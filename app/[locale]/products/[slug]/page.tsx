@@ -1,10 +1,38 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import type { Metadata } from "next";
 import { getAllProductSlugs, getProduct } from "@/lib/mdx";
 import { useMDXComponents } from "@/mdx-components";
+import { pageMetadata } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
 import type { Product } from "@/lib/mdx";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  try {
+    const product = await getProduct(slug, locale as Locale);
+    return pageMetadata({
+      locale: locale as Locale,
+      path: `/products/${slug}`,
+      title: product.title,
+      description: product.tagline,
+      image: product.hero_image,
+    });
+  } catch {
+    return pageMetadata({
+      locale: locale as Locale,
+      path: `/products/${slug}`,
+      title: "Product",
+      description: "Product",
+      noindex: true,
+    });
+  }
+}
 
 export async function generateStaticParams() {
   const slugs = await getAllProductSlugs();

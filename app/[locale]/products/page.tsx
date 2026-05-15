@@ -1,8 +1,25 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 import { Link } from "@/i18n/routing";
 import { getAllProducts } from "@/lib/mdx";
 import { DisplayHeading } from "@/components/primitives/DisplayHeading";
+import { pageMetadata } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "products" });
+  return pageMetadata({
+    locale: locale as Locale,
+    path: "/products",
+    title: t("title"),
+    description: t("subtitle"),
+  });
+}
 
 export default async function ProductsListPage({
   params,

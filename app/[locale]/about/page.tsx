@@ -1,6 +1,24 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { DisplayHeading } from "@/components/primitives/DisplayHeading";
 import { ScrollReveal } from "@/components/primitives/ScrollReveal";
+import type { Locale } from "@/i18n/routing";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "about" });
+  return pageMetadata({
+    locale: locale as Locale,
+    path: "/about",
+    title: t("title"),
+    description: t("subtitle"),
+  });
+}
 
 export default async function AboutPage({
   params,
