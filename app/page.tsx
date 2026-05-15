@@ -1,7 +1,7 @@
 export default function TokenSmokeTest() {
   return (
     <main className="min-h-screen bg-canvas p-16 space-y-8">
-      <h1 className="text-display-xl text-ink">H3</h1>
+      <h1 className="text-display-xl text-primary">H3</h1>
       <p className="text-body-md text-body max-w-md">
         Token smoke test page. Replaced by the localized home in Phase 2.
       </p>

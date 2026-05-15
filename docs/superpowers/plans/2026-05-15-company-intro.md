@@ -826,7 +826,7 @@ export async function Header() {
           so screen readers don't announce the brand twice. */}
       <h1 className="sr-only">H3</h1>
       <div className="max-w-[1280px] mx-auto h-full px-xl flex items-center justify-between">
-        <Link href="/" aria-hidden="true" tabIndex={-1} className="text-body-strong text-ink">
+        <Link href="/" aria-hidden="true" tabIndex={-1} className="text-heading-xl text-primary font-bold">
           H3
         </Link>
         <nav className="hidden md:flex items-center gap-xl text-body-strong text-ink">
