@@ -3,6 +3,7 @@ import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { Inter } from "next/font/google";
 import { routing, type Locale } from "@/i18n/routing";
+import { LocaleSwitcher } from "@/components/layout/LocaleSwitcher";
 import type { Metadata } from "next";
 
 const inter = Inter({
@@ -42,6 +43,10 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen">
         <NextIntlClientProvider messages={messages}>
+          {/* TEMP: bare-bones header until the real Header lands in Phase 3 */}
+          <div className="fixed top-4 right-4 z-50 bg-canvas/80 backdrop-blur px-3 py-1 rounded-full border border-hairline">
+            <LocaleSwitcher />
+          </div>
           {children}
         </NextIntlClientProvider>
       </body>
