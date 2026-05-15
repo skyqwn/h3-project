@@ -4,7 +4,8 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import { getAllProductSlugs, getProduct } from "@/lib/mdx";
 import { useMDXComponents } from "@/mdx-components";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, productJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { getTranslations } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import type { Product } from "@/lib/mdx";
 
@@ -57,9 +58,33 @@ export default async function ProductDetailPage({
   }
 
   const components = useMDXComponents({});
+  const t = await getTranslations({ locale, namespace: "products" });
+
+  const productLd = productJsonLd({
+    title: product.title,
+    tagline: product.tagline,
+    slug: product.slug,
+    locale: product.locale,
+    image: product.hero_image,
+  });
+  const breadcrumb = breadcrumbJsonLd(product.locale, [
+    { name: "Home", path: "/" },
+    { name: t("title"), path: "/products" },
+    { name: product.title, path: `/products/${product.slug}` },
+  ]);
 
   return (
     <article className="min-h-screen bg-canvas py-section">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
       <div className="max-w-narrow mx-auto px-6">
         <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
           {product.tagline}

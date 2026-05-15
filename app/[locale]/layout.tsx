@@ -6,6 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LenisProvider } from "@/components/layout/LenisProvider";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import type { Metadata } from "next";
 
 const inter = Inter({
@@ -44,6 +45,20 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen">
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationJsonLd()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteJsonLd(locale as Locale)),
+          }}
+        />
         <NextIntlClientProvider messages={messages}>
           <LenisProvider>
             <Header />
