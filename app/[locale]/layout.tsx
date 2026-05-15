@@ -47,7 +47,7 @@ export default async function LocaleLayout({
         <NextIntlClientProvider messages={messages}>
           <LenisProvider>
             <Header />
-            <div className="pt-16">{children}</div>
+            <main className="pt-16">{children}</main>
             <Footer />
           </LenisProvider>
         </NextIntlClientProvider>

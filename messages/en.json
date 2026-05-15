@@ -10,6 +10,25 @@
       "eyebrow": "MISSION COMPANY",
       "headline": "The next scene, engineered",
       "cta": "See products"
+    },
+    "feature": {
+      "tech": {
+        "title": "Technology",
+        "body": "The core technology we built and why it matters. What problems it solves, what tradeoffs we made.",
+        "ctaLabel": "Learn more"
+      },
+      "team": {
+        "title": "Team",
+        "body": "The people behind the mission. How we work and the culture we're building.",
+        "ctaLabel": "About us"
+      }
+    },
+    "products": {
+      "title": "Product lineup"
+    },
+    "closing": {
+      "title": "Ready to build together?",
+      "cta": "Contact us"
     }
   },
   "about": {

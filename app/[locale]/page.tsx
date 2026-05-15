@@ -1,4 +1,31 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { Hero } from "@/components/sections/Hero";
+import { FeatureCardRow } from "@/components/sections/FeatureCardRow";
+import { ProductShowcase } from "@/components/sections/ProductShowcase";
+import { CtaStrip } from "@/components/sections/CtaStrip";
+import type { ProductTeaser } from "@/components/sections/ProductShowcase";
+
+// Placeholder product data — replaced by the MDX loader in Phase 5.
+const MOCK_PRODUCTS: ProductTeaser[] = [
+  {
+    slug: "sample-one",
+    title: "Product One",
+    tagline: "Placeholder product card.",
+    hero_image: "/hero-placeholder.jpg",
+  },
+  {
+    slug: "sample-two",
+    title: "Product Two",
+    tagline: "Placeholder product card.",
+    hero_image: "/hero-placeholder.jpg",
+  },
+  {
+    slug: "sample-three",
+    title: "Product Three",
+    tagline: "Placeholder product card.",
+    hero_image: "/hero-placeholder.jpg",
+  },
+];
 
 export default async function Home({
   params,
@@ -7,17 +34,35 @@ export default async function Home({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations("home.hero");
+
+  const home = await getTranslations("home");
+
+  const features = [
+    {
+      title: home("feature.tech.title"),
+      body: home("feature.tech.body"),
+      image: "/hero-placeholder.jpg",
+      cta: { label: home("feature.tech.ctaLabel"), href: "/about" as const },
+    },
+    {
+      title: home("feature.team.title"),
+      body: home("feature.team.body"),
+      image: "/hero-placeholder.jpg",
+      cta: { label: home("feature.team.ctaLabel"), href: "/about" as const },
+      reverse: true,
+    },
+  ];
 
   return (
-    <main className="min-h-screen bg-canvas p-16">
-      <p className="text-caption-md uppercase tracking-wider text-mute mb-4">
-        {t("eyebrow")}
-      </p>
-      <h1 className="text-display-xl text-primary mb-8">{t("headline")}</h1>
-      <button className="bg-primary text-on-primary rounded-md h-10 px-4 text-button-md">
-        {t("cta")}
-      </button>
-    </main>
+    <>
+      <Hero />
+      <FeatureCardRow items={features} />
+      <ProductShowcase title={home("products.title")} products={MOCK_PRODUCTS} />
+      <CtaStrip
+        title={home("closing.title")}
+        ctaLabel={home("closing.cta")}
+        ctaHref="/contact"
+      />
+    </>
   );
 }
