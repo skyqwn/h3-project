@@ -56,6 +56,12 @@
   --spacing-xxl: 32px;
   --spacing-section: 64px;
 
+  /* --- Container max-widths (from DESIGN.md layout grid) --- */
+  --container-page: 1280px;     /* outer marketing container          */
+  --container-reading: 1200px;  /* inner type column over photography */
+  --container-narrow: 800px;    /* product detail / article body      */
+  --container-form: 640px;      /* forms, contact, modal cards        */
+
   /* --- Fonts (resolved from next/font CSS variables at runtime) --- */
   --font-display: var(--font-pin-sans), Inter, -apple-system, system-ui, sans-serif;
   --font-body: var(--font-pin-sans), Inter, -apple-system, system-ui, sans-serif;

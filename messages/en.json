@@ -1,0 +1,43 @@
+{
+  "nav": {
+    "about": "About",
+    "products": "Products",
+    "contact": "Contact",
+    "cta": "Get in touch"
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "MISSION COMPANY",
+      "headline": "The next scene, engineered",
+      "cta": "See products"
+    }
+  },
+  "about": {
+    "title": "About"
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "What we built"
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's start a conversation",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "company": "Company (optional)",
+      "message": "Message",
+      "submit": "Send",
+      "submitting": "Sending...",
+      "success": "Message delivered. We'll get back to you soon.",
+      "error": "Send failed. Please try again in a moment."
+    }
+  },
+  "footer": {
+    "copyright": "© 2026 H3"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "back": "Back to home"
+  }
+}
