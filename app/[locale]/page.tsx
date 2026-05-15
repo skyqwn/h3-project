@@ -3,29 +3,8 @@ import { Hero } from "@/components/sections/Hero";
 import { FeatureCardRow } from "@/components/sections/FeatureCardRow";
 import { ProductShowcase } from "@/components/sections/ProductShowcase";
 import { CtaStrip } from "@/components/sections/CtaStrip";
-import type { ProductTeaser } from "@/components/sections/ProductShowcase";
-
-// Placeholder product data — replaced by the MDX loader in Phase 5.
-const MOCK_PRODUCTS: ProductTeaser[] = [
-  {
-    slug: "sample-one",
-    title: "Product One",
-    tagline: "Placeholder product card.",
-    hero_image: "/hero-placeholder.jpg",
-  },
-  {
-    slug: "sample-two",
-    title: "Product Two",
-    tagline: "Placeholder product card.",
-    hero_image: "/hero-placeholder.jpg",
-  },
-  {
-    slug: "sample-three",
-    title: "Product Three",
-    tagline: "Placeholder product card.",
-    hero_image: "/hero-placeholder.jpg",
-  },
-];
+import { getAllProducts } from "@/lib/mdx";
+import type { Locale } from "@/i18n/routing";
 
 export default async function Home({
   params,
@@ -36,6 +15,7 @@ export default async function Home({
   setRequestLocale(locale);
 
   const home = await getTranslations("home");
+  const products = await getAllProducts(locale as Locale);
 
   const features = [
     {
@@ -57,7 +37,10 @@ export default async function Home({
     <>
       <Hero />
       <FeatureCardRow items={features} />
-      <ProductShowcase title={home("products.title")} products={MOCK_PRODUCTS} />
+      <ProductShowcase
+        title={home("products.title")}
+        products={products.slice(0, 6)}
+      />
       <CtaStrip
         title={home("closing.title")}
         ctaLabel={home("closing.cta")}
