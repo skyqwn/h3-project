@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:unit": "tsx tests/unit/run.ts",
+    "test:e2e": "playwright test",
     "check:i18n": "tsx scripts/check-i18n-parity.ts"
   },
   "dependencies": {
