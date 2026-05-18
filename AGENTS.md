@@ -10,6 +10,17 @@ Bilingual (KR/EN) company-intro marketing site. Any agent (Claude, Codex, etc.)
 continuing this project should read this file. `CLAUDE.md` imports it via
 `@AGENTS.md`, so it is the single shared source of truth.
 
+## ⚠️ ALWAYS
+
+- **Any user-facing text is bilingual.** Whenever you add, change, or remove
+  ANY string a user sees (labels, headings, copy, button text, alt text, aria
+  labels, error/success messages, metadata), you MUST update BOTH
+  `messages/ko.json` AND `messages/en.json` with the same key tree, and the
+  string must be rendered via next-intl (`t("...")`) — never hardcoded in JSX.
+  Run `pnpm run check:i18n` before committing; it fails if the two locales
+  drift. No text change is "small enough" to skip this.
+- Run `pnpm exec tsc --noEmit` and `pnpm run lint` before committing.
+
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack), React 19, TypeScript strict
