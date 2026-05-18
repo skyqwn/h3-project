@@ -8,7 +8,7 @@
         "http://localhost:3000/products/sample",
         "http://localhost:3000/contact"
       ],
-      "startServerCommand": "npm run start",
+      "startServerCommand": "pnpm start",
       "startServerReadyPattern": "Ready",
       "numberOfRuns": 1
     },
