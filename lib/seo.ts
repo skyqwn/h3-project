@@ -1,8 +1,33 @@
 import type { Metadata } from "next";
-import { env } from "@/lib/env";
 import type { Locale } from "@/i18n/routing";
 
-const SITE = env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+// Resolve the canonical site origin without hardcoding it per environment.
+// Priority:
+//   1. NEXT_PUBLIC_SITE_URL — explicit override (use this for a custom
+//      domain, e.g. https://h3.co.kr).
+//   2. Vercel production: VERCEL_PROJECT_PRODUCTION_URL — the stable
+//      production domain (h3-project.vercel.app), correct for canonical/OG.
+//   3. Vercel preview: VERCEL_URL — the per-deployment preview URL.
+//   4. Local dev fallback: http://localhost:3000.
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL;
+  if (explicit) return explicit.replace(/\/$/, "");
+
+  if (
+    process.env.VERCEL_ENV === "production" &&
+    process.env.VERCEL_PROJECT_PRODUCTION_URL
+  ) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+
+  return "http://localhost:3000";
+}
+
+const SITE = resolveSiteUrl();
 const BRAND = "H3";
 
 // Build the URL pair for a locale-agnostic path. Korean lives at root,

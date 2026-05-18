@@ -6,7 +6,10 @@ const EnvSchema = z.object({
   CONTACT_FROM_EMAIL: z.string().email(),
   TURNSTILE_SECRET_KEY: z.string().min(1),
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1),
-  NEXT_PUBLIC_SITE_URL: z.string().url(),
+  // Optional: when set it must be a valid URL (custom-domain override).
+  // When unset, lib/seo.ts auto-resolves from Vercel system env vars or
+  // falls back to localhost — see resolveSiteUrl().
+  NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
 });
 
 export const env = EnvSchema.parse({
