@@ -61,8 +61,29 @@ function restore() {
   await telegramChannel.send(lead); // must not throw
   assert.equal(fetchCount, 0, "unconfigured channel must not call fetch");
 
+  // --- Hub-level cases ---
+  const { runChannels } = await import("../../lib/notify/index");
+
+  // Case 3: a throwing channel does not make the hub reject
+  let secondRan = false;
+  await runChannels(lead, [
+    { name: "boom", send: async () => { throw new Error("boom"); } },
+    { name: "ok", send: async () => { secondRan = true; } },
+  ]);
+  assert.equal(
+    secondRan,
+    true,
+    "fan-out must continue to later channels after one throws"
+  );
+
+  // Case 4: notify() (default channels) never throws even if unconfigured
+  delete process.env.TELEGRAM_BOT_TOKEN;
+  delete process.env.TELEGRAM_CHAT_ID;
+  const { notify } = await import("../../lib/notify/index");
+  await notify(lead); // unconfigured telegram -> no-op -> notify resolves
+
   restore();
-  console.log("notify.test: telegram channel — 4 assertions passed.");
+  console.log("notify.test: 6 assertions passed.");
 })().catch((err) => {
   restore();
   console.error("notify.test FAILED:", err);
