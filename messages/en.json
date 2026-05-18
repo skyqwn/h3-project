@@ -51,7 +51,9 @@
       "submit": "Send",
       "submitting": "Sending...",
       "success": "Message delivered. We'll get back to you soon.",
-      "error": "Send failed. Please try again in a moment."
+      "error": "Send failed. Please try again in a moment.",
+      "again": "Send another",
+      "home": "Back to home"
     }
   },
   "footer": {

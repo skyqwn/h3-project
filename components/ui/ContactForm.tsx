@@ -45,9 +45,23 @@ export function ContactForm({
     return (
       <div
         role="status"
-        className="bg-success-pale text-success-deep rounded-md p-6"
+        className="bg-success-pale text-success-deep rounded-md p-6 space-y-4"
       >
         <p className="text-body-md">{t("success")}</p>
+        <div className="flex flex-wrap gap-3">
+          <Button
+            type="button"
+            variant="primary"
+            size="md"
+            className="cursor-pointer"
+            onClick={() => window.location.reload()}
+          >
+            {t("again")}
+          </Button>
+          <Button href="/" variant="secondary" size="md">
+            {t("home")}
+          </Button>
+        </div>
       </div>
     );
   }
