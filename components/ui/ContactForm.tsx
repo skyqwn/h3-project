@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import Script from "next/script";
 import { submitContact } from "@/actions/contact";
 import { Button } from "@/components/ui/Button";
 import type { ContactResult } from "@/lib/contact-schema";
@@ -18,6 +19,22 @@ export function ContactForm({
   turnstileSiteKey: string;
 }) {
   const t = useTranslations("contact.form");
+
+  // Register the Turnstile success callback on window. The widget's
+  // data-callback attribute resolves this by name once the external
+  // api.js loads. Defining it here (not via an inline <script>) is what
+  // makes it actually run on the client.
+  useEffect(() => {
+    window.onTurnstileSuccess = (token: string) => {
+      const el = document.getElementById(
+        "turnstileToken"
+      ) as HTMLInputElement | null;
+      if (el) el.value = token;
+    };
+    return () => {
+      delete window.onTurnstileSuccess;
+    };
+  }, []);
   const [state, formAction, isPending] = useActionState<
     ContactResult | null,
     FormData
@@ -104,17 +121,9 @@ export function ContactForm({
         data-callback="onTurnstileSuccess"
       />
       <input type="hidden" name="turnstileToken" id="turnstileToken" />
-      <script
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html:
-            "function onTurnstileSuccess(t){var el=document.getElementById('turnstileToken');if(el){el.value=t;}}",
-        }}
-      />
-      <script
+      <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        async
-        defer
+        strategy="afterInteractive"
       />
 
       <Button variant="primary" size="md" disabled={isPending}>

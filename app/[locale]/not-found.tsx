@@ -1,5 +1,4 @@
 import { getTranslations } from "next-intl/server";
-import { Link } from "@/i18n/routing";
 import { DisplayHeading } from "@/components/primitives/DisplayHeading";
 import { Button } from "@/components/ui/Button";
 

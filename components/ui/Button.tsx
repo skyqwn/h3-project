@@ -40,7 +40,8 @@ export function Button(props: AsLink | AsButton) {
   const cls = `${base} ${sizeClass[size]} ${variantClass[variant]} ${className}`;
 
   if ("href" in props && props.href) {
-    const { variant: _v, size: _s, className: _c, children: _ch, href, ...rest } = props;
+    const { variant: _, size: __, className: ___, children: ____, href, ...rest } =
+      props;
     return (
       <Link href={href} className={cls} {...rest}>
         {children}
@@ -48,7 +49,13 @@ export function Button(props: AsLink | AsButton) {
     );
   }
 
-  const { variant: _v, size: _s, className: _c, children: _ch, ...rest } = props as AsButton;
+  const {
+    variant: _,
+    size: __,
+    className: ___,
+    children: ____,
+    ...rest
+  } = props as AsButton;
   return (
     <button className={cls} {...rest}>
       {children}

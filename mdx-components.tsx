@@ -1,10 +1,9 @@
 import type { MDXComponents } from "mdx/types";
 
-// Custom renderers for Markdown nodes inside product MDX files. Keeps the
-// heading/body styles aligned with DESIGN.md typography roles. Pages can
-// import and pass this into <MDXRemote components={...} />.
-export function useMDXComponents(components: MDXComponents): MDXComponents {
-  return {
+// Plain components map — import this for next-mdx-remote's <MDXRemote
+// components={mdxComponents} /> in async server components (it is NOT a
+// hook, so it doesn't trip react-hooks/rules-of-hooks).
+export const mdxComponents: MDXComponents = {
     h1: ({ children }) => (
       <h1 className="text-display-lg text-ink mb-6">{children}</h1>
     ),
@@ -38,6 +37,12 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         {children}
       </code>
     ),
-    ...components,
-  };
+};
+
+// Next.js convention export — used when .mdx files are imported directly
+// (file-based MDX). Delegates to the same map above.
+export function useMDXComponents(
+  components: MDXComponents
+): MDXComponents {
+  return { ...mdxComponents, ...components };
 }

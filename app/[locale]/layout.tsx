@@ -47,14 +47,12 @@ export default async function LocaleLayout({
       <body className="min-h-screen">
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(organizationJsonLd()),
           }}
         />
         <script
           type="application/ld+json"
-          // eslint-disable-next-line react/no-danger
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(websiteJsonLd(locale as Locale)),
           }}

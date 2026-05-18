@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import { getAllProductSlugs, getProduct } from "@/lib/mdx";
-import { useMDXComponents } from "@/mdx-components";
+import { mdxComponents } from "@/mdx-components";
 import { pageMetadata, productJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { getTranslations } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
@@ -57,7 +57,6 @@ export default async function ProductDetailPage({
     notFound();
   }
 
-  const components = useMDXComponents({});
   const t = await getTranslations({ locale, namespace: "products" });
 
   const productLd = productJsonLd({
@@ -77,12 +76,10 @@ export default async function ProductDetailPage({
     <article className="min-h-screen bg-canvas py-section">
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <div className="max-w-narrow mx-auto px-6">
@@ -97,7 +94,7 @@ export default async function ProductDetailPage({
           }}
           aria-hidden
         />
-        <MDXRemote source={product.body} components={components} />
+        <MDXRemote source={product.body} components={mdxComponents} />
       </div>
     </article>
   );
