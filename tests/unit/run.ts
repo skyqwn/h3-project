@@ -4,5 +4,6 @@
 import "./mdx.test";
 import "./turnstile.test";
 import "./notify.test";
+import "./posts.test";
 
 console.log("All unit tests passed.");
