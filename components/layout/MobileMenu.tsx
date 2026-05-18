@@ -4,8 +4,6 @@ import { useState, useRef, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { useGSAP, gsap } from "@/lib/gsap";
-import { LocaleSwitcher } from "./LocaleSwitcher";
-import { Button } from "@/components/ui/Button";
 
 export function MobileMenu() {
   const t = useTranslations("nav");
@@ -141,19 +139,6 @@ export function MobileMenu() {
             {t("contact")}
           </Link>
         </nav>
-        <div data-mm-item>
-          <LocaleSwitcher />
-        </div>
-        <div data-mm-item>
-          <Button
-            href="/contact"
-            variant="primary"
-            size="md"
-            onClick={() => setOpen(false)}
-          >
-            {t("cta")}
-          </Button>
-        </div>
       </div>
     </div>
   );
