@@ -7,6 +7,7 @@ import {
   type ContactResult,
 } from "@/lib/contact-schema";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { notify } from "@/lib/notify";
 
 export async function submitContact(
   _prev: ContactResult | null,
@@ -17,6 +18,7 @@ export async function submitContact(
     email: formData.get("email"),
     company: formData.get("company") ?? "",
     message: formData.get("message"),
+    locale: formData.get("locale") ?? "ko",
     turnstileToken: formData.get("turnstileToken"),
     honeypot: formData.get("honeypot") ?? "",
   });
@@ -52,6 +54,17 @@ export async function submitContact(
     console.error("Resend send error:", error);
     return { ok: false, error: "Send failed" };
   }
+
+  // Best-effort fan-out. notify() never throws; a Telegram failure must
+  // not turn a delivered email into a user-facing error.
+  await notify({
+    name: input.name,
+    email: input.email,
+    company: input.company,
+    message: input.message,
+    locale: input.locale,
+    submittedAt: new Date().toISOString(),
+  });
 
   return { ok: true };
 }
