@@ -53,7 +53,27 @@ import {
   }
   assert.equal(threw, true, "getPost on missing slug must throw");
 
-  console.log("posts.test: 12 assertions passed.");
+  const { paginate, PAGE_SIZE } = await import("../../lib/blog-pagination");
+  assert.equal(PAGE_SIZE, 10);
+  const items = Array.from({ length: 23 }, (_, i) => i);
+  const p1 = paginate(items, 1);
+  assert.equal(p1.items.length, 10);
+  assert.equal(p1.totalPages, 3);
+  assert.equal(p1.page, 1);
+  const p3 = paginate(items, 3);
+  assert.equal(p3.items.length, 3);
+  const empty = paginate([], 1);
+  assert.equal(empty.totalPages, 1);
+  assert.equal(empty.items.length, 0);
+  let oob = false;
+  try {
+    paginate(items, 4);
+  } catch {
+    oob = true;
+  }
+  assert.equal(oob, true, "out-of-range page must throw");
+
+  console.log("posts.test: 19 assertions passed.");
 })().catch((err) => {
   console.error("posts.test FAILED:", err);
   process.exit(1);
