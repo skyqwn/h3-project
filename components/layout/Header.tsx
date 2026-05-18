@@ -1,6 +1,7 @@
 import { Link } from "@/i18n/routing";
 import { getTranslations } from "next-intl/server";
 import { LocaleSwitcher } from "./LocaleSwitcher";
+import { MobileMenu } from "./MobileMenu";
 import { Button } from "@/components/ui/Button";
 
 export async function Header() {
@@ -22,7 +23,7 @@ export async function Header() {
           aria-label="Home"
           className="text-heading-xl text-primary font-bold leading-none"
         >
-          <span aria-hidden="true">H3</span>
+          <span aria-hidden="true" className="text-2xl">H3</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 text-body-strong text-ink">
@@ -37,12 +38,14 @@ export async function Header() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-4">
           <LocaleSwitcher />
           <Button href="/contact" variant="primary" size="md">
             {t("cta")}
           </Button>
         </div>
+
+        <MobileMenu />
       </div>
     </header>
   );
