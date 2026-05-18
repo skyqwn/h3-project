@@ -12,7 +12,7 @@ import {
 (async () => {
   const ko = await getAllPosts("ko");
   assert.ok(ko.length >= 1, "expected >=1 KO post");
-  assert.equal(ko[0]?.slug, "sample-post");
+  assert.equal(ko[0]?.slug, "gold-refining-pvc-pp-fumehood-scrubber-duct");
   assert.equal(ko[0]?.category, "article");
   assert.ok(Array.isArray(ko[0]?.tags));
   for (let i = 1; i < ko.length; i++) {
@@ -22,28 +22,35 @@ import {
     );
   }
 
+  // Migrated Naver posts are KO-only (no .en.mdx) — verify SP1's
+  // ko-required / en-optional behavior: a KO-only post is absent from /en.
   const en = await getAllPosts("en");
-  assert.ok(en.some((p) => p.slug === "sample-post"), "EN sample present");
+  assert.ok(
+    !en.some(
+      (p) => p.slug === "gold-refining-pvc-pp-fumehood-scrubber-duct"
+    ),
+    "KO-only post must be absent from the EN list"
+  );
 
   const slugs = await getAllPostSlugs();
-  assert.ok(slugs.includes("sample-post"));
+  assert.ok(slugs.includes("gold-refining-pvc-pp-fumehood-scrubber-duct"));
   assert.equal(new Set(slugs).size, slugs.length, "slugs unique");
 
-  const one = await getPost("sample-post", "ko");
-  assert.equal(one.slug, "sample-post");
+  const one = await getPost("gold-refining-pvc-pp-fumehood-scrubber-duct", "ko");
+  assert.equal(one.slug, "gold-refining-pvc-pp-fumehood-scrubber-duct");
   assert.ok(one.body.length > 0);
 
   const tags = await getAllTags("ko");
-  assert.ok(tags.includes("공지") && tags.includes("기술"));
+  assert.ok(tags.includes("흄후드"));
 
   const cats = await getAllCategories("ko");
   assert.ok(cats.includes("article"));
 
-  const byTag = await getPostsByTag("기술", "ko");
-  assert.ok(byTag.some((p) => p.slug === "sample-post"));
+  const byTag = await getPostsByTag("흄후드", "ko");
+  assert.ok(byTag.some((p) => p.slug === "gold-refining-pvc-pp-fumehood-scrubber-duct"));
 
   const byCat = await getPostsByCategory("article", "ko");
-  assert.ok(byCat.some((p) => p.slug === "sample-post"));
+  assert.ok(byCat.some((p) => p.slug === "gold-refining-pvc-pp-fumehood-scrubber-duct"));
 
   let threw = false;
   try {

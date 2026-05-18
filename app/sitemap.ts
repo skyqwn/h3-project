@@ -3,7 +3,6 @@ import { SITE_URL } from "@/lib/seo";
 import { getAllProductSlugs } from "@/lib/mdx";
 import {
   getAllPosts,
-  getAllPostSlugs,
   getAllTags,
   getAllCategories,
 } from "@/lib/posts";
@@ -48,13 +47,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // --- Blog (per-locale: EN is a subset, pagination count differs) ---
-  const postSlugs = await getAllPostSlugs();
-  for (const slug of postSlugs) {
-    for (const loc of routing.locales) {
-      const base = loc === "ko" ? SITE_URL : `${SITE_URL}/en`;
+  // --- Blog (per-locale via getAllPosts: excludes drafts in prod and
+  // never emits an /en URL for a KO-only post) ---
+  for (const loc of routing.locales) {
+    const base = loc === "ko" ? SITE_URL : `${SITE_URL}/en`;
+    for (const post of await getAllPosts(loc)) {
       entries.push({
-        url: `${base}/blog/${slug}`,
+        url: `${base}/blog/${post.slug}`,
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.7,

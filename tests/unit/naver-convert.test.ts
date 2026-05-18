@@ -49,6 +49,36 @@ import { convertSmartEditor } from "../../scripts/naver-migrate/convert";
   assert.ok(r4.mdxBody.includes("- 항목1"), "li -> - item");
   assert.ok(r4.mdxBody.includes("- 항목2"), "second li");
 
+  // image strip (gallery) -> every img collected
+  const stripHtml = `<div class="se-main-container">
+    <div class="se-component se-imageStrip se-imageStrip2 se-l-default">
+      <img src="https://postfiles.pstatic.net/a.jpg?type=w80_blur" data-lazy-src="https://postfiles.pstatic.net/a.jpg?type=w966" alt="a" />
+      <img src="https://postfiles.pstatic.net/b.jpg?type=w80_blur" data-lazy-src="https://postfiles.pstatic.net/b.jpg?type=w466" alt="b" />
+    </div></div>`;
+  const r6 = convertSmartEditor(stripHtml);
+  assert.equal(r6.imageUrls.length, 2, "se-imageStrip collects every img");
+  assert.ok(
+    r6.imageUrls[0]!.includes("a.jpg") && r6.imageUrls[1]!.includes("b.jpg"),
+    "strip image urls captured in order"
+  );
+  assert.ok(
+    /!\[[^\]]*\]\(__IMAGE_0__\)[\s\S]*!\[[^\]]*\]\(__IMAGE_1__\)/.test(
+      r6.mdxBody
+    ),
+    "strip emits one token per image"
+  );
+
+  // horizontal line -> markdown hr (no warning)
+  const hrHtml = `<div class="se-main-container">
+    <div class="se-component se-horizontalLine"><div class="se-module">​</div></div></div>`;
+  const r7 = convertSmartEditor(hrHtml);
+  assert.ok(r7.mdxBody.includes("---"), "se-horizontalLine -> ---");
+  assert.equal(
+    r7.warnings.length,
+    0,
+    "horizontalLine is supported (no warning)"
+  );
+
   // unsupported widget -> warning, not crash
   const mapHtml = `<div class="se-main-container">
     <div class="se-component se-map"><div class="se-module se-module-map">지도</div></div></div>`;
@@ -58,7 +88,7 @@ import { convertSmartEditor } from "../../scripts/naver-migrate/convert";
     "unsupported widget logs a warning"
   );
 
-  console.log("naver-convert.test: 7 assertions passed.");
+  console.log("naver-convert.test: 13 assertions passed.");
 })().catch((err) => {
   console.error("naver-convert.test FAILED:", err);
   process.exit(1);

@@ -2,7 +2,31 @@ import { parse, type HTMLElement } from "node-html-parser";
 import type { ConvertResult } from "./types";
 
 // SmartEditor component classes we convert losslessly.
-const SUPPORTED = new Set(["se-text", "se-quotation", "se-list", "se-image"]);
+const SUPPORTED = new Set([
+  "se-text",
+  "se-quotation",
+  "se-list",
+  "se-image",
+  "se-imageStrip",
+  "se-horizontalLine",
+]);
+
+function pushImg(
+  img: HTMLElement,
+  imageUrls: string[],
+  out: string[]
+): void {
+  const src =
+    img.getAttribute("data-lazy-src") ||
+    img.getAttribute("src") ||
+    img.getAttribute("data-src") ||
+    "";
+  if (!src) return;
+  const idx = imageUrls.length;
+  imageUrls.push(src);
+  const alt = (img.getAttribute("alt") || "").replace(/[\]\n]/g, " ");
+  out.push(`![${alt}](__IMAGE_${idx}__)`);
+}
 
 function textOf(el: HTMLElement): string {
   // Each se-text-paragraph is a line; collapse whitespace, keep line breaks.
@@ -26,24 +50,22 @@ export function convertSmartEditor(html: string): ConvertResult {
   for (const comp of components) {
     const classes = comp.classNames.split(/\s+/);
 
+    // se-imageStrip is a multi-image gallery row — emit every img.
+    if (classes.includes("se-imageStrip")) {
+      for (const img of comp.querySelectorAll("img")) {
+        pushImg(img, imageUrls, out);
+      }
+      continue;
+    }
+
     if (classes.includes("se-image")) {
       const img = comp.querySelector("img");
-      if (img) {
-        const src =
-          img.getAttribute("data-lazy-src") ||
-          img.getAttribute("src") ||
-          img.getAttribute("data-src") ||
-          "";
-        if (src) {
-          const idx = imageUrls.length;
-          imageUrls.push(src);
-          const alt = (img.getAttribute("alt") || "").replace(
-            /[\]\n]/g,
-            " "
-          );
-          out.push(`![${alt}](__IMAGE_${idx}__)`);
-        }
-      }
+      if (img) pushImg(img, imageUrls, out);
+      continue;
+    }
+
+    if (classes.includes("se-horizontalLine")) {
+      out.push("---");
       continue;
     }
 

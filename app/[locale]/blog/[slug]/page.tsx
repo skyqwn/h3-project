@@ -2,17 +2,22 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
-import { getAllPostSlugs, getPost } from "@/lib/posts";
+import { getAllPosts, getPost } from "@/lib/posts";
 import { mdxComponents } from "@/mdx-components";
 import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
 import type { Post } from "@/lib/posts";
 
 export async function generateStaticParams() {
-  const slugs = await getAllPostSlugs();
-  return routing.locales.flatMap((locale) =>
-    slugs.map((slug) => ({ locale, slug }))
-  );
+  // Per-locale from getAllPosts so drafts are excluded in production and
+  // a KO-only post never generates an /en param.
+  const params: { locale: string; slug: string }[] = [];
+  for (const locale of routing.locales) {
+    for (const post of await getAllPosts(locale)) {
+      params.push({ locale, slug: post.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({
@@ -58,6 +63,12 @@ export default async function PostDetailPage({
   try {
     post = await getPost(slug, locale as Locale);
   } catch {
+    notFound();
+  }
+
+  // Defense-in-depth: a draft must not be reachable by direct URL in
+  // production even though getPost (single) does not filter drafts.
+  if (post.draft && process.env.NODE_ENV === "production") {
     notFound();
   }
 
