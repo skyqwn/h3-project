@@ -38,6 +38,7 @@ export async function Header() {
           </Link>
         </nav>
 
+        {/* Desktop: locale switcher + CTA */}
         <div className="hidden md:flex items-center gap-4">
           <LocaleSwitcher />
           <Button href="/contact" variant="primary" size="md">
@@ -45,7 +46,11 @@ export async function Header() {
           </Button>
         </div>
 
-        <MobileMenu />
+        {/* Mobile: locale switcher to the left of the hamburger */}
+        <div className="flex md:hidden items-center gap-3">
+          <LocaleSwitcher />
+          <MobileMenu />
+        </div>
       </div>
     </header>
   );
