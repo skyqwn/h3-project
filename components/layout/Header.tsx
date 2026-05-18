@@ -33,6 +33,9 @@ export async function Header() {
           <Link href="/products" className="hover:text-ink-soft transition-colors">
             {t("products")}
           </Link>
+          <Link href="/blog" className="hover:text-ink-soft transition-colors">
+            {t("blog")}
+          </Link>
           <Link href="/contact" className="hover:text-ink-soft transition-colors">
             {t("contact")}
           </Link>

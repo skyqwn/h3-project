@@ -132,6 +132,14 @@ export function MobileMenu() {
           </Link>
           <Link
             data-mm-item
+            href="/blog"
+            onClick={() => setOpen(false)}
+            className="hover:text-primary transition-colors"
+          >
+            {t("blog")}
+          </Link>
+          <Link
+            data-mm-item
             href="/contact"
             onClick={() => setOpen(false)}
             className="hover:text-primary transition-colors"

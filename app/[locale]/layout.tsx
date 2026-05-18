@@ -6,7 +6,7 @@ import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { LenisProvider } from "@/components/layout/LenisProvider";
-import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
+import { organizationJsonLd, websiteJsonLd, SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 
 const inter = Inter({
@@ -16,10 +16,22 @@ const inter = Inter({
   variable: "--font-pin-sans",
 });
 
-export const metadata: Metadata = {
-  title: "H3",
-  description: "H3 company intro site",
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const feed =
+    locale === "en" ? `${SITE_URL}/en/rss.xml` : `${SITE_URL}/rss.xml`;
+  return {
+    title: "H3",
+    description: "H3 company intro site",
+    alternates: {
+      types: { "application/rss+xml": feed },
+    },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
