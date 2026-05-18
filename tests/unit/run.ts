@@ -3,5 +3,6 @@
 // throw / process.exit(1) on failure.
 import "./mdx.test";
 import "./turnstile.test";
+import "./notify.test";
 
 console.log("All unit tests passed.");
