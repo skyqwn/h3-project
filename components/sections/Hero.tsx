@@ -7,28 +7,70 @@ import { Button } from "@/components/ui/Button";
 
 export function Hero() {
   const t = useTranslations("home.hero");
+  const rootRef = useRef<HTMLElement | null>(null);
   const imgRef = useRef<HTMLDivElement | null>(null);
+
+  const headline = t("headline");
+  const words = headline.split(" ");
 
   useGSAP(
     () => {
-      if (!imgRef.current) return;
+      const root = rootRef.current;
+      if (!root) return;
+
       const reduced =
         typeof window !== "undefined" &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (reduced) return;
-      gsap.to(imgRef.current, {
-        scale: 1.05,
-        duration: 8,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+
+      const wordEls = root.querySelectorAll<HTMLElement>("[data-hero-word]");
+      const eyebrow = root.querySelector<HTMLElement>("[data-hero-eyebrow]");
+      const cta = root.querySelector<HTMLElement>("[data-hero-cta]");
+
+      if (reduced) {
+        gsap.set([eyebrow, ...wordEls, cta], { opacity: 1, yPercent: 0 });
+        return;
+      }
+
+      // Ambient background zoom (subtle, infinite).
+      if (imgRef.current) {
+        gsap.to(imgRef.current, {
+          scale: 1.05,
+          duration: 8,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+
+      // Choreographed entrance: eyebrow → headline words rise from behind
+      // their mask → CTA.
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.fromTo(
+        eyebrow,
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.6 }
+      )
+        .fromTo(
+          wordEls,
+          { yPercent: 110 },
+          { yPercent: 0, duration: 0.9, stagger: 0.08 },
+          "-=0.2"
+        )
+        .fromTo(
+          cta,
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.6 },
+          "-=0.3"
+        );
     },
-    { scope: imgRef }
+    { scope: rootRef }
   );
 
   return (
-    <section className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-surface-dark">
+    <section
+      ref={rootRef}
+      className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-surface-dark"
+    >
       {/* Photo/video plate. When a real asset lands at /hero-placeholder.jpg
           it shows; until then the dark gradient fallback below carries the
           full-bleed look. */}
@@ -44,13 +86,37 @@ export function Hero() {
 
       <div className="absolute inset-0 flex flex-col justify-end p-16 text-on-dark">
         <div className="max-w-page mx-auto w-full">
-          <p className="text-caption-md uppercase tracking-wider text-on-dark-mute mb-3">
+          <p
+            data-hero-eyebrow
+            className="text-caption-md uppercase tracking-wider text-on-dark-mute mb-3 opacity-0"
+          >
             {t("eyebrow")}
           </p>
-          <h2 className="text-display-xl max-w-4xl mb-6">{t("headline")}</h2>
-          <Button href="/products" variant="primary" size="md">
-            {t("cta")}
-          </Button>
+
+          {/* Accessible full headline for SR/SEO; the animated copy is
+              aria-hidden so screen readers don't read it word-by-word. */}
+          <h2 className="text-display-xl max-w-4xl mb-6">
+            <span className="sr-only">{headline}</span>
+            <span aria-hidden className="block">
+              {words.map((word, i) => (
+                <span
+                  key={i}
+                  className="inline-block overflow-hidden align-bottom"
+                >
+                  <span data-hero-word className="inline-block will-change-transform">
+                    {word}
+                  </span>
+                  {i < words.length - 1 ? " " : ""}
+                </span>
+              ))}
+            </span>
+          </h2>
+
+          <span data-hero-cta className="inline-block opacity-0">
+            <Button href="/products" variant="primary" size="md">
+              {t("cta")}
+            </Button>
+          </span>
         </div>
       </div>
     </section>
