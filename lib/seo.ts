@@ -51,6 +51,12 @@ type PageMetaArgs = {
   image?: string;
   /** robots index directives — defaults to index,follow */
   noindex?: boolean;
+  /** when present, og:type becomes "article" with publish/modify times */
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    authors?: string[];
+  };
 };
 
 export function pageMetadata({
@@ -60,6 +66,7 @@ export function pageMetadata({
   description,
   image,
   noindex = false,
+  article,
 }: PageMetaArgs): Metadata {
   const urls = urlsFor(path);
   const ownUrl = locale === "ko" ? urls.ko : urls.en;
@@ -88,7 +95,7 @@ export function pageMetadata({
           },
         },
     openGraph: {
-      type: "website",
+      type: article ? "article" : "website",
       siteName: BRAND,
       title: fullTitle,
       description,
@@ -96,6 +103,13 @@ export function pageMetadata({
       locale: locale === "ko" ? "ko_KR" : "en_US",
       alternateLocale: locale === "ko" ? ["en_US"] : ["ko_KR"],
       images: image ? [{ url: image, width: 1200, height: 630 }] : undefined,
+      ...(article
+        ? {
+            publishedTime: article.publishedTime,
+            modifiedTime: article.modifiedTime ?? article.publishedTime,
+            authors: article.authors,
+          }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -174,6 +188,33 @@ export function breadcrumbJsonLd(
       name: item.name,
       item: `${prefix}${item.path === "/" ? "" : item.path}`,
     })),
+  };
+}
+
+export function articleJsonLd(p: {
+  title: string;
+  summary: string;
+  slug: string;
+  locale: Locale;
+  image: string;
+  publishedAt: string;
+  updatedAt?: string;
+  author: string;
+}) {
+  const path = `/blog/${p.slug}`;
+  const url = p.locale === "ko" ? `${SITE}${path}` : `${SITE}/en${path}`;
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: p.title,
+    description: p.summary,
+    image: p.image.startsWith("http") ? p.image : `${SITE}${p.image}`,
+    datePublished: p.publishedAt,
+    dateModified: p.updatedAt ?? p.publishedAt,
+    author: { "@type": "Organization", name: p.author },
+    publisher: { "@type": "Organization", name: BRAND },
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
   };
 }
 
