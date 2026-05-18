@@ -1,6 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 import { getAllProductSlugs } from "@/lib/mdx";
+import {
+  getAllPosts,
+  getAllPostSlugs,
+  getAllTags,
+  getAllCategories,
+} from "@/lib/posts";
+import { PAGE_SIZE } from "@/lib/blog-pagination";
 import { routing } from "@/i18n/routing";
 
 const STATIC_PATHS = ["", "/about", "/products", "/contact"] as const;
@@ -41,9 +48,57 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
+  // --- Blog (per-locale: EN is a subset, pagination count differs) ---
+  const postSlugs = await getAllPostSlugs();
+  for (const slug of postSlugs) {
+    for (const loc of routing.locales) {
+      const base = loc === "ko" ? SITE_URL : `${SITE_URL}/en`;
+      entries.push({
+        url: `${base}/blog/${slug}`,
+        lastModified: now,
+        changeFrequency: "monthly",
+        priority: 0.7,
+      });
+    }
+  }
+  for (const loc of routing.locales) {
+    const base = loc === "ko" ? SITE_URL : `${SITE_URL}/en`;
+    const localePosts = await getAllPosts(loc);
+    const totalPages = Math.max(
+      1,
+      Math.ceil(localePosts.length / PAGE_SIZE)
+    );
+    entries.push({
+      url: `${base}/blog`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
+    });
+    for (let p = 2; p <= totalPages; p++) {
+      entries.push({
+        url: `${base}/blog/page/${p}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.6,
+      });
+    }
+    for (const tag of await getAllTags(loc)) {
+      entries.push({
+        url: `${base}/blog/tag/${encodeURIComponent(tag)}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.5,
+      });
+    }
+    for (const cat of await getAllCategories(loc)) {
+      entries.push({
+        url: `${base}/blog/category/${cat}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.5,
+      });
+    }
+  }
+
   return entries;
 }
-
-// Reference routing so the import isn't flagged unused — kept for type
-// safety even though the path enumeration above is locale-agnostic.
-void routing;
