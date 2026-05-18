@@ -6,5 +6,6 @@ import "./turnstile.test";
 import "./notify.test";
 import "./posts.test";
 import "./naver-convert.test";
+import "./rehype-image-dimensions.test";
 
 console.log("All unit tests passed.");

@@ -42,13 +42,17 @@ export const mdxComponents: MDXComponents = {
       {children}
     </code>
   ),
-  // Re-hosted Naver photos. Unknown intrinsic size, so a plain lazy <img>
-  // sized to the reading column beats next/image fill-parent gymnastics.
-  img: ({ src, alt }) => (
+  // Re-hosted Naver photos. width/height come from rehypeImageDimensions
+  // (read off the file in public/) so the browser reserves the correct
+  // box before the lazy bytes arrive — no layout shift, no Lenis fight.
+  // w-full + h-auto keeps it responsive while honoring that aspect ratio.
+  img: ({ src, alt, width, height }) => (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src as string}
       alt={(alt as string) || ""}
+      width={width as number | undefined}
+      height={height as number | undefined}
       loading="lazy"
       decoding="async"
       className="block w-full h-auto my-8 rounded-md border border-hairline-soft bg-surface-card"

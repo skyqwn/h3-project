@@ -2,6 +2,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import { rehypeImageDimensions } from "@/lib/rehype-image-dimensions";
 import type { Metadata } from "next";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { mdxComponents } from "@/mdx-components";
@@ -115,7 +116,12 @@ export default async function PostDetailPage({
         <MDXRemote
           source={post.body}
           components={mdxComponents}
-          options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          options={{
+            mdxOptions: {
+              remarkPlugins: [remarkGfm],
+              rehypePlugins: [rehypeImageDimensions],
+            },
+          }}
         />
       </div>
     </article>
