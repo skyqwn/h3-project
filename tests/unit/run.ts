@@ -5,5 +5,6 @@ import "./mdx.test";
 import "./turnstile.test";
 import "./notify.test";
 import "./posts.test";
+import "./naver-convert.test";
 
 console.log("All unit tests passed.");
