@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Script from "next/script";
 import { submitContact } from "@/actions/contact";
 import { Button } from "@/components/ui/Button";
@@ -19,6 +19,7 @@ export function ContactForm({
   turnstileSiteKey: string;
 }) {
   const t = useTranslations("contact.form");
+  const locale = useLocale();
 
   // Register the Turnstile success callback on window. The widget's
   // data-callback attribute resolves this by name once the external
@@ -71,6 +72,8 @@ export function ContactForm({
         className="hidden"
         aria-hidden
       />
+
+      <input type="hidden" name="locale" value={locale} />
 
       <label className="block">
         <span className="block text-body-sm text-ink mb-1">{t("name")}</span>

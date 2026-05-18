@@ -5,6 +5,7 @@ export const ContactInputSchema = z.object({
   email: z.string().trim().email().max(200),
   company: z.string().trim().max(120).optional().default(""),
   message: z.string().trim().min(1).max(2000),
+  locale: z.enum(["ko", "en"]).default("ko"),
   turnstileToken: z.string().min(1),
   // Honeypot field — real users leave it empty; bots populate it.
   honeypot: z
