@@ -1,0 +1,108 @@
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { notFound } from "next/navigation";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import type { Metadata } from "next";
+import { getAllPostSlugs, getPost } from "@/lib/posts";
+import { mdxComponents } from "@/mdx-components";
+import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { routing, type Locale } from "@/i18n/routing";
+import type { Post } from "@/lib/posts";
+
+export async function generateStaticParams() {
+  const slugs = await getAllPostSlugs();
+  return routing.locales.flatMap((locale) =>
+    slugs.map((slug) => ({ locale, slug }))
+  );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  try {
+    const post = await getPost(slug, locale as Locale);
+    return pageMetadata({
+      locale: locale as Locale,
+      path: `/blog/${slug}`,
+      title: post.title,
+      description: post.summary,
+      image: post.coverImage,
+      article: {
+        publishedTime: post.publishedAt,
+        modifiedTime: post.updatedAt,
+        authors: [post.author],
+      },
+    });
+  } catch {
+    return pageMetadata({
+      locale: locale as Locale,
+      path: `/blog/${slug}`,
+      title: "Post",
+      description: "Post",
+      noindex: true,
+    });
+  }
+}
+
+export default async function PostDetailPage({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}) {
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+
+  let post: Post;
+  try {
+    post = await getPost(slug, locale as Locale);
+  } catch {
+    notFound();
+  }
+
+  const t = await getTranslations("blog");
+  const article = articleJsonLd({
+    title: post.title,
+    summary: post.summary,
+    slug: post.slug,
+    locale: post.locale,
+    image: post.coverImage,
+    publishedAt: post.publishedAt,
+    updatedAt: post.updatedAt,
+    author: post.author,
+  });
+  const breadcrumb = breadcrumbJsonLd(post.locale, [
+    { name: "Home", path: "/" },
+    { name: t("title"), path: "/blog" },
+    { name: post.title, path: `/blog/${post.slug}` },
+  ]);
+
+  return (
+    <article className="min-h-screen bg-canvas py-section">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <div className="max-w-narrow mx-auto px-6">
+        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
+          {t(`category.${post.category}`)} · {t("publishedOn")}{" "}
+          {post.publishedAt}
+        </p>
+        <h1 className="text-display-lg text-ink mb-12">{post.title}</h1>
+        <div
+          className="aspect-[16/10] rounded-lg bg-surface-card bg-cover bg-center mb-12"
+          style={{
+            backgroundImage: `linear-gradient(135deg, #f6f6f3 0%, #dadad3 100%), url(${post.coverImage})`,
+          }}
+          aria-hidden
+        />
+        <MDXRemote source={post.body} components={mdxComponents} />
+      </div>
+    </article>
+  );
+}
