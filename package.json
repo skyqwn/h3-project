@@ -10,7 +10,8 @@
     "lint": "eslint",
     "test:unit": "tsx tests/unit/run.ts",
     "test:e2e": "playwright test",
-    "check:i18n": "tsx scripts/check-i18n-parity.ts"
+    "check:i18n": "tsx scripts/check-i18n-parity.ts",
+    "migrate:naver": "tsx scripts/naver-migrate/run.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -37,6 +38,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
+    "node-html-parser": "^7.1.0",
     "tailwindcss": "^4",
     "tsx": "^4.22.0",
     "typescript": "^5"
