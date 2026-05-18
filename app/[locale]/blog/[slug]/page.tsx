@@ -1,6 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import type { Metadata } from "next";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { mdxComponents } from "@/mdx-components";
@@ -105,14 +106,17 @@ export default async function PostDetailPage({
           {post.publishedAt}
         </p>
         <h1 className="text-display-lg text-ink mb-12">{post.title}</h1>
-        <div
-          className="aspect-[16/10] rounded-lg bg-surface-card bg-cover bg-center mb-12"
-          style={{
-            backgroundImage: `linear-gradient(135deg, #f6f6f3 0%, #dadad3 100%), url(${post.coverImage})`,
-          }}
-          aria-hidden
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={post.coverImage}
+          alt={post.title}
+          className="aspect-[16/10] w-full rounded-lg object-cover bg-surface-card mb-12"
         />
-        <MDXRemote source={post.body} components={mdxComponents} />
+        <MDXRemote
+          source={post.body}
+          components={mdxComponents}
+          options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+        />
       </div>
     </article>
   );

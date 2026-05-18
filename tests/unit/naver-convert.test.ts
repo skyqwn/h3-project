@@ -29,15 +29,37 @@ import { convertSmartEditor } from "../../scripts/naver-migrate/convert";
     "image becomes a placeholder token __IMAGE_0__ for later path rewrite"
   );
 
-  // quotation -> blockquote
-  const quoteHtml = `<div class="se-main-container">
-    <div class="se-component se-quotation"><div class="se-module se-module-text">
-      <p class="se-text-paragraph">인용된 문장</p>
+  // se-quotation.se-l-quotation_line -> ## heading (Naver uses these as
+  // section titles, NOT as quotes)
+  const headingHtml = `<div class="se-main-container">
+    <div class="se-component se-quotation se-l-quotation_line"><div class="se-module se-module-text">
+      <p class="se-text-paragraph">작업 현장 레이아웃 작성</p>
     </div></div></div>`;
-  const r3 = convertSmartEditor(quoteHtml);
+  const r3 = convertSmartEditor(headingHtml);
   assert.ok(
-    r3.mdxBody.split("\n").some((l) => l.startsWith("> 인용된 문장")),
-    "se-quotation -> > blockquote"
+    r3.mdxBody.split("\n").some((l) => l === "## 작업 현장 레이아웃 작성"),
+    "se-quotation.se-l-quotation_line -> ## heading"
+  );
+  assert.ok(
+    !r3.mdxBody.includes("> 작업 현장"),
+    "quotation_line is NOT emitted as a blockquote"
+  );
+
+  // se-quotation (other layouts, e.g. se-l-default) -> > blockquote callout
+  const calloutHtml = `<div class="se-main-container">
+    <div class="se-component se-quotation se-l-default"><div class="se-module se-module-text">
+      <p class="se-text-paragraph">💡 팁: PVC는 내화학성이 뛰어납니다.</p>
+    </div></div></div>`;
+  const r3b = convertSmartEditor(calloutHtml);
+  assert.ok(
+    r3b.mdxBody
+      .split("\n")
+      .some((l) => l.startsWith("> 💡 팁: PVC는 내화학성이 뛰어납니다.")),
+    "se-quotation.se-l-default -> > blockquote"
+  );
+  assert.ok(
+    !r3b.mdxBody.includes("## "),
+    "a default-layout quotation is NOT a heading"
   );
 
   // list
@@ -68,27 +90,87 @@ import { convertSmartEditor } from "../../scripts/naver-migrate/convert";
     "strip emits one token per image"
   );
 
-  // horizontal line -> markdown hr (no warning)
+  // se-table -> GFM markdown table (first row is the header)
+  const tableHtml = `<div class="se-main-container">
+    <div class="se-component se-table"><div class="se-module">
+      <table><tbody>
+        <tr><td class="se-cell">약품 이름</td><td class="se-cell">주요 역할</td></tr>
+        <tr><td class="se-cell">왕수</td><td class="se-cell">금을 녹임</td></tr>
+      </tbody></table>
+    </div></div></div>`;
+  const r8 = convertSmartEditor(tableHtml);
+  const tlines = r8.mdxBody.split("\n");
+  assert.ok(
+    tlines.some((l) => l === "| 약품 이름 | 주요 역할 |"),
+    "se-table header row -> markdown table header"
+  );
+  assert.ok(
+    tlines.some((l) => /^\|\s*---\s*\|\s*---\s*\|$/.test(l)),
+    "se-table emits a GFM delimiter row"
+  );
+  assert.ok(
+    tlines.some((l) => l === "| 왕수 | 금을 녹임 |"),
+    "se-table data row -> markdown table row"
+  );
+  assert.equal(
+    r8.warnings.length,
+    0,
+    "se-table is supported (no warning)"
+  );
+
+  // se-table cell containing a pipe is escaped so it doesn't break the table
+  const pipeTableHtml = `<div class="se-main-container">
+    <div class="se-component se-table"><div class="se-module">
+      <table><tbody>
+        <tr><td class="se-cell">A</td><td class="se-cell">B</td></tr>
+        <tr><td class="se-cell">x|y</td><td class="se-cell">z</td></tr>
+      </tbody></table>
+    </div></div></div>`;
+  const r9 = convertSmartEditor(pipeTableHtml);
+  assert.ok(
+    r9.mdxBody.includes("x\\|y"),
+    "pipe inside a table cell is escaped"
+  );
+
+  // se-horizontalLine -> dropped entirely (no --- noise, no warning)
   const hrHtml = `<div class="se-main-container">
     <div class="se-component se-horizontalLine"><div class="se-module">​</div></div></div>`;
   const r7 = convertSmartEditor(hrHtml);
-  assert.ok(r7.mdxBody.includes("---"), "se-horizontalLine -> ---");
+  assert.ok(
+    !r7.mdxBody.includes("---"),
+    "se-horizontalLine is dropped (no --- separators)"
+  );
   assert.equal(
     r7.warnings.length,
     0,
-    "horizontalLine is supported (no warning)"
+    "horizontalLine is recognized (no warning)"
+  );
+
+  // zero-width characters are stripped from text
+  const zwHtml = `<div class="se-main-container">
+    <div class="se-component se-text"><div class="se-module se-module-text">
+      <p class="se-text-paragraph">​깨끗한​ 문장﻿</p>
+    </div></div></div>`;
+  const rzw = convertSmartEditor(zwHtml);
+  assert.ok(
+    rzw.mdxBody.includes("깨끗한 문장"),
+    "text content survives zero-width stripping"
+  );
+  assert.ok(
+    !/[​‌‍﻿]/.test(rzw.mdxBody),
+    "no zero-width characters remain in output"
   );
 
   // unsupported widget -> warning, not crash
-  const mapHtml = `<div class="se-main-container">
-    <div class="se-component se-map"><div class="se-module se-module-map">지도</div></div></div>`;
-  const r5 = convertSmartEditor(mapHtml);
+  const stickerHtml = `<div class="se-main-container">
+    <div class="se-component se-sticker"><div class="se-module se-module-sticker">스티커</div></div></div>`;
+  const r5 = convertSmartEditor(stickerHtml);
   assert.ok(
-    r5.warnings.some((w) => w.includes("se-map")),
+    r5.warnings.some((w) => w.includes("se-sticker")),
     "unsupported widget logs a warning"
   );
 
-  console.log("naver-convert.test: 13 assertions passed.");
+  console.log("naver-convert.test: 21 assertions passed.");
 })().catch((err) => {
   console.error("naver-convert.test FAILED:", err);
   process.exit(1);

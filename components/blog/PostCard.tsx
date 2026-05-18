@@ -6,13 +6,16 @@ export function PostCard({ post }: { post: Post }) {
   const t = useTranslations("blog");
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
-      <div
-        className="aspect-[16/10] rounded-md bg-surface-card bg-cover bg-center overflow-hidden"
-        style={{
-          backgroundImage: `linear-gradient(135deg, #f6f6f3 0%, #dadad3 100%), url(${post.coverImage})`,
-        }}
-        aria-hidden
-      />
+      <div className="aspect-[16/10] rounded-md bg-surface-card overflow-hidden">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={post.coverImage}
+          alt={post.title}
+          loading="lazy"
+          decoding="async"
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+        />
+      </div>
       <p className="text-caption-md uppercase tracking-wider text-mute mt-3">
         {t(`category.${post.category}`)} · {post.publishedAt}
       </p>
