@@ -55,7 +55,18 @@
     }
   },
   "footer": {
-    "copyright": "© 2026 H3"
+    "copyright": "© 2026 H3",
+    "company": {
+      "heading": "Company",
+      "ceoLabel": "CEO",
+      "ceo": "Seung-chan Hong",
+      "phoneLabel": "Phone",
+      "phone": "010-6777-6730",
+      "emailLabel": "Email",
+      "email": "contact@h3.co.kr",
+      "addressLabel": "Address",
+      "address": "Seoul, South Korea (address TBD)"
+    }
   },
   "notFound": {
     "title": "Page not found",
