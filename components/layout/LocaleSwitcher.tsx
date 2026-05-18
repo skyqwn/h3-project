@@ -26,7 +26,9 @@ export function LocaleSwitcher() {
       <button
         type="button"
         onClick={() => switchTo("ko")}
-        className={locale === "ko" ? "font-bold text-ink" : "text-mute"}
+        className={`cursor-pointer ${
+          locale === "ko" ? "font-bold text-ink" : "text-mute"
+        }`}
         aria-current={locale === "ko" ? "true" : undefined}
       >
         KO
@@ -35,7 +37,9 @@ export function LocaleSwitcher() {
       <button
         type="button"
         onClick={() => switchTo("en")}
-        className={locale === "en" ? "font-bold text-ink" : "text-mute"}
+        className={`cursor-pointer ${
+          locale === "en" ? "font-bold text-ink" : "text-mute"
+        }`}
         aria-current={locale === "en" ? "true" : undefined}
       >
         EN
