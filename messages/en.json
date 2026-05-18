@@ -40,6 +40,23 @@
     "title": "Products",
     "subtitle": "What we built"
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "News and stories from H3",
+    "readMore": "Read more",
+    "publishedOn": "Published",
+    "empty": "No posts yet.",
+    "prev": "Previous",
+    "next": "Next",
+    "pageLabel": "Page",
+    "tagLabel": "Tag",
+    "categoryLabel": "Category",
+    "category": {
+      "news": "News",
+      "article": "Article",
+      "update": "Update"
+    }
+  },
   "contact": {
     "title": "Contact",
     "subtitle": "Let's start a conversation",

@@ -40,6 +40,23 @@
     "title": "제품",
     "subtitle": "우리가 만든 것들"
   },
+  "blog": {
+    "title": "블로그",
+    "subtitle": "H3의 소식과 이야기",
+    "readMore": "더 읽기",
+    "publishedOn": "발행일",
+    "empty": "아직 글이 없습니다.",
+    "prev": "이전",
+    "next": "다음",
+    "pageLabel": "페이지",
+    "tagLabel": "태그",
+    "categoryLabel": "카테고리",
+    "category": {
+      "news": "뉴스",
+      "article": "아티클",
+      "update": "업데이트"
+    }
+  },
   "contact": {
     "title": "문의",
     "subtitle": "이야기를 시작해 봅시다",
