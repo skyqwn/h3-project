@@ -79,6 +79,8 @@
       "message": "문의 내용",
       "file": "첨부파일 (선택)",
       "fileHint": "PDF·이미지·문서, 최대 5MB",
+      "fileDrop": "파일을 끌어다 놓거나 클릭해서 선택",
+      "fileRemove": "제거",
       "fileTooLarge": "파일이 5MB를 초과합니다.",
       "fileType": "허용되지 않는 파일 형식입니다.",
       "required": "필수 입력 항목입니다.",

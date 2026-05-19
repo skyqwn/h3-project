@@ -79,6 +79,8 @@
       "message": "Message",
       "file": "Attachment (optional)",
       "fileHint": "PDF / image / document, 5MB max",
+      "fileDrop": "Drag & drop a file, or click to choose",
+      "fileRemove": "Remove",
       "fileTooLarge": "File exceeds 5MB.",
       "fileType": "File type not allowed.",
       "required": "This field is required.",
