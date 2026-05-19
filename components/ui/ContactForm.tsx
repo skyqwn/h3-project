@@ -5,6 +5,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
 import Script from "next/script";
+import { Loader2 } from "lucide-react";
 import { submitContact } from "@/actions/contact";
 import { Button } from "@/components/ui/Button";
 import { Step1 } from "@/components/ui/contact/Step1";
@@ -237,9 +238,22 @@ export function ContactForm({
             <Button
               variant="primary"
               size="md"
-              disabled={isPending || !token}
+              aria-busy={isPending || methods.formState.isSubmitting}
+              disabled={
+                isPending || methods.formState.isSubmitting || !token
+              }
             >
-              {isPending ? t("submitting") : t("submit")}
+              {isPending || methods.formState.isSubmitting ? (
+                <>
+                  <Loader2
+                    aria-hidden
+                    className="size-4 animate-spin mr-2"
+                  />
+                  {t("submitting")}
+                </>
+              ) : (
+                t("submit")
+              )}
             </Button>
           )}
         </div>
