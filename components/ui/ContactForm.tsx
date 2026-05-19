@@ -91,11 +91,18 @@ export function ContactForm({
       const el = turnstileRef.current;
       if (window.turnstile && el) {
         widgetRendered.current = true;
+        const sync = (tok: string) => {
+          setToken(tok);
+          // The token must also land in the RHF field: ContactClientSchema
+          // requires turnstileToken.min(1), so without this handleSubmit
+          // silently fails validation and the submit never fires.
+          methods.setValue("turnstileToken" as never, tok as never);
+        };
         window.turnstile.render(el, {
           sitekey: turnstileSiteKey,
-          callback: (tok: string) => setToken(tok),
-          "expired-callback": () => setToken(""),
-          "error-callback": () => setToken(""),
+          callback: (tok: string) => sync(tok),
+          "expired-callback": () => sync(""),
+          "error-callback": () => sync(""),
         });
         return;
       }
@@ -106,7 +113,7 @@ export function ContactForm({
       cancelled = true;
       window.clearTimeout(timer);
     };
-  }, [step, turnstileSiteKey]);
+  }, [step, turnstileSiteKey, methods]);
 
   if (state?.ok) {
     return (
@@ -161,6 +168,9 @@ export function ContactForm({
     if (file) fd.set("file", file);
 
     formAction(fd);
+  }, (errs) => {
+    // Surface why a click did nothing instead of failing silently.
+    console.warn("[contact] submit blocked by validation:", errs);
   });
 
   return (
