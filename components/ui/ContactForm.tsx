@@ -174,6 +174,19 @@ export function ContactForm({
     console.warn("[contact] submit blocked by validation:", errs);
   });
 
+  // Busy from the click (RHF isSubmitting) through the server roundtrip
+  // (useActionState isPending) — keeps the submit button locked the whole
+  // time so a slow request can't be double-submitted.
+  const submitting = isPending || methods.formState.isSubmitting;
+  const submitLabel = submitting ? (
+    <span className="inline-flex items-center gap-2">
+      <Loader2 aria-hidden className="size-4 animate-spin" />
+      {t("submitting")}
+    </span>
+  ) : (
+    t("submit")
+  );
+
   return (
     <FormProvider {...methods}>
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
@@ -238,22 +251,10 @@ export function ContactForm({
             <Button
               variant="primary"
               size="md"
-              aria-busy={isPending || methods.formState.isSubmitting}
-              disabled={
-                isPending || methods.formState.isSubmitting || !token
-              }
+              aria-busy={submitting}
+              disabled={submitting || !token}
             >
-              {isPending || methods.formState.isSubmitting ? (
-                <>
-                  <Loader2
-                    aria-hidden
-                    className="size-4 animate-spin mr-2"
-                  />
-                  {t("submitting")}
-                </>
-              ) : (
-                t("submit")
-              )}
+              {submitLabel}
             </Button>
           )}
         </div>
