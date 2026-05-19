@@ -13,11 +13,18 @@ import {
 import { EmailField } from "./EmailField";
 import { PURPOSES, type Purpose } from "@/lib/contact-schema";
 
+const VK = ["required", "invalidEmail", "invalidPhone"];
 function Err({ name }: { name: string }) {
+  const t = useTranslations("contact.form");
   const { formState } = useFormContext();
   const e = (formState.errors as Record<string, { message?: string }>)[name];
   if (!e?.message) return null;
-  return <p className="mt-1 text-body-sm text-error">{e.message}</p>;
+  const m = e.message;
+  return (
+    <p className="mt-1 text-body-sm text-error">
+      {VK.includes(m) ? t(m) : m}
+    </p>
+  );
 }
 
 const PURPOSE_KEY: Record<Purpose, string> = {

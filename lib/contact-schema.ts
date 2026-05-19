@@ -65,24 +65,24 @@ export function composeEmail(local: string, domain: string): string {
 // the single composed `email` via ContactInputSchema (source of truth).
 export const ContactClientSchema = z
   .object({
-    company: z.string().trim().min(1).max(120),
-    contactName: z.string().trim().min(1).max(120),
-    phone,
+    company: z.string().trim().min(1, "required").max(120),
+    contactName: z.string().trim().min(1, "required").max(120),
+    phone: z.string().trim().regex(/^[0-9+\-\s]{8,20}$/, "invalidPhone"),
     emailLocal: z
       .string()
       .trim()
-      .min(1)
-      .regex(/^[^\s@]+$/, "invalid email local part"),
+      .min(1, "required")
+      .regex(/^[^\s@]+$/, "invalidEmail"),
     emailDomain: z
       .string()
       .trim()
-      .min(1)
+      .min(1, "required")
       .regex(
         /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "invalid email domain"
+        "invalidEmail"
       ),
-    purpose: z.enum(PURPOSES),
-    message: z.string().trim().min(1).max(2000),
+    purpose: z.enum(PURPOSES, { message: "required" }),
+    message: z.string().trim().min(1, "required").max(2000),
     locale: z.enum(["ko", "en"]).default("ko"),
     turnstileToken: z.string().min(1),
     honeypot: z.string().max(0).optional().default(""),
@@ -93,7 +93,7 @@ export const ContactClientSchema = z
         .string()
         .email()
         .safeParse(composeEmail(v.emailLocal, v.emailDomain)).success,
-    { message: "invalid email", path: ["emailDomain"] }
+    { message: "invalidEmail", path: ["emailDomain"] }
   );
 
 export type ContactClientInput = z.infer<typeof ContactClientSchema>;

@@ -4,6 +4,8 @@ import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 import { ALLOWED_FILE_EXT } from "@/lib/contact-schema";
 
+const VK = ["required", "invalidEmail", "invalidPhone"];
+
 export function Step2({
   fileError,
 }: {
@@ -29,7 +31,9 @@ export function Step2({
           {...register("message")}
         />
         {msgErr?.message && (
-          <p className="mt-1 text-body-sm text-error">{msgErr.message}</p>
+          <p className="mt-1 text-body-sm text-error">
+            {VK.includes(msgErr.message) ? t(msgErr.message) : msgErr.message}
+          </p>
         )}
       </div>
 
