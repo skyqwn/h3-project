@@ -1,9 +1,12 @@
 export type Lead = {
-  name: string;
+  contactName: string;
   email: string;
-  company: string; // "" when not provided
+  company: string;
+  phone: string;
+  purpose: "product" | "technical" | "partnership" | "etc";
   message: string;
   locale: "ko" | "en";
+  attachmentName: string | null;
   submittedAt: string; // ISO 8601
 };
 

@@ -3,9 +3,12 @@ import { telegramChannel } from "../../lib/notify/channels/telegram";
 import type { Lead } from "../../lib/notify/types";
 
 const lead: Lead = {
-  name: "홍길동",
+  contactName: "홍길동",
   email: "gildong@example.com",
   company: "Acme",
+  phone: "010-0000-0000",
+  purpose: "product",
+  attachmentName: null,
   message: "문의 내용입니다",
   locale: "ko",
   submittedAt: "2026-05-18T00:00:00.000Z",
@@ -49,6 +52,7 @@ function restore() {
       calledBody.includes("gildong@example.com"),
     "body should carry the lead email"
   );
+  assert.ok(typeof telegramChannel.send === "function", "telegram channel intact");
 
   // Case 2: unconfigured -> no fetch, no throw
   delete process.env.TELEGRAM_BOT_TOKEN;
@@ -83,7 +87,7 @@ function restore() {
   await notify(lead); // unconfigured telegram -> no-op -> notify resolves
 
   restore();
-  console.log("notify.test: 6 assertions passed.");
+  console.log("notify.test: 7 assertions passed.");
 })().catch((err) => {
   restore();
   console.error("notify.test FAILED:", err);

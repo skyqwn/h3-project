@@ -1,11 +1,21 @@
 import type { Lead, NotifyChannel } from "../types";
 
+const PURPOSE_LABEL: Record<Lead["purpose"], string> = {
+  product: "제품·견적 문의",
+  technical: "기술 상담",
+  partnership: "협력·파트너십",
+  etc: "기타",
+};
+
 function formatMessage(lead: Lead): string {
   return (
     "🔔 H3 새 문의\n" +
-    `이름: ${lead.name}\n` +
-    `이메일: ${lead.email}\n` +
+    `담당자: ${lead.contactName}\n` +
     `회사: ${lead.company || "—"}\n` +
+    `전화: ${lead.phone}\n` +
+    `이메일: ${lead.email}\n` +
+    `목적: ${PURPOSE_LABEL[lead.purpose]}\n` +
+    `첨부: ${lead.attachmentName || "—"}\n` +
     `언어: ${lead.locale}\n\n` +
     lead.message
   );
