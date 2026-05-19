@@ -55,3 +55,55 @@ export function validateUpload(
     return "contact.form.fileType";
   return null;
 }
+
+export function composeEmail(local: string, domain: string): string {
+  return `${local.trim()}@${domain.trim()}`;
+}
+
+// Client-only shape: the form holds local + domain separately and the
+// resolver validates the composed address. The server still validates
+// the single composed `email` via ContactInputSchema (source of truth).
+export const ContactClientSchema = z
+  .object({
+    company: z.string().trim().min(1).max(120),
+    contactName: z.string().trim().min(1).max(120),
+    phone,
+    emailLocal: z
+      .string()
+      .trim()
+      .min(1)
+      .regex(/^[^\s@]+$/, "invalid email local part"),
+    emailDomain: z
+      .string()
+      .trim()
+      .min(1)
+      .regex(
+        /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "invalid email domain"
+      ),
+    purpose: z.enum(PURPOSES),
+    message: z.string().trim().min(1).max(2000),
+    locale: z.enum(["ko", "en"]).default("ko"),
+    turnstileToken: z.string().min(1),
+    honeypot: z.string().max(0).optional().default(""),
+  })
+  .refine(
+    (v) =>
+      z
+        .string()
+        .email()
+        .safeParse(composeEmail(v.emailLocal, v.emailDomain)).success,
+    { message: "invalid email", path: ["emailDomain"] }
+  );
+
+export type ContactClientInput = z.infer<typeof ContactClientSchema>;
+
+export const EMAIL_DOMAINS = [
+  "gmail.com",
+  "naver.com",
+  "daum.net",
+  "hanmail.net",
+  "nate.com",
+  "outlook.com",
+  "icloud.com",
+] as const;

@@ -68,7 +68,34 @@ import {
     "allowed ext list"
   );
 
-  console.log("contact-schema.test: 11 assertions passed.");
+  const { ContactClientSchema, composeEmail } = await import(
+    "../../lib/contact-schema"
+  );
+  assert.equal(composeEmail("user", "gmail.com"), "user@gmail.com", "compose");
+  const cbase = {
+    company: "H3",
+    contactName: "홍길동",
+    phone: "010-1234-5678",
+    emailLocal: "user",
+    emailDomain: "gmail.com",
+    purpose: "product",
+    message: "hi",
+    locale: "ko",
+    turnstileToken: "t",
+    honeypot: "",
+  };
+  assert.equal(ContactClientSchema.safeParse(cbase).success, true, "client ok");
+  assert.equal(
+    ContactClientSchema.safeParse({ ...cbase, emailLocal: "a b" }).success,
+    false,
+    "local part rejects space"
+  );
+  assert.equal(
+    ContactClientSchema.safeParse({ ...cbase, emailDomain: "nodot" }).success,
+    false,
+    "domain must look like a hostname"
+  );
+  console.log("contact-schema.test: 15 assertions passed.");
 })().catch((err) => {
   console.error("contact-schema.test FAILED:", err);
   process.exit(1);
