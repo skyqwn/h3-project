@@ -147,11 +147,13 @@ export function ContactForm({
   };
 
   const onSubmit = methods.handleSubmit(async (values) => {
-    const fileList = (values as Record<string, unknown>).file as
-      | FileList
-      | undefined;
-    const file =
-      fileList && fileList.length > 0 ? (fileList[0] ?? null) : null;
+    // Read the file straight off the DOM input: zodResolver strips
+    // unknown keys, so the schema-less `file` field never survives onto
+    // `values` (this is why attachments arrived as "(none)").
+    const fileInput = document.getElementById(
+      "file"
+    ) as HTMLInputElement | null;
+    const file = fileInput?.files?.[0] ?? null;
     const fErr = validateUpload(file);
     setFileError(fErr ? fErr.replace("contact.form.", "") : null);
     if (fErr) return;
