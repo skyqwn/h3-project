@@ -60,7 +60,7 @@ export function FileDropzone() {
       />
       {name ? (
         <div className="flex w-full flex-col items-center gap-2">
-          <div className="group flex max-w-full items-center gap-2 rounded-md bg-surface-card px-3 py-2 transition-colors hover:bg-secondary-bg">
+          <div className="group flex max-w-full items-center gap-2 rounded-md bg-surface-card px-3 py-2 ring-1 ring-transparent transition-colors hover:bg-secondary-bg hover:ring-stone">
             <Paperclip
               aria-hidden
               className="size-4 shrink-0 text-mute"
