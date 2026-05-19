@@ -9,6 +9,8 @@ import { ALLOWED_FILE_EXT } from "@/lib/contact-schema";
 // Single-file dropzone. Keeps a real <input id="file"> in the DOM so the
 // ContactForm submit (which reads document.getElementById("file")) works
 // unchanged. Drag-drop assigns the file to that input via DataTransfer.
+// The outer box keeps a fixed size in every state (empty / filled /
+// dragging) so selecting a file never shifts the layout.
 export function FileDropzone() {
   const t = useTranslations("contact.form");
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -31,7 +33,23 @@ export function FileDropzone() {
   };
 
   return (
-    <div>
+    <div
+      onDragOver={(e) => {
+        e.preventDefault();
+        setDrag(true);
+      }}
+      onDragLeave={() => setDrag(false)}
+      onDrop={(e) => {
+        e.preventDefault();
+        setDrag(false);
+        const f = e.dataTransfer.files?.[0] ?? null;
+        if (f) setFile(f);
+      }}
+      className={cn(
+        "flex min-h-[140px] w-full items-center justify-center rounded-md border border-dashed px-4 py-6 transition-colors",
+        drag ? "border-primary bg-surface-card" : "border-ash bg-canvas"
+      )}
+    >
       <input
         ref={inputRef}
         id="file"
@@ -41,7 +59,7 @@ export function FileDropzone() {
         onChange={(e) => setName(e.target.files?.[0]?.name ?? null)}
       />
       {name ? (
-        <div className="flex items-center justify-between gap-3 rounded-md border border-hairline bg-surface-card px-4 py-3">
+        <div className="flex w-full items-center justify-between gap-3">
           <span className="truncate text-body-sm text-ink">{name}</span>
           <button
             type="button"
@@ -56,23 +74,7 @@ export function FileDropzone() {
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDrag(true);
-          }}
-          onDragLeave={() => setDrag(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setDrag(false);
-            const f = e.dataTransfer.files?.[0] ?? null;
-            if (f) setFile(f);
-          }}
-          className={cn(
-            "flex w-full flex-col items-center gap-2 rounded-md border border-dashed px-4 py-8 text-center transition-colors cursor-pointer",
-            drag
-              ? "border-primary bg-surface-card"
-              : "border-ash bg-canvas hover:bg-surface-soft"
-          )}
+          className="flex w-full flex-col items-center gap-2 text-center cursor-pointer"
         >
           <Upload aria-hidden className="size-6 text-mute" />
           <span className="text-body-sm text-ink">{t("fileDrop")}</span>
