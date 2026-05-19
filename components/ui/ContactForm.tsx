@@ -1,11 +1,20 @@
 "use client";
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
 import Script from "next/script";
 import { submitContact } from "@/actions/contact";
 import { Button } from "@/components/ui/Button";
-import type { ContactResult } from "@/lib/contact-schema";
+import { Step1 } from "@/components/ui/contact/Step1";
+import { Step2 } from "@/components/ui/contact/Step2";
+import {
+  ContactClientSchema,
+  composeEmail,
+  validateUpload,
+  type ContactResult,
+} from "@/lib/contact-schema";
 
 declare global {
   interface Window {
@@ -13,33 +22,55 @@ declare global {
   }
 }
 
+const STEP1_FIELDS = [
+  "company",
+  "contactName",
+  "phone",
+  "emailLocal",
+  "emailDomain",
+  "purpose",
+] as const;
+
 export function ContactForm({
   turnstileSiteKey,
 }: {
   turnstileSiteKey: string;
 }) {
   const t = useTranslations("contact.form");
+  const tStep = useTranslations("contact.step");
   const locale = useLocale();
 
-  // Register the Turnstile success callback on window. The widget's
-  // data-callback attribute resolves this by name once the external
-  // api.js loads. Defining it here (not via an inline <script>) is what
-  // makes it actually run on the client.
-  useEffect(() => {
-    window.onTurnstileSuccess = (token: string) => {
-      const el = document.getElementById(
-        "turnstileToken"
-      ) as HTMLInputElement | null;
-      if (el) el.value = token;
-    };
-    return () => {
-      delete window.onTurnstileSuccess;
-    };
-  }, []);
+  const methods = useForm({
+    resolver: zodResolver(ContactClientSchema),
+    mode: "onTouched",
+    defaultValues: {
+      company: "",
+      contactName: "",
+      phone: "",
+      emailLocal: "",
+      emailDomain: "",
+      purpose: "",
+      message: "",
+      locale,
+      turnstileToken: "",
+      honeypot: "",
+    } as never,
+  });
+
+  const [step, setStep] = useState<1 | 2>(1);
+  const [fileError, setFileError] = useState<string | null>(null);
+  const [token, setToken] = useState("");
   const [state, formAction, isPending] = useActionState<
     ContactResult | null,
     FormData
   >(submitContact, null);
+
+  useEffect(() => {
+    window.onTurnstileSuccess = (tok: string) => setToken(tok);
+    return () => {
+      delete window.onTurnstileSuccess;
+    };
+  }, []);
 
   if (state?.ok) {
     return (
@@ -66,86 +97,114 @@ export function ContactForm({
     );
   }
 
+  const goNext = async () => {
+    const ok = await methods.trigger(STEP1_FIELDS as unknown as never);
+    if (ok) setStep(2);
+  };
+
+  const onSubmit = methods.handleSubmit(async (values) => {
+    const fileList = (values as Record<string, unknown>).file as
+      | FileList
+      | undefined;
+    const file =
+      fileList && fileList.length > 0 ? (fileList[0] ?? null) : null;
+    const fErr = validateUpload(file);
+    setFileError(fErr ? fErr.replace("contact.form.", "") : null);
+    if (fErr) return;
+
+    const fd = new FormData();
+    fd.set("company", values.company);
+    fd.set("contactName", values.contactName);
+    fd.set("phone", values.phone);
+    fd.set("email", composeEmail(values.emailLocal, values.emailDomain));
+    fd.set("purpose", values.purpose);
+    fd.set("message", values.message);
+    fd.set("locale", locale);
+    fd.set("turnstileToken", token);
+    fd.set("honeypot", values.honeypot ?? "");
+    if (file) fd.set("file", file);
+
+    formAction(fd);
+  });
+
   return (
-    <form action={formAction} className="space-y-4">
-      {state && !state.ok && (
-        <div
-          role="alert"
-          className="bg-error-deep text-on-primary rounded-md p-3 text-body-sm"
-        >
-          {t("error")}
+    <FormProvider {...methods}>
+      <form onSubmit={onSubmit} className="space-y-6" noValidate>
+        {state && !state.ok && (
+          <div
+            role="alert"
+            className="bg-error-deep text-on-primary rounded-md p-3 text-body-sm"
+          >
+            {t("error")}
+          </div>
+        )}
+
+        <p className="text-caption-md uppercase tracking-wider text-mute">
+          {tStep("of", { current: step, total: 2 })}
+        </p>
+
+        {/* Honeypot — hidden from users; bots fill it and get rejected. */}
+        <input
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          className="hidden"
+          aria-hidden
+          {...methods.register("honeypot")}
+        />
+
+        <div className={step === 1 ? "" : "hidden"}>
+          <Step1 />
         </div>
-      )}
+        <div className={step === 2 ? "" : "hidden"}>
+          <Step2 fileError={fileError} />
+          <div
+            className="cf-turnstile mt-4"
+            data-sitekey={turnstileSiteKey}
+            data-callback="onTurnstileSuccess"
+          />
+          <Script
+            src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+            strategy="afterInteractive"
+          />
+        </div>
 
-      {/* Honeypot — hidden from real users; bots fill it and get rejected. */}
-      <input
-        type="text"
-        name="honeypot"
-        tabIndex={-1}
-        autoComplete="off"
-        className="hidden"
-        aria-hidden
-      />
-
-      <input type="hidden" name="locale" value={locale} />
-
-      <label className="block">
-        <span className="block text-body-sm text-ink mb-1">{t("name")}</span>
-        <input
-          name="name"
-          required
-          maxLength={120}
-          className="w-full h-11 px-3 bg-canvas border border-ash rounded-md text-body-md text-ink"
-        />
-      </label>
-
-      <label className="block">
-        <span className="block text-body-sm text-ink mb-1">{t("email")}</span>
-        <input
-          name="email"
-          type="email"
-          required
-          maxLength={200}
-          className="w-full h-11 px-3 bg-canvas border border-ash rounded-md text-body-md text-ink"
-        />
-      </label>
-
-      <label className="block">
-        <span className="block text-body-sm text-ink mb-1">{t("company")}</span>
-        <input
-          name="company"
-          maxLength={120}
-          className="w-full h-11 px-3 bg-canvas border border-ash rounded-md text-body-md text-ink"
-        />
-      </label>
-
-      <label className="block">
-        <span className="block text-body-sm text-ink mb-1">{t("message")}</span>
-        <textarea
-          name="message"
-          required
-          maxLength={2000}
-          rows={6}
-          className="w-full px-3 py-3 bg-canvas border border-ash rounded-md text-body-md text-ink"
-        />
-      </label>
-
-      {/* Cloudflare Turnstile widget mounts here and writes its token into
-          the hidden field below via the onTurnstileSuccess callback. */}
-      <div
-        className="cf-turnstile"
-        data-sitekey={turnstileSiteKey}
-        data-callback="onTurnstileSuccess"
-      />
-      <input type="hidden" name="turnstileToken" id="turnstileToken" />
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        strategy="afterInteractive"
-      />
-
-      <Button variant="primary" size="md" disabled={isPending}>
-        {isPending ? t("submitting") : t("submit")}
-      </Button>
-    </form>
+        <div className="flex gap-3">
+          {step === 2 && (
+            <Button
+              type="button"
+              variant="secondary"
+              size="md"
+              className="cursor-pointer"
+              onClick={() => setStep(1)}
+            >
+              {tStep("prev")}
+            </Button>
+          )}
+          {step === 1 ? (
+            <Button
+              type="button"
+              variant="primary"
+              size="md"
+              className="cursor-pointer"
+              onClick={goNext}
+            >
+              {tStep("next")}
+            </Button>
+          ) : (
+            <Button
+              variant="primary"
+              size="md"
+              disabled={isPending || !token}
+            >
+              {isPending ? t("submitting") : t("submit")}
+            </Button>
+          )}
+        </div>
+        {step === 2 && !token && (
+          <p className="text-body-sm text-mute">{t("turnstileWait")}</p>
+        )}
+      </form>
+    </FormProvider>
   );
 }
