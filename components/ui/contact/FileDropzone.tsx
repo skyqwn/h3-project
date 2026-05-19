@@ -60,7 +60,7 @@ export function FileDropzone() {
       />
       {name ? (
         <div className="flex w-full flex-col items-center gap-2">
-          <div className="flex max-w-full items-center gap-2 rounded-md bg-surface-card px-3 py-2">
+          <div className="group flex max-w-full items-center gap-2 rounded-md bg-surface-card px-3 py-2 transition-colors hover:bg-secondary-bg">
             <Paperclip
               aria-hidden
               className="size-4 shrink-0 text-mute"
@@ -72,7 +72,7 @@ export function FileDropzone() {
               type="button"
               onClick={() => setFile(null)}
               aria-label={t("fileRemove")}
-              className="shrink-0 rounded-sm p-0.5 text-mute hover:text-ink cursor-pointer"
+              className="shrink-0 rounded-full p-1 text-mute transition-colors hover:bg-canvas hover:text-ink cursor-pointer"
             >
               <X aria-hidden className="size-4" />
             </button>
