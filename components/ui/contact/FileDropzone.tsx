@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Upload, X } from "lucide-react";
+import { Paperclip, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ALLOWED_FILE_EXT } from "@/lib/contact-schema";
 
@@ -59,16 +59,27 @@ export function FileDropzone() {
         onChange={(e) => setName(e.target.files?.[0]?.name ?? null)}
       />
       {name ? (
-        <div className="flex w-full items-center justify-between gap-3">
-          <span className="truncate text-body-sm text-ink">{name}</span>
-          <button
-            type="button"
-            onClick={() => setFile(null)}
-            aria-label={t("fileRemove")}
-            className="shrink-0 rounded-sm p-1 text-mute hover:text-ink cursor-pointer"
-          >
-            <X aria-hidden className="size-4" />
-          </button>
+        <div className="flex w-full flex-col items-center gap-2">
+          <div className="flex max-w-full items-center gap-2 rounded-md bg-surface-card px-3 py-2">
+            <Paperclip
+              aria-hidden
+              className="size-4 shrink-0 text-mute"
+            />
+            <span className="min-w-0 truncate text-body-sm text-ink">
+              {name}
+            </span>
+            <button
+              type="button"
+              onClick={() => setFile(null)}
+              aria-label={t("fileRemove")}
+              className="shrink-0 rounded-sm p-0.5 text-mute hover:text-ink cursor-pointer"
+            >
+              <X aria-hidden className="size-4" />
+            </button>
+          </div>
+          <span className="text-caption-md text-mute">
+            {t("fileReplace")}
+          </span>
         </div>
       ) : (
         <button
