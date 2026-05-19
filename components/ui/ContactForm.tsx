@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations, useLocale } from "next-intl";
@@ -18,7 +18,18 @@ import {
 
 declare global {
   interface Window {
-    onTurnstileSuccess?: (token: string) => void;
+    turnstile?: {
+      render: (
+        el: HTMLElement,
+        opts: {
+          sitekey: string;
+          callback: (token: string) => void;
+          "expired-callback"?: () => void;
+          "error-callback"?: () => void;
+        }
+      ) => string;
+      reset: (id?: string) => void;
+    };
   }
 }
 
@@ -60,17 +71,42 @@ export function ContactForm({
   const [step, setStep] = useState<1 | 2>(1);
   const [fileError, setFileError] = useState<string | null>(null);
   const [token, setToken] = useState("");
+  const turnstileRef = useRef<HTMLDivElement | null>(null);
+  const widgetRendered = useRef(false);
   const [state, formAction, isPending] = useActionState<
     ContactResult | null,
     FormData
   >(submitContact, null);
 
+  // Explicitly render Turnstile when the user reaches step 2. It must NOT
+  // auto-render on load: on step 1 the widget's container is display:none,
+  // and Cloudflare's implicit render then yields no challenge/token, which
+  // left the submit button permanently disabled. Render once, when visible.
   useEffect(() => {
-    window.onTurnstileSuccess = (tok: string) => setToken(tok);
-    return () => {
-      delete window.onTurnstileSuccess;
+    if (step !== 2 || widgetRendered.current) return;
+    let cancelled = false;
+    let timer = 0;
+    const tryRender = () => {
+      if (cancelled || widgetRendered.current) return;
+      const el = turnstileRef.current;
+      if (window.turnstile && el) {
+        widgetRendered.current = true;
+        window.turnstile.render(el, {
+          sitekey: turnstileSiteKey,
+          callback: (tok: string) => setToken(tok),
+          "expired-callback": () => setToken(""),
+          "error-callback": () => setToken(""),
+        });
+        return;
+      }
+      timer = window.setTimeout(tryRender, 200);
     };
-  }, []);
+    timer = window.setTimeout(tryRender, 0);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [step, turnstileSiteKey]);
 
   if (state?.ok) {
     return (
@@ -158,11 +194,7 @@ export function ContactForm({
         </div>
         <div className={step === 2 ? "" : "hidden"}>
           <Step2 fileError={fileError} />
-          <div
-            className="cf-turnstile mt-4"
-            data-sitekey={turnstileSiteKey}
-            data-callback="onTurnstileSuccess"
-          />
+          <div ref={turnstileRef} className="mt-4" />
           <Script
             src="https://challenges.cloudflare.com/turnstile/v0/api.js"
             strategy="afterInteractive"
