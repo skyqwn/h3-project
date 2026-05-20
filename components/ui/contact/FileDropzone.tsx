@@ -6,6 +6,13 @@ import { Paperclip, Upload, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ALLOWED_FILE_EXT } from "@/lib/contact-schema";
 
+function formatSize(bytes: number): string {
+  const mb = bytes / (1024 * 1024);
+  return mb >= 0.1
+    ? `${mb.toFixed(1)}MB`
+    : `${Math.max(1, Math.round(bytes / 1024))}KB`;
+}
+
 // Single-file dropzone. Keeps a real <input id="file"> in the DOM so the
 // ContactForm submit (which reads document.getElementById("file")) works
 // unchanged. Drag-drop assigns the file to that input via DataTransfer.
@@ -14,7 +21,9 @@ import { ALLOWED_FILE_EXT } from "@/lib/contact-schema";
 export function FileDropzone() {
   const t = useTranslations("contact.form");
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [name, setName] = useState<string | null>(null);
+  const [info, setInfo] = useState<{ name: string; size: number } | null>(
+    null
+  );
   const [drag, setDrag] = useState(false);
   const accept = ALLOWED_FILE_EXT.map((e) => `.${e}`).join(",");
 
@@ -25,10 +34,10 @@ export function FileDropzone() {
       const dt = new DataTransfer();
       dt.items.add(file);
       input.files = dt.files;
-      setName(file.name);
+      setInfo({ name: file.name, size: file.size });
     } else {
       input.value = "";
-      setName(null);
+      setInfo(null);
     }
   };
 
@@ -56,9 +65,12 @@ export function FileDropzone() {
         type="file"
         accept={accept}
         className="sr-only"
-        onChange={(e) => setName(e.target.files?.[0]?.name ?? null)}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          setInfo(f ? { name: f.name, size: f.size } : null);
+        }}
       />
-      {name ? (
+      {info ? (
         <div className="flex w-full flex-col items-center gap-2">
           <div className="group flex max-w-full items-center gap-2 rounded-md bg-surface-card px-3 py-2 ring-1 ring-transparent transition-colors hover:bg-secondary-bg hover:ring-stone">
             <Paperclip
@@ -66,7 +78,10 @@ export function FileDropzone() {
               className="size-4 shrink-0 text-mute"
             />
             <span className="min-w-0 truncate text-body-sm text-ink">
-              {name}
+              {info.name}
+            </span>
+            <span className="shrink-0 text-caption-md text-mute tabular-nums">
+              ({formatSize(info.size)})
             </span>
             <button
               type="button"
