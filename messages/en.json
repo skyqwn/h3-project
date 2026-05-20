@@ -30,6 +30,93 @@
     "closing": {
       "title": "Ready to build together?",
       "cta": "Contact us"
+    },
+    "services": {
+      "eyebrow": "Services",
+      "title": "What H3 does",
+      "items": {
+        "design": {
+          "title": "Design & drawings",
+          "desc": "Layouts and drawings based on on-site measurement."
+        },
+        "cnc": {
+          "title": "CNC machining",
+          "desc": "Precision PVC/PP cutting on CNC routers."
+        },
+        "welding": {
+          "title": "PVC/PP welding",
+          "desc": "Expert hot-air welding for chemical-resistant structures."
+        },
+        "fabrication": {
+          "title": "Fume hoods & booths",
+          "desc": "Custom fume hoods and refining booths."
+        },
+        "scrubber": {
+          "title": "Scrubbers & ducting",
+          "desc": "Gas-treatment scrubbers and exhaust ducting."
+        },
+        "field": {
+          "title": "Install & maintenance",
+          "desc": "On-site install plus inspection and service."
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "Process",
+      "title": "How we work",
+      "cta": "Request a quote",
+      "s1": {
+        "title": "Consultation",
+        "desc": "We capture your requirements and site conditions."
+      },
+      "s2": {
+        "title": "Survey & design",
+        "desc": "We measure on site and design the layout and drawings."
+      },
+      "s3": {
+        "title": "CNC machining",
+        "desc": "We machine precisely to the approved drawings."
+      },
+      "s4": {
+        "title": "Fabrication & welding",
+        "desc": "We weld PVC/PP into the finished structures."
+      },
+      "s5": {
+        "title": "Installation",
+        "desc": "We install on site and connect the exhaust ducting."
+      },
+      "s6": {
+        "title": "Maintenance",
+        "desc": "We provide regular inspection and fast service."
+      }
+    },
+    "faq": {
+      "eyebrow": "FAQ",
+      "title": "Frequently asked questions",
+      "q1": {
+        "q": "How do I get a quote?",
+        "a": "Send your requirements via the contact form or by phone; we review your site conditions and provide a tailored quote."
+      },
+      "q2": {
+        "q": "How long does fabrication take?",
+        "a": "It depends on scale and spec, but usually 2–6 weeks after the design is finalized."
+      },
+      "q3": {
+        "q": "What materials do you use?",
+        "a": "Mainly PVC and PP for their chemical resistance and durability, chosen to fit the application."
+      },
+      "q4": {
+        "q": "Do you handle on-site installation?",
+        "a": "Yes — from fabrication to on-site install and exhaust ducting, all in one."
+      },
+      "q5": {
+        "q": "What about service and maintenance?",
+        "a": "We provide regular inspections and fast after-sales support after installation."
+      },
+      "q6": {
+        "q": "How do I start?",
+        "a": "Fill out the form on the Contact page or call our main line."
+      }
     }
   },
   "about": {
@@ -61,7 +148,11 @@
   "contact": {
     "title": "Contact",
     "subtitle": "Let's start a conversation",
-    "step": { "of": "Step {current} / {total}", "next": "Next", "prev": "Back" },
+    "step": {
+      "of": "Step {current} / {total}",
+      "next": "Next",
+      "prev": "Back"
+    },
     "form": {
       "company": "Company",
       "contactName": "Contact name",
@@ -113,5 +204,8 @@
   "notFound": {
     "title": "Page not found",
     "back": "Back to home"
+  },
+  "common": {
+    "toTop": "Back to top"
   }
 }
