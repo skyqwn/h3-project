@@ -71,15 +71,16 @@ export function Hero() {
       ref={rootRef}
       className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-surface-dark"
     >
-      {/* Photo/video plate. When a real asset lands at /hero-placeholder.jpg
-          it shows; until then the dark gradient fallback below carries the
-          full-bleed look. */}
+      {/* Hero photo with a bottom-heavy translucent scrim so the image
+          shows through while the bottom-left headline stays legible.
+          (The scrim MUST use rgba/alpha — a solid gradient would hide
+          the photo entirely.) */}
       <div
         ref={imgRef}
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage:
-            "linear-gradient(135deg, #0a0a0a 0%, #262622 60%, #3a3a3f 100%), url(/hero-placeholder.jpg)",
+            "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 35%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.05) 100%), url(/hero.png)",
         }}
         aria-hidden
       />
