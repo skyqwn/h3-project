@@ -122,7 +122,13 @@
   "about": {
     "title": "About",
     "subtitle": "What we do",
-    "body": "H3 builds the next scene with technology and product. (Replace this placeholder with real company copy.)"
+    "lead": "H3 is a specialist fabricator of PVC/PP fume hoods, refining booths, scrubbers, and exhaust ducting for chemical processes — from design through fabrication, installation, and maintenance.",
+    "body1": "We design from on-site surveys and build chemical-resistant, durable custom equipment with precision CNC machining and expert hot-air welding.",
+    "body2": "From small components to full turnkey installation, we deliver to each client's process and site conditions.",
+    "location": {
+      "title": "Visit us",
+      "viewLarger": "View larger map"
+    }
   },
   "products": {
     "title": "Products",

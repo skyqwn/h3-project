@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { DisplayHeading } from "@/components/primitives/DisplayHeading";
 import { ScrollReveal } from "@/components/primitives/ScrollReveal";
+import { LocationSection } from "@/components/sections/LocationSection";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -30,8 +31,8 @@ export default async function AboutPage({
   const t = await getTranslations("about");
 
   return (
-    <div className="min-h-screen bg-canvas py-section">
-      <div className="max-w-narrow mx-auto px-6 space-y-12">
+    <div className="min-h-screen bg-canvas">
+      <div className="max-w-narrow mx-auto px-6 py-section space-y-12">
         <div>
           <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
             {t("subtitle")}
@@ -39,9 +40,20 @@ export default async function AboutPage({
           <DisplayHeading level="lg">{t("title")}</DisplayHeading>
         </div>
         <ScrollReveal>
-          <p className="text-body-md text-body leading-relaxed">{t("body")}</p>
+          <div className="space-y-4">
+            <p className="text-heading-md text-ink leading-relaxed">
+              {t("lead")}
+            </p>
+            <p className="text-body-md text-body leading-relaxed">
+              {t("body1")}
+            </p>
+            <p className="text-body-md text-body leading-relaxed">
+              {t("body2")}
+            </p>
+          </div>
         </ScrollReveal>
       </div>
+      <LocationSection />
     </div>
   );
 }
