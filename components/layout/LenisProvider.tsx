@@ -5,6 +5,13 @@ import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 
+// Module-level handle so sibling client components (e.g. TopButton) can
+// drive the single Lenis instance without prop-drilling or window globals.
+let lenisInstance: Lenis | null = null;
+export function getLenis(): Lenis | null {
+  return lenisInstance;
+}
+
 export function LenisProvider({ children }: { children: ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
   const pathname = usePathname();
@@ -17,6 +24,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
 
     const lenis = new Lenis({ duration: 1.1, smoothWheel: true });
     lenisRef.current = lenis;
+    lenisInstance = lenis;
 
     const onScroll = () => ScrollTrigger.update();
     lenis.on("scroll", onScroll);
@@ -30,6 +38,7 @@ export function LenisProvider({ children }: { children: ReactNode }) {
       gsap.ticker.remove(tickerFn);
       lenis.destroy();
       lenisRef.current = null;
+      lenisInstance = null;
     };
   }, []);
 

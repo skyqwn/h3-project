@@ -65,6 +65,18 @@
   /* --- Fonts (resolved from next/font CSS variables at runtime) --- */
   --font-display: var(--font-pin-sans), Inter, -apple-system, system-ui, sans-serif;
   --font-body: var(--font-pin-sans), Inter, -apple-system, system-ui, sans-serif;
+
+  /* Radix Accordion height animation (consumed by components/ui/accordion.tsx) */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
 }
 
 /* Base reset */
