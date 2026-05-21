@@ -41,13 +41,13 @@ export default async function Home({
     {
       title: home("feature.tech.title"),
       body: home("feature.tech.body"),
-      image: "/hero-placeholder.jpg",
+      image: "/feature-fabrication.jpg",
       cta: { label: home("feature.tech.ctaLabel"), href: "/about" as const },
     },
     {
       title: home("feature.team.title"),
       body: home("feature.team.body"),
-      image: "/hero-placeholder.jpg",
+      image: "/feature-site.jpg",
       cta: { label: home("feature.team.ctaLabel"), href: "/about" as const },
       reverse: true,
     },

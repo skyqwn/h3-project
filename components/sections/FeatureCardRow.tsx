@@ -22,12 +22,12 @@ export function FeatureCardRow({ items }: { items: FeatureItem[] }) {
                 item.reverse ? "md:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <div
-                className="aspect-[4/5] rounded-md bg-surface-card bg-cover bg-center"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, #f6f6f3 0%, #e5e5e0 100%), url(${item.image})`,
-                }}
-                aria-hidden
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.image}
+                alt={item.title}
+                loading="lazy"
+                className="aspect-[4/5] w-full rounded-md object-cover bg-surface-card"
               />
               <div className="space-y-4">
                 <DisplayHeading as="h2" level="heading-xl">
