@@ -2,12 +2,13 @@ import { Link } from "@/i18n/routing";
 import type { ComponentProps, ReactNode } from "react";
 
 type Variant = "primary" | "secondary" | "tertiary";
-type Size = "md" | "sm";
+type Size = "lg" | "md" | "sm";
 
 const base =
   "inline-flex items-center justify-center rounded-md transition-colors disabled:cursor-not-allowed";
 
 const sizeClass: Record<Size, string> = {
+  lg: "h-12 px-7 text-button-md",
   md: "h-10 px-4 text-button-md",
   sm: "h-8 px-3 text-button-sm",
 };

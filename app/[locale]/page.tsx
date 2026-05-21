@@ -61,6 +61,7 @@ export default async function Home({
       <ServiceGrid />
       <ProcessSection />
       <ProductShowcase
+        eyebrow={home("products.eyebrow")}
         title={home("products.title")}
         products={products.slice(0, 6)}
       />

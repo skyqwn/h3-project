@@ -62,9 +62,11 @@
   --container-narrow: 800px;    /* product detail / article body      */
   --container-form: 640px;      /* forms, contact, modal cards        */
 
-  /* --- Fonts (resolved from next/font CSS variables at runtime) --- */
-  --font-display: var(--font-pin-sans), Inter, -apple-system, system-ui, sans-serif;
-  --font-body: var(--font-pin-sans), Inter, -apple-system, system-ui, sans-serif;
+  /* --- Fonts (Pretendard Variable via next/font, KO + Latin unified) --- */
+  --font-display: var(--font-pin-sans), -apple-system, "Apple SD Gothic Neo",
+    "Malgun Gothic", system-ui, sans-serif;
+  --font-body: var(--font-pin-sans), -apple-system, "Apple SD Gothic Neo",
+    "Malgun Gothic", system-ui, sans-serif;
 
   /* Radix Accordion height animation (consumed by components/ui/accordion.tsx) */
   --animate-accordion-down: accordion-down 0.2s ease-out;
@@ -98,24 +100,22 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Typography utility classes — DESIGN.md treats these as roles, not arbitrary sizes */
-.text-display-xl  { font-size: 70px;     font-weight: 600; line-height: 1.1;  letter-spacing: -1.2px; }
-.text-display-lg  { font-size: 44px;     font-weight: 700; line-height: 1.15; letter-spacing: -0.8px; }
-.text-heading-xl  { font-size: 28px;     font-weight: 700; line-height: 1.2;  letter-spacing: -1.2px; }
-.text-heading-lg  { font-size: 22px;     font-weight: 600; line-height: 1.25; }
-.text-heading-md  { font-size: 18px;     font-weight: 600; line-height: 1.3;  }
-.text-body-md     { font-size: 16px;     font-weight: 400; line-height: 1.4;  }
-.text-body-strong { font-size: 16px;     font-weight: 600; line-height: 1.4;  }
-.text-body-sm     { font-size: 14px;     font-weight: 400; line-height: 1.4;  }
+/* Typography utility classes — DESIGN.md treats these as roles, not arbitrary
+   sizes. Display tiers use fluid clamp() so headlines breathe on wide screens
+   and scale smoothly on mobile (no hard breakpoint jump). Negative tracking on
+   the display/heading tiers is part of the brand voice; expressed in em so it
+   tracks the fluid size. */
+.text-display-xl  { font-size: clamp(2.75rem, 1.45rem + 5vw, 4.5rem); font-weight: 600; line-height: 1.06; letter-spacing: -0.022em; }
+.text-display-lg  { font-size: clamp(2rem, 1.4rem + 2.6vw, 2.75rem);  font-weight: 700; line-height: 1.12; letter-spacing: -0.02em;  }
+.text-heading-xl  { font-size: clamp(1.375rem, 1.05rem + 1.4vw, 1.75rem); font-weight: 700; line-height: 1.18; letter-spacing: -0.03em; }
+.text-heading-lg  { font-size: 22px;     font-weight: 600; line-height: 1.25; letter-spacing: -0.01em; }
+.text-heading-md  { font-size: 18px;     font-weight: 600; line-height: 1.3;  letter-spacing: -0.01em; }
+.text-body-md     { font-size: 16px;     font-weight: 400; line-height: 1.5;  }
+.text-body-strong { font-size: 16px;     font-weight: 600; line-height: 1.5;  }
+.text-body-sm     { font-size: 14px;     font-weight: 400; line-height: 1.45; }
 .text-caption-md  { font-size: 12px;     font-weight: 500; line-height: 1.5;  }
 .text-button-md   { font-size: 14px;     font-weight: 700; line-height: 1;    }
 .text-button-sm   { font-size: 12px;     font-weight: 700; line-height: 1;    }
-
-@media (max-width: 767px) {
-  .text-display-xl { font-size: 44px; letter-spacing: -0.8px; }
-  .text-display-lg { font-size: 32px; }
-  .text-heading-xl { font-size: 22px; }
-}
 
 /* Visually-hidden but available to screen readers and search engines.
    Used by the header's SEO h1 ("h1 behind logo" pattern). */

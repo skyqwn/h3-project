@@ -246,7 +246,7 @@ export function ContactForm({
             <Button
               type="button"
               variant="secondary"
-              size="md"
+              size="lg"
               className="cursor-pointer"
               onClick={() => setStep(1)}
             >
@@ -257,7 +257,7 @@ export function ContactForm({
             <Button
               type="button"
               variant="primary"
-              size="md"
+              size="lg"
               className="cursor-pointer"
               onClick={goNext}
             >
@@ -266,7 +266,7 @@ export function ContactForm({
           ) : (
             <Button
               variant="primary"
-              size="md"
+              size="lg"
               aria-busy={submitting}
               disabled={submitting || !token}
             >

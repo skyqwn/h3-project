@@ -5,7 +5,6 @@ import { Link, usePathname } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileMenu } from "./MobileMenu";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -70,12 +69,9 @@ export function Header() {
           ))}
         </nav>
 
-        {/* Desktop: locale switcher + CTA */}
+        {/* Desktop: locale switcher */}
         <div className="hidden md:flex items-center gap-4">
           <LocaleSwitcher />
-          <Button href="/contact" variant="primary" size="md">
-            {t("cta")}
-          </Button>
         </div>
 
         {/* Mobile: locale switcher to the left of the hamburger */}

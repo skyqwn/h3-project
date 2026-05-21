@@ -3,13 +3,12 @@
     "about": "About",
     "products": "Products",
     "blog": "Blog",
-    "contact": "Contact",
-    "cta": "Get in touch"
+    "contact": "Contact"
   },
   "home": {
     "hero": {
-      "eyebrow": "MISSION COMPANY",
-      "headline": "The next scene, engineered",
+      "eyebrow": "PVC & PP precision fabrication",
+      "headline": "Chemical-resistant systems, from design to install",
       "cta": "See products"
     },
     "feature": {
@@ -25,6 +24,7 @@
       }
     },
     "products": {
+      "eyebrow": "Products",
       "title": "Product lineup"
     },
     "closing": {
@@ -160,6 +160,17 @@
   "contact": {
     "title": "Contact",
     "subtitle": "Let's start a conversation",
+    "aside": {
+      "responseTitle": "Response",
+      "responseBody": "We reply within one business day.",
+      "directTitle": "Contact directly",
+      "processTitle": "How it works",
+      "step1": "We receive your inquiry",
+      "step2": "We review the site and requirements, then quote",
+      "step3": "Our team follows up",
+      "hoursLabel": "Hours",
+      "hours": "Weekdays 09:00 – 18:00"
+    },
     "step": {
       "of": "Step {current} / {total}",
       "next": "Next",
@@ -201,6 +212,8 @@
   },
   "footer": {
     "copyright": "© 2026 H3",
+    "tagline": "Chemical-resistant systems, from design to install",
+    "exploreLabel": "Explore",
     "company": {
       "heading": "Company",
       "ceoLabel": "CEO",
@@ -208,7 +221,7 @@
       "phoneLabel": "Phone",
       "phone": "010-6777-6730",
       "emailLabel": "Email",
-      "email": "contact@h3.co.kr",
+      "email": "hyu1045@naver.com",
       "addressLabel": "Address",
       "address": "15 Eden 1-ro, Seo-gu, Incheon 22667, South Korea"
     }

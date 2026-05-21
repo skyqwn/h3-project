@@ -34,7 +34,7 @@ export function FeatureCardRow({ items }: { items: FeatureItem[] }) {
                   {item.title}
                 </DisplayHeading>
                 <p className="text-body-md text-body">{item.body}</p>
-                <Button href={item.cta.href} variant="primary" size="md">
+                <Button href={item.cta.href} variant="secondary" size="md">
                   {item.cta.label}
                 </Button>
               </div>

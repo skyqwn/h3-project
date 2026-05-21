@@ -3,13 +3,12 @@
     "about": "회사 소개",
     "products": "제품",
     "blog": "블로그",
-    "contact": "문의",
-    "cta": "지금 만나기"
+    "contact": "문의"
   },
   "home": {
     "hero": {
-      "eyebrow": "미션 컴퍼니",
-      "headline": "기술이 만드는 다음 장면",
+      "eyebrow": "PVC·PP 정밀 가공",
+      "headline": "내화학 설비, 설계부터 시공까지",
       "cta": "제품 보기"
     },
     "feature": {
@@ -25,6 +24,7 @@
       }
     },
     "products": {
+      "eyebrow": "제품",
       "title": "제품 라인업"
     },
     "closing": {
@@ -160,6 +160,17 @@
   "contact": {
     "title": "문의",
     "subtitle": "이야기를 시작해 봅시다",
+    "aside": {
+      "responseTitle": "회신 안내",
+      "responseBody": "영업일 기준 1일 이내에 답변드립니다.",
+      "directTitle": "직접 연락",
+      "processTitle": "이렇게 진행됩니다",
+      "step1": "문의 접수",
+      "step2": "현장·요구사항 검토 후 맞춤 견적",
+      "step3": "담당자 회신·상담",
+      "hoursLabel": "운영 시간",
+      "hours": "평일 09:00 – 18:00"
+    },
     "step": {
       "of": "{current} / {total} 단계",
       "next": "다음",
@@ -201,6 +212,8 @@
   },
   "footer": {
     "copyright": "© 2026 H3",
+    "tagline": "내화학 설비, 설계부터 시공까지",
+    "exploreLabel": "둘러보기",
     "company": {
       "heading": "회사 정보",
       "ceoLabel": "대표",
@@ -208,7 +221,7 @@
       "phoneLabel": "연락처",
       "phone": "010-6777-6730",
       "emailLabel": "이메일",
-      "email": "contact@h3.co.kr",
+      "email": "hyu1045@naver.com",
       "addressLabel": "주소",
       "address": "인천광역시 서구 이든1로 15 (22667)"
     }

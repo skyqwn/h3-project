@@ -1,7 +1,7 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -10,10 +10,13 @@ import { TopButton } from "@/components/layout/TopButton";
 import { organizationJsonLd, websiteJsonLd, SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+// Pretendard Variable — unified KO + Latin web font, self-hosted so Korean
+// (the default locale) renders consistently across devices instead of a
+// system fallback. Variable weight axis 45–920.
+const pretendard = localFont({
+  src: "../fonts/PretendardVariable.woff2",
   display: "swap",
+  weight: "45 920",
   variable: "--font-pin-sans",
 });
 
@@ -54,7 +57,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} h-full antialiased`}
+      className={`${pretendard.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body className="min-h-screen">

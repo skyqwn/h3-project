@@ -34,14 +34,14 @@ export function EmailField() {
       <div className="flex items-center gap-2">
         <Input
           id="emailLocal"
-          className="flex-1"
+          className="min-w-0 flex-1"
           placeholder={t("emailLocalPlaceholder")}
           aria-invalid={!!errors.emailLocal}
           {...register("emailLocal")}
         />
         <span className="text-ink">@</span>
         <Input
-          className="flex-1"
+          className="min-w-0 flex-1"
           placeholder={t("emailDomainPlaceholder")}
           disabled={mode !== CUSTOM}
           aria-invalid={!!errors.emailDomain}
@@ -56,7 +56,7 @@ export function EmailField() {
             });
           }}
         >
-          <SelectTrigger className="w-40" aria-label={t("email")}>
+          <SelectTrigger className="w-32 shrink-0" aria-label={t("email")}>
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

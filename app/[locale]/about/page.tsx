@@ -32,7 +32,9 @@ export default async function AboutPage({
 
   return (
     <div className="min-h-screen bg-canvas">
-      <div className="max-w-narrow mx-auto px-6 py-section space-y-12">
+      {/* Reading container matches LocationSection below so the whole page
+          shares one width and left edge. */}
+      <div className="max-w-reading mx-auto px-6 py-section space-y-12">
         <div>
           <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
             {t("subtitle")}
