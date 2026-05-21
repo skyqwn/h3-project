@@ -77,6 +77,14 @@
     from { height: var(--radix-accordion-content-height); }
     to { height: 0; }
   }
+
+  /* Page-enter transition (consumed by app/[locale]/template.tsx). Runs
+     once on each route change; disabled under prefers-reduced-motion. */
+  --animate-page-enter: page-enter 0.3s ease-out both;
+  @keyframes page-enter {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: none; }
+  }
 }
 
 /* Base reset */
