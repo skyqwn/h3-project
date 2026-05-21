@@ -31,15 +31,17 @@ export default async function ContactPage({
   const t = await getTranslations("contact");
 
   return (
-    <div className="min-h-screen bg-canvas py-section">
-      <div className="max-w-form mx-auto px-6 space-y-12">
+    <div className="min-h-screen bg-surface-soft py-section">
+      <div className="max-w-form mx-auto px-6 space-y-8">
         <div>
           <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
             {t("subtitle")}
           </p>
           <DisplayHeading level="lg">{t("title")}</DisplayHeading>
         </div>
-        <ContactForm turnstileSiteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} />
+        <div className="rounded-lg border border-hairline bg-surface-elevated p-6 shadow-sm sm:p-8">
+          <ContactForm turnstileSiteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} />
+        </div>
       </div>
     </div>
   );

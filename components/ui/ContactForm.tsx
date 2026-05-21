@@ -201,9 +201,23 @@ export function ContactForm({
           </div>
         )}
 
-        <p className="text-caption-md uppercase tracking-wider text-mute">
-          {tStep("of", { current: step, total: 2 })}
-        </p>
+        <div className="space-y-2">
+          <p className="text-caption-md uppercase tracking-wider text-mute">
+            {tStep("of", { current: step, total: 2 })}
+          </p>
+          <div
+            className="h-1 w-full overflow-hidden rounded-full bg-secondary-bg"
+            role="progressbar"
+            aria-valuenow={step}
+            aria-valuemin={1}
+            aria-valuemax={2}
+          >
+            <div
+              className="h-full rounded-full bg-primary transition-all duration-300"
+              style={{ width: step === 1 ? "50%" : "100%" }}
+            />
+          </div>
+        </div>
 
         {/* Honeypot — hidden from users; bots fill it and get rejected. */}
         <input
