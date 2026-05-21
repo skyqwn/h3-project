@@ -117,6 +117,12 @@
         "q": "How do I start?",
         "a": "Fill out the form on the Contact page or call our main line."
       }
+    },
+    "gallery": {
+      "eyebrow": "Our work",
+      "title": "Projects we've built",
+      "alt": "H3 fabrication and installation work",
+      "cta": "View the case study"
     }
   },
   "about": {

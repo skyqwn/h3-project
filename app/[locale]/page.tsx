@@ -6,6 +6,7 @@ import { FeatureCardRow } from "@/components/sections/FeatureCardRow";
 import { ServiceGrid } from "@/components/sections/ServiceGrid";
 import { ProcessSection } from "@/components/sections/ProcessSection";
 import { ProductShowcase } from "@/components/sections/ProductShowcase";
+import { GallerySection } from "@/components/sections/GallerySection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CtaStrip } from "@/components/sections/CtaStrip";
 import { getAllProducts } from "@/lib/mdx";
@@ -63,6 +64,7 @@ export default async function Home({
         title={home("products.title")}
         products={products.slice(0, 6)}
       />
+      <GallerySection />
       <FaqSection />
       <CtaStrip
         title={home("closing.title")}
