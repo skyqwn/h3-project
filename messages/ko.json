@@ -223,7 +223,9 @@
       "emailLabel": "이메일",
       "email": "hyu1045@naver.com",
       "addressLabel": "주소",
-      "address": "인천광역시 서구 이든1로 15 (22667)"
+      "address": "인천광역시 서구 이든1로 15 (22667)",
+      "hoursLabel": "운영 시간",
+      "hours": "평일 09:00 – 18:00"
     }
   },
   "notFound": {

@@ -223,7 +223,9 @@
       "emailLabel": "Email",
       "email": "hyu1045@naver.com",
       "addressLabel": "Address",
-      "address": "15 Eden 1-ro, Seo-gu, Incheon 22667, South Korea"
+      "address": "15 Eden 1-ro, Seo-gu, Incheon 22667, South Korea",
+      "hoursLabel": "Hours",
+      "hours": "Weekdays 09:00 – 18:00"
     }
   },
   "notFound": {

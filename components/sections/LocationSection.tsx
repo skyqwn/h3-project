@@ -12,8 +12,8 @@ export async function LocationSection() {
   const largeHref = `https://www.google.com/maps?q=${q}`;
 
   return (
-    <section className="bg-surface-soft py-section">
-      <div className="max-w-reading mx-auto px-6">
+    <section className="border-t border-hairline bg-canvas py-section">
+      <div className="max-w-page mx-auto px-6">
         <h2 className="text-heading-xl text-ink mb-8">{t("title")}</h2>
         <div className="grid gap-8 lg:grid-cols-2">
           <div className="aspect-[16/10] overflow-hidden rounded-md border border-hairline">

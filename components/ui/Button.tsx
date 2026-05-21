@@ -5,7 +5,17 @@ type Variant = "primary" | "secondary" | "tertiary";
 type Size = "lg" | "md" | "sm";
 
 const base =
-  "inline-flex items-center justify-center rounded-md transition-colors disabled:cursor-not-allowed";
+  "inline-flex select-none items-center justify-center rounded-md cursor-pointer " +
+  // Motion: animate color AND transform with an ease-out-quint curve so the
+  // press feels deliberate, not the default 'fade'. Honors reduced-motion via
+  // the global stylesheet (durations collapse to ~0).
+  "transition-[background-color,color,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] " +
+  // Press feedback.
+  "active:scale-[0.97] disabled:active:scale-100 " +
+  // Keyboard focus ring (DESIGN focus-outer token), offset so it reads on any
+  // surface; mouse clicks stay ring-free via focus-visible.
+  "outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-outer " +
+  "disabled:cursor-not-allowed";
 
 const sizeClass: Record<Size, string> = {
   lg: "h-12 px-7 text-button-md",

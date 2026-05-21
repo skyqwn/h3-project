@@ -1,7 +1,7 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { DisplayHeading } from "@/components/primitives/DisplayHeading";
+import { PageShell } from "@/components/layout/PageShell";
 import { ScrollReveal } from "@/components/primitives/ScrollReveal";
 import { LocationSection } from "@/components/sections/LocationSection";
 import type { Locale } from "@/i18n/routing";
@@ -31,18 +31,10 @@ export default async function AboutPage({
   const t = await getTranslations("about");
 
   return (
-    <div className="min-h-screen bg-canvas">
-      {/* Reading container matches LocationSection below so the whole page
-          shares one width and left edge. */}
-      <div className="max-w-reading mx-auto px-6 py-section space-y-12">
-        <div>
-          <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-            {t("subtitle")}
-          </p>
-          <DisplayHeading level="lg">{t("title")}</DisplayHeading>
-        </div>
+    <>
+      <PageShell eyebrow={t("subtitle")} title={t("title")} fill={false}>
         <ScrollReveal>
-          <div className="space-y-4">
+          <div className="max-w-narrow space-y-4">
             <p className="text-heading-md text-ink leading-relaxed">
               {t("lead")}
             </p>
@@ -54,8 +46,8 @@ export default async function AboutPage({
             </p>
           </div>
         </ScrollReveal>
-      </div>
+      </PageShell>
       <LocationSection />
-    </div>
+    </>
   );
 }

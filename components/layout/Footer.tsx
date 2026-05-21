@@ -26,6 +26,7 @@ export async function Footer() {
       href: `mailto:${foot("company.email")}`,
     },
     { label: foot("company.addressLabel"), value: foot("company.address") },
+    { label: foot("company.hoursLabel"), value: foot("company.hours") },
   ];
 
   return (
@@ -73,7 +74,9 @@ export async function Footer() {
               <dl className="space-y-1.5">
                 {rows.map((r) => (
                   <div key={r.label} className="flex gap-3">
-                    <dt className="w-12 shrink-0 text-mute">{r.label}</dt>
+                    <dt className="w-16 shrink-0 whitespace-nowrap text-mute">
+                      {r.label}
+                    </dt>
                     <dd className="text-body">
                       {r.href ? (
                         <a
