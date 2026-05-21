@@ -4,20 +4,20 @@ import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/primitives/SectionHeader";
 import { Stagger } from "@/components/primitives/Stagger";
+import { Section } from "@/components/layout/Section";
 
 const STEPS = ["s1", "s2", "s3", "s4", "s5", "s6"];
 
 export function ProcessSection() {
   const t = useTranslations("home.process");
   return (
-    <section className="bg-surface-dark py-section">
-      <div className="max-w-reading mx-auto px-6">
-        <SectionHeader
-          index="02"
-          eyebrow={t("eyebrow")}
-          title={t("title")}
-          tone="dark"
-        />
+    <Section tone="dark">
+      <SectionHeader
+        index="02"
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        tone="dark"
+      />
         <Stagger as="ol" className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {STEPS.map((s, i) => (
             <li key={s} className="flex gap-4">
@@ -40,7 +40,6 @@ export function ProcessSection() {
             {t("cta")}
           </Button>
         </div>
-      </div>
-    </section>
+    </Section>
   );
 }

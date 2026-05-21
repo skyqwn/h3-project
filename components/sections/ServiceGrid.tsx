@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { SectionHeader } from "@/components/primitives/SectionHeader";
 import { Stagger } from "@/components/primitives/Stagger";
+import { Section } from "@/components/layout/Section";
 import {
   PencilRuler,
   Cpu,
@@ -25,13 +26,12 @@ const SERVICES: { key: string; Icon: LucideIcon }[] = [
 export function ServiceGrid() {
   const t = useTranslations("home.services");
   return (
-    <section className="bg-canvas py-section">
-      <div className="max-w-reading mx-auto px-6">
-        <SectionHeader index="01" eyebrow={t("eyebrow")} title={t("title")} />
-        {/* Editorial capability index — top hairline + ink icon per item,
-            no card boxes or icon chips (avoids the generic SaaS
-            feature-grid look). */}
-        <Stagger className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+    <Section tone="canvas">
+      <SectionHeader index="01" eyebrow={t("eyebrow")} title={t("title")} />
+      {/* Editorial capability index — top hairline + ink icon per item,
+          no card boxes or icon chips (avoids the generic SaaS
+          feature-grid look). */}
+      <Stagger className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {SERVICES.map(({ key, Icon }) => (
             <div key={key} className="border-t border-hairline pt-5">
               <Icon aria-hidden className="size-6 text-ink mb-3" />
@@ -44,7 +44,6 @@ export function ServiceGrid() {
             </div>
           ))}
         </Stagger>
-      </div>
-    </section>
+    </Section>
   );
 }
