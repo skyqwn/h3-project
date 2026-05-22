@@ -2,7 +2,7 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
 import { z } from "zod";
-import type { Locale } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 
 // gray-matter parses an unquoted YAML date (publishedAt: 2026-05-18) into a
 // JS Date. Normalize Date|string -> "YYYY-MM-DD" so authors don't have to
@@ -67,13 +67,30 @@ async function loadFile(slug: string, locale: Locale): Promise<Post> {
 
 export async function getAllPosts(locale: Locale): Promise<Post[]> {
   const files = await readContentDir();
-  const posts: Post[] = [];
+  // Collect which locales each slug actually has a file for.
+  const localesBySlug = new Map<string, Set<Locale>>();
   for (const file of files) {
     const parsed = parseFilename(file);
-    if (!parsed || parsed.locale !== locale) continue;
-    const post = await loadFile(parsed.slug, parsed.locale);
+    if (!parsed) continue;
+    const set = localesBySlug.get(parsed.slug) ?? new Set<Locale>();
+    set.add(parsed.locale);
+    localesBySlug.set(parsed.slug, set);
+  }
+
+  const posts: Post[] = [];
+  for (const [slug, locales] of localesBySlug) {
+    // Prefer the requested locale; fall back to the default locale so the
+    // blog shows the same posts in every locale even without a translation.
+    const fileLocale = locales.has(locale)
+      ? locale
+      : locales.has(routing.defaultLocale)
+        ? routing.defaultLocale
+        : [...locales][0];
+    if (!fileLocale) continue;
+    const post = await loadFile(slug, fileLocale);
     if (post.draft && process.env.NODE_ENV === "production") continue;
-    posts.push(post);
+    // Keep the requested locale for routing; body may be the fallback's.
+    posts.push({ ...post, locale });
   }
   // publishedAt is ISO (YYYY-MM-DD…) so string compare = chronological
   return posts.sort((a, b) =>
@@ -82,7 +99,14 @@ export async function getAllPosts(locale: Locale): Promise<Post[]> {
 }
 
 export async function getPost(slug: string, locale: Locale): Promise<Post> {
-  return loadFile(slug, locale);
+  try {
+    return await loadFile(slug, locale);
+  } catch {
+    // Missing translation: serve the default-locale content, keep the
+    // requested locale so links/routing stay in that locale.
+    const post = await loadFile(slug, routing.defaultLocale);
+    return { ...post, locale };
+  }
 }
 
 export async function getAllPostSlugs(): Promise<string[]> {
