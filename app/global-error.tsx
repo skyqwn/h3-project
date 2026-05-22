@@ -3,9 +3,12 @@
 import { useEffect } from "react";
 
 // global-error replaces the root layout entirely, so it must render its
-// own <html>/<body>. Our real html/body live in [locale]/layout.tsx,
-// which a thrown root error would bypass — hence global-error, not
-// a segment-level error.tsx.
+// own <html>/<body> and cannot use next-intl (it lives outside the locale
+// provider). Copy is hardcoded in Korean (the default locale); the font is
+// loaded directly here since the locale layout's <head> is bypassed.
+const PRETENDARD_CSS =
+  "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css";
+
 export default function GlobalError({
   error,
   reset,
@@ -19,15 +22,33 @@ export default function GlobalError({
 
   return (
     <html lang="ko">
+      <head>
+        <link rel="stylesheet" href={PRETENDARD_CSS} />
+      </head>
       <body className="min-h-screen bg-canvas flex items-center justify-center p-8">
-        <div className="text-center space-y-6">
-          <h1 className="text-display-lg text-ink">Something went wrong</h1>
-          <button
-            onClick={reset}
-            className="inline-flex items-center justify-center bg-primary text-on-primary rounded-md h-10 px-4 text-button-md hover:bg-primary-pressed transition-colors"
-          >
-            Try again
-          </button>
+        <div className="max-w-md space-y-4 text-center">
+          <h1 className="text-display-lg text-ink">문제가 발생했습니다</h1>
+          <p className="text-body-md text-body leading-relaxed">
+            일시적인 오류가 발생했어요. 잠시 후 다시 시도해 주세요.
+            문제가 계속되면 문의해 주시면 빠르게 도와드리겠습니다.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <button
+              onClick={reset}
+              className="inline-flex h-11 cursor-pointer items-center justify-center rounded-md bg-primary px-5 text-button-md text-on-primary transition-colors hover:bg-primary-pressed"
+            >
+              다시 시도
+            </button>
+            {/* Full-page nav on purpose: a root crash should reset all state,
+                so a plain <a> is correct here, not next/link. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            <a
+              href="/"
+              className="text-body-strong text-ink underline-offset-2 transition-colors hover:text-primary"
+            >
+              홈으로
+            </a>
+          </div>
         </div>
       </body>
     </html>
