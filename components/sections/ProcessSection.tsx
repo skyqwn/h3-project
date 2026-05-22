@@ -36,7 +36,7 @@ export function ProcessSection() {
           ))}
         </Stagger>
         <div className="mt-10">
-          <Button href="/contact" variant="primary" size="md">
+          <Button href="/contact" variant="primary" size="md" arrow>
             {t("cta")}
           </Button>
         </div>

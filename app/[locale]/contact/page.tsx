@@ -81,7 +81,7 @@ export default async function ContactPage({
       <div className="grid gap-10 lg:grid-cols-[minmax(0,36rem)_1fr] lg:gap-16">
           {/* Form panel — flat bordered surface (no shadow; DESIGN reserves
               elevation for the modal layer). */}
-          <div className="rounded-lg border border-hairline bg-surface-elevated p-6 sm:p-8">
+          <div className="@container rounded-lg border border-hairline bg-surface-elevated p-6 sm:p-8">
             <ContactForm turnstileSiteKey={env.NEXT_PUBLIC_TURNSTILE_SITE_KEY} />
           </div>
 

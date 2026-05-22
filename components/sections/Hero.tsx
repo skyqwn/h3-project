@@ -114,7 +114,7 @@ export function Hero() {
           </h2>
 
           <span data-hero-cta className="inline-block opacity-0">
-            <Button href="/products" variant="primary" size="md">
+            <Button href="/products" variant="primary" size="md" arrow>
               {t("cta")}
             </Button>
           </span>

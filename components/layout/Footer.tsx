@@ -33,12 +33,13 @@ export async function Footer() {
     <footer className="bg-canvas border-t border-hairline text-body-sm text-mute">
       <div className="mx-auto max-w-page px-6 py-16">
         {/* Aligns to the site container (max-w-page) like the header; a
-            12-col track fills the full width so columns spread evenly
-            instead of leaving an empty middle. Mobile: brand on top, then
-            explore + company as two columns. */}
-        <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-12">
-          {/* Brand anchor */}
-          <div className="col-span-2 md:col-span-5">
+            12-col track fills the full width. Below lg: brand on top, then
+            explore (content-width) + company (fills the rest) so the long
+            values stay on one line instead of cramping in a half column. */}
+        <div className="grid grid-cols-[auto_1fr] gap-x-8 gap-y-10 lg:grid-cols-12 lg:gap-y-12">
+          {/* Brand anchor — hidden on mobile (the copyright keeps the mark);
+              shown as the left anchor on desktop. */}
+          <div className="hidden lg:col-span-5 lg:block">
             <Link
               href="/"
               aria-label="Home"
@@ -49,25 +50,25 @@ export async function Footer() {
             <p className="mt-4 text-body-md text-body">{foot("tagline")}</p>
           </div>
 
-          <nav aria-label={foot("exploreLabel")} className="md:col-span-3">
-              <h2 className="mb-3 text-body-sm font-bold text-ink">
-                {foot("exploreLabel")}
-              </h2>
-              <ul className="flex flex-col gap-2">
-                {NAV.map(({ href, key }) => (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      className="transition-colors hover:text-ink"
-                    >
-                      {nav(key)}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
+          <nav aria-label={foot("exploreLabel")} className="lg:col-span-3">
+            <h2 className="mb-3 text-body-sm font-bold text-ink">
+              {foot("exploreLabel")}
+            </h2>
+            <ul className="flex flex-col gap-2">
+              {NAV.map(({ href, key }) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="whitespace-nowrap transition-colors hover:text-ink"
+                  >
+                    {nav(key)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-            <div className="md:col-span-4">
+            <div className="lg:col-span-4">
               <h2 className="mb-3 text-body-sm font-bold text-ink">
                 {foot("company.heading")}
               </h2>

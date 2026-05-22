@@ -1,11 +1,13 @@
 import { Link } from "@/i18n/routing";
+import { ArrowRight } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 
 type Variant = "primary" | "secondary" | "tertiary";
 type Size = "lg" | "md" | "sm";
 
 const base =
-  "inline-flex select-none items-center justify-center rounded-md cursor-pointer " +
+  // `group/btn` lets the optional arrow react to the button's hover.
+  "group/btn inline-flex select-none items-center justify-center rounded-md cursor-pointer " +
   // Motion: animate color AND transform with an ease-out-quint curve so the
   // press feels deliberate, not the default 'fade'. Honors reduced-motion via
   // the global stylesheet (durations collapse to ~0).
@@ -34,6 +36,9 @@ const variantClass: Record<Variant, string> = {
 type BaseProps = {
   variant?: Variant;
   size?: Size;
+  /** Signature affordance for navigational CTAs: a right arrow that nudges on
+   *  hover. Use for "takes you somewhere" links, not form actions. */
+  arrow?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -47,15 +52,40 @@ type AsButton = BaseProps & {
 } & Omit<ComponentProps<"button">, "className" | "children">;
 
 export function Button(props: AsLink | AsButton) {
-  const { variant = "primary", size = "md", className = "", children } = props;
+  const {
+    variant = "primary",
+    size = "md",
+    arrow = false,
+    className = "",
+    children,
+  } = props;
   const cls = `${base} ${sizeClass[size]} ${variantClass[variant]} ${className}`;
 
+  const content = (
+    <>
+      {children}
+      {arrow && (
+        <ArrowRight
+          aria-hidden
+          className="ml-1.5 size-4 transition-transform duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/btn:translate-x-1"
+        />
+      )}
+    </>
+  );
+
   if ("href" in props && props.href) {
-    const { variant: _, size: __, className: ___, children: ____, href, ...rest } =
-      props;
+    const {
+      variant: _,
+      size: __,
+      arrow: ___,
+      className: ____,
+      children: _____,
+      href,
+      ...rest
+    } = props;
     return (
       <Link href={href} className={cls} {...rest}>
-        {children}
+        {content}
       </Link>
     );
   }
@@ -63,13 +93,14 @@ export function Button(props: AsLink | AsButton) {
   const {
     variant: _,
     size: __,
-    className: ___,
-    children: ____,
+    arrow: ___,
+    className: ____,
+    children: _____,
     ...rest
   } = props as AsButton;
   return (
     <button className={cls} {...rest}>
-      {children}
+      {content}
     </button>
   );
 }

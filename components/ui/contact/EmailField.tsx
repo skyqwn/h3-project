@@ -31,22 +31,27 @@ export function EmailField() {
       <label className="block text-body-sm text-ink mb-1" htmlFor="emailLocal">
         {t("email")}
       </label>
-      <div className="flex items-center gap-2">
-        <Input
-          id="emailLocal"
-          className="min-w-0 flex-1"
-          placeholder={t("emailLocalPlaceholder")}
-          aria-invalid={!!errors.emailLocal}
-          {...register("emailLocal")}
-        />
-        <span className="text-ink">@</span>
-        <Input
-          className="min-w-0 flex-1"
-          placeholder={t("emailDomainPlaceholder")}
-          disabled={mode !== CUSTOM}
-          aria-invalid={!!errors.emailDomain}
-          {...register("emailDomain")}
-        />
+      {/* Reflows on the FORM width (container query), not the viewport: when
+          the form is narrow (mobile) the domain preset drops to its own row;
+          when it's wide enough (≥28rem) it's a single row. */}
+      <div className="flex flex-col gap-2 @md:flex-row @md:items-center">
+        <div className="flex min-w-0 flex-1 items-center gap-2">
+          <Input
+            id="emailLocal"
+            className="min-w-0 flex-1"
+            placeholder={t("emailLocalPlaceholder")}
+            aria-invalid={!!errors.emailLocal}
+            {...register("emailLocal")}
+          />
+          <span className="text-ink">@</span>
+          <Input
+            className="min-w-0 flex-1"
+            placeholder={t("emailDomainPlaceholder")}
+            disabled={mode !== CUSTOM}
+            aria-invalid={!!errors.emailDomain}
+            {...register("emailDomain")}
+          />
+        </div>
         <Select
           value={mode}
           onValueChange={(v) => {
@@ -56,7 +61,10 @@ export function EmailField() {
             });
           }}
         >
-          <SelectTrigger className="w-32 shrink-0" aria-label={t("email")}>
+          <SelectTrigger
+            className="w-full shrink-0 @md:w-36"
+            aria-label={t("email")}
+          >
             <SelectValue />
           </SelectTrigger>
           <SelectContent>

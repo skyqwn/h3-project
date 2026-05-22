@@ -88,10 +88,8 @@ export default async function ProductDetailPage({
         </p>
         <h1 className="text-display-lg text-ink mb-12">{product.title}</h1>
         <div
-          className="aspect-[16/10] rounded-lg bg-surface-card bg-cover bg-center mb-12"
-          style={{
-            backgroundImage: `linear-gradient(135deg, #f6f6f3 0%, #dadad3 100%), url(${product.hero_image})`,
-          }}
+          className="aspect-[16/10] overflow-hidden rounded-lg bg-surface-card bg-cover bg-center mb-12"
+          style={{ backgroundImage: `url(${product.hero_image})` }}
           aria-hidden
         />
         <MDXRemote source={product.body} components={mdxComponents} />

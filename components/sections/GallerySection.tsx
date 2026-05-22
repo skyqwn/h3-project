@@ -31,7 +31,7 @@ export function GallerySection() {
           ))}
         </Stagger>
         <div className="mt-8">
-          <Button href={CASE_HREF} variant="secondary" size="md">
+          <Button href={CASE_HREF} variant="secondary" size="md" arrow>
             {t("cta")}
           </Button>
         </div>
