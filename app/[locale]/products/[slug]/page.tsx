@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import { getAllProductSlugs, getProduct } from "@/lib/mdx";
@@ -87,11 +88,16 @@ export default async function ProductDetailPage({
           {product.tagline}
         </p>
         <h1 className="text-display-lg text-ink mb-12">{product.title}</h1>
-        <div
-          className="aspect-[16/10] overflow-hidden rounded-lg bg-surface-card bg-cover bg-center mb-12"
-          style={{ backgroundImage: `url(${product.hero_image})` }}
-          aria-hidden
-        />
+        <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
+          <Image
+            src={product.hero_image}
+            alt=""
+            fill
+            priority
+            sizes="(min-width: 800px) 768px, 100vw"
+            className="object-cover"
+          />
+        </div>
         <MDXRemote source={product.body} components={mdxComponents} />
       </div>
     </article>

@@ -30,6 +30,7 @@ export function EmailField() {
     <div>
       <label className="block text-body-sm text-ink mb-1" htmlFor="emailLocal">
         {t("email")}
+        <span aria-hidden className="text-error"> *</span>
       </label>
       {/* Reflows on the FORM width (container query), not the viewport: when
           the form is narrow (mobile) the domain preset drops to its own row;

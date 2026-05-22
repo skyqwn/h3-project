@@ -44,6 +44,7 @@ export function Step1() {
       <div>
         <label className="block text-body-sm text-ink mb-1" htmlFor="company">
           {t("company")}
+          <span aria-hidden className="text-error"> *</span>
         </label>
         <Input
           id="company"
@@ -59,6 +60,7 @@ export function Step1() {
           htmlFor="contactName"
         >
           {t("contactName")}
+          <span aria-hidden className="text-error"> *</span>
         </label>
         <Input
           id="contactName"
@@ -73,6 +75,7 @@ export function Step1() {
       <div>
         <label className="block text-body-sm text-ink mb-1" htmlFor="phone">
           {t("phone")}
+          <span aria-hidden className="text-error"> *</span>
         </label>
         <Input
           id="phone"
@@ -88,6 +91,7 @@ export function Step1() {
       <div>
         <label className="block text-body-sm text-ink mb-1">
           {t("purpose")}
+          <span aria-hidden className="text-error"> *</span>
         </label>
         <Select
           value={purpose}

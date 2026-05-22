@@ -1,5 +1,6 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { rehypeImageDimensions } from "@/lib/rehype-image-dimensions";
@@ -107,12 +108,16 @@ export default async function PostDetailPage({
           {post.publishedAt}
         </p>
         <h1 className="text-display-lg text-ink mb-12">{post.title}</h1>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={post.coverImage}
-          alt={post.title}
-          className="aspect-[16/10] w-full rounded-lg object-cover bg-surface-card mb-12"
-        />
+        <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
+          <Image
+            src={post.coverImage}
+            alt={post.title}
+            fill
+            priority
+            sizes="(min-width: 800px) 768px, 100vw"
+            className="object-cover"
+          />
+        </div>
         <MDXRemote
           source={post.body}
           components={mdxComponents}

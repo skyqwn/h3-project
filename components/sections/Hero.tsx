@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useGSAP, gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
@@ -71,16 +72,26 @@ export function Hero() {
       ref={rootRef}
       className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-surface-dark"
     >
-      {/* Hero photo with a bottom-heavy translucent scrim so the image
-          shows through while the bottom-left headline stays legible.
-          (The scrim MUST use rgba/alpha — a solid gradient would hide
-          the photo entirely.) */}
+      {/* Hero photo (next/image, LCP → priority). The ambient zoom animates
+          this wrapper, so only the image scales — not the scrim. */}
+      <div ref={imgRef} className="absolute inset-0" aria-hidden>
+        <Image
+          src="/hero.webp"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+      </div>
+
+      {/* Bottom-heavy translucent scrim so the image shows through while the
+          bottom-left headline stays legible. */}
       <div
-        ref={imgRef}
-        className="absolute inset-0 bg-cover bg-center"
+        className="absolute inset-0"
         style={{
-          backgroundImage:
-            "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 35%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.05) 100%), url(/hero.webp)",
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 35%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.05) 100%)",
         }}
         aria-hidden
       />

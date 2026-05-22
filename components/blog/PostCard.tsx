@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 import type { Post } from "@/lib/posts";
@@ -6,14 +7,13 @@ export function PostCard({ post }: { post: Post }) {
   const t = useTranslations("blog");
   return (
     <Link href={`/blog/${post.slug}`} className="block group">
-      <div className="aspect-[16/10] rounded-md bg-surface-card overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+      <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-surface-card">
+        <Image
           src={post.coverImage}
           alt={post.title}
-          loading="lazy"
-          decoding="async"
-          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+          fill
+          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+          className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
         />
       </div>
       <p className="text-caption-md uppercase tracking-wider text-mute mt-3">

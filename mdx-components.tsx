@@ -1,4 +1,14 @@
+import Image from "next/image";
 import type { MDXComponents } from "mdx/types";
+
+function toNum(v: unknown): number | undefined {
+  if (typeof v === "number") return v;
+  if (typeof v === "string") {
+    const n = parseInt(v, 10);
+    return Number.isFinite(n) ? n : undefined;
+  }
+  return undefined;
+}
 
 // Plain components map — import this for next-mdx-remote's <MDXRemote
 // components={mdxComponents} /> in async server components (it is NOT a
@@ -42,22 +52,38 @@ export const mdxComponents: MDXComponents = {
       {children}
     </code>
   ),
-  // Re-hosted Naver photos. width/height come from rehypeImageDimensions
-  // (read off the file in public/) so the browser reserves the correct
-  // box before the lazy bytes arrive — no layout shift, no Lenis fight.
-  // w-full + h-auto keeps it responsive while honoring that aspect ratio.
-  img: ({ src, alt, width, height }) => (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={src as string}
-      alt={(alt as string) || ""}
-      width={width as number | undefined}
-      height={height as number | undefined}
-      loading="lazy"
-      decoding="async"
-      className="block w-full h-auto my-8 rounded-md border border-hairline-soft bg-surface-card"
-    />
-  ),
+  // Re-hosted Naver photos (local /public). width/height come from
+  // rehypeImageDimensions so next/image reserves the correct box (no layout
+  // shift) and serves AVIF/WebP + srcset. Falls back to a plain img only if a
+  // source ever lacks measured dimensions, so a stray image can't crash MDX.
+  img: ({ src, alt, width, height }) => {
+    const w = toNum(width);
+    const h = toNum(height);
+    const cls =
+      "block w-full h-auto my-8 rounded-md border border-hairline-soft bg-surface-card";
+    if (src && w && h) {
+      return (
+        <Image
+          src={src as string}
+          alt={(alt as string) || ""}
+          width={w}
+          height={h}
+          sizes="(min-width: 800px) 768px, 100vw"
+          className={cls}
+        />
+      );
+    }
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src as string}
+        alt={(alt as string) || ""}
+        loading="lazy"
+        decoding="async"
+        className={cls}
+      />
+    );
+  },
   blockquote: ({ children }) => (
     <blockquote className="my-6 rounded-r-md border-l-4 border-primary bg-surface-card px-5 py-4 text-body-md text-body [&>p]:my-0 [&>p+p]:mt-3">
       {children}
