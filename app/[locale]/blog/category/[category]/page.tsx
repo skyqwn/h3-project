@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAllCategories, getPostsByCategory } from "@/lib/posts";
 import { pageMetadata } from "@/lib/seo";
-import { DisplayHeading } from "@/components/primitives/DisplayHeading";
+import { PageShell } from "@/components/layout/PageShell";
 import { PostGrid } from "@/components/blog/PostGrid";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -50,16 +50,8 @@ export default async function CategoryArchivePage({
   if (posts.length === 0) notFound();
 
   return (
-    <div className="min-h-screen bg-canvas py-section">
-      <div className="max-w-page mx-auto px-6">
-        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-          {t("categoryLabel")}
-        </p>
-        <DisplayHeading level="lg" className="mb-12">
-          {t(`category.${category}`)}
-        </DisplayHeading>
-        <PostGrid posts={posts} />
-      </div>
-    </div>
+    <PageShell eyebrow={t("categoryLabel")} title={t(`category.${category}`)}>
+      <PostGrid posts={posts} />
+    </PageShell>
   );
 }

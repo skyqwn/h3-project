@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getAllTags, getPostsByTag } from "@/lib/posts";
 import { pageMetadata } from "@/lib/seo";
-import { DisplayHeading } from "@/components/primitives/DisplayHeading";
+import { PageShell } from "@/components/layout/PageShell";
 import { PostGrid } from "@/components/blog/PostGrid";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -46,16 +46,8 @@ export default async function TagArchivePage({
   if (posts.length === 0) notFound();
 
   return (
-    <div className="min-h-screen bg-canvas py-section">
-      <div className="max-w-page mx-auto px-6">
-        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-          {t("tagLabel")}
-        </p>
-        <DisplayHeading level="lg" className="mb-12">
-          #{decoded}
-        </DisplayHeading>
-        <PostGrid posts={posts} />
-      </div>
-    </div>
+    <PageShell eyebrow={t("tagLabel")} title={`#${decoded}`}>
+      <PostGrid posts={posts} />
+    </PageShell>
   );
 }

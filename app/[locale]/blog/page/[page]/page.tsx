@@ -5,7 +5,7 @@ import { Link } from "@/i18n/routing";
 import { getAllPosts } from "@/lib/posts";
 import { paginate, PAGE_SIZE } from "@/lib/blog-pagination";
 import { pageMetadata } from "@/lib/seo";
-import { DisplayHeading } from "@/components/primitives/DisplayHeading";
+import { PageShell } from "@/components/layout/PageShell";
 import { PostGrid } from "@/components/blog/PostGrid";
 import { routing, type Locale } from "@/i18n/routing";
 
@@ -56,13 +56,12 @@ export default async function BlogPaginatedPage({
   }
 
   return (
-    <div className="min-h-screen bg-canvas py-section">
-      <div className="max-w-page mx-auto px-6">
-        <DisplayHeading level="lg" className="mb-12">
-          {t("title")} — {t("pageLabel")} {pageNum}
-        </DisplayHeading>
-        <PostGrid posts={result.items} />
-        <nav className="mt-12 flex justify-center gap-6">
+    <PageShell
+      eyebrow={t("subtitle")}
+      title={`${t("title")} — ${t("pageLabel")} ${pageNum}`}
+    >
+      <PostGrid posts={result.items} />
+      <nav className="mt-12 flex justify-center gap-6">
           <Link
             href={pageNum === 2 ? "/blog" : `/blog/page/${pageNum - 1}`}
             className="text-body-strong text-ink hover:text-primary transition-colors"
@@ -77,8 +76,7 @@ export default async function BlogPaginatedPage({
               {t("next")} →
             </Link>
           )}
-        </nav>
-      </div>
-    </div>
+      </nav>
+    </PageShell>
   );
 }
