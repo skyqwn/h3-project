@@ -23,7 +23,7 @@ const toneClass: Record<
 > = {
   light: {
     rule: "bg-hairline",
-    index: "text-ash",
+    index: "text-mute",
     eyebrow: "text-mute",
     title: "text-ink",
   },

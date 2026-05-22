@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
 import { SectionHeader } from "@/components/primitives/SectionHeader";
@@ -18,14 +19,14 @@ export function GallerySection() {
           {PHOTOS.map((p) => (
             <div
               key={p}
-              className="aspect-square overflow-hidden rounded-md bg-surface-card"
+              className="relative aspect-square overflow-hidden rounded-md bg-surface-card"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={`/gallery/${p}.jpg`}
                 alt={t("alt")}
-                loading="lazy"
-                className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                fill
+                sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+                className="object-cover transition-transform duration-300 ease-out hover:scale-105"
               />
             </div>
           ))}

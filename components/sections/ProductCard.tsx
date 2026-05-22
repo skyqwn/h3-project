@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight, Image as ImageIcon } from "lucide-react";
 import { Link } from "@/i18n/routing";
 import { ScrollReveal } from "@/components/primitives/ScrollReveal";
@@ -26,13 +27,13 @@ export function ProductCard({ product }: { product: ProductTeaser }) {
               <ImageIcon aria-hidden className="size-8" />
             </div>
           ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
+            <Image
               src={product.hero_image}
               alt=""
-              loading="lazy"
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
               onError={() => setFailed(true)}
-              className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+              className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
             />
           )}
 

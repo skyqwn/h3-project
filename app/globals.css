@@ -62,10 +62,10 @@
   --container-narrow: 800px;    /* product detail / article body      */
   --container-form: 640px;      /* forms, contact, modal cards        */
 
-  /* --- Fonts (Pretendard Variable via next/font, KO + Latin unified) --- */
-  --font-display: var(--font-pin-sans), -apple-system, "Apple SD Gothic Neo",
+  /* --- Fonts (Pretendard Variable via CDN dynamic subset; see layout.tsx) --- */
+  --font-display: "Pretendard Variable", -apple-system, "Apple SD Gothic Neo",
     "Malgun Gothic", system-ui, sans-serif;
-  --font-body: var(--font-pin-sans), -apple-system, "Apple SD Gothic Neo",
+  --font-body: "Pretendard Variable", -apple-system, "Apple SD Gothic Neo",
     "Malgun Gothic", system-ui, sans-serif;
 
   /* Radix Accordion height animation (consumed by components/ui/accordion.tsx) */

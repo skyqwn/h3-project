@@ -1,7 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import localFont from "next/font/local";
 import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -10,15 +9,11 @@ import { TopButton } from "@/components/layout/TopButton";
 import { organizationJsonLd, websiteJsonLd, SITE_URL } from "@/lib/seo";
 import type { Metadata } from "next";
 
-// Pretendard Variable — unified KO + Latin web font, self-hosted so Korean
-// (the default locale) renders consistently across devices instead of a
-// system fallback. Variable weight axis 45–920.
-const pretendard = localFont({
-  src: "../fonts/PretendardVariable.woff2",
-  display: "swap",
-  weight: "45 920",
-  variable: "--font-pin-sans",
-});
+// Pretendard Variable via CDN dynamic subset: the browser fetches only the
+// glyph chunks a page actually uses (~100-300KB) instead of the full ~2MB
+// font, with full Korean coverage. See app/globals.css --font-* stack.
+const PRETENDARD_CSS =
+  "https://cdn.jsdelivr.net/npm/pretendard@1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css";
 
 export async function generateMetadata({
   params,
@@ -55,11 +50,15 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html
-      lang={locale}
-      className={`${pretendard.variable} h-full antialiased`}
-      suppressHydrationWarning
-    >
+    <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
+      <head>
+        <link
+          rel="preconnect"
+          href="https://cdn.jsdelivr.net"
+          crossOrigin="anonymous"
+        />
+        <link rel="stylesheet" href={PRETENDARD_CSS} />
+      </head>
       <body className="min-h-screen">
         <script
           type="application/ld+json"

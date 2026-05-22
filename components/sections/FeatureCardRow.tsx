@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ScrollReveal } from "@/components/primitives/ScrollReveal";
 import { DisplayHeading } from "@/components/primitives/DisplayHeading";
 import { Button } from "@/components/ui/Button";
@@ -22,13 +23,15 @@ export function FeatureCardRow({ items }: { items: FeatureItem[] }) {
                 item.reverse ? "md:[&>*:first-child]:order-2" : ""
               }`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.image}
-                alt={item.title}
-                loading="lazy"
-                className="aspect-[4/5] w-full rounded-md object-cover bg-surface-card"
-              />
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-md bg-surface-card">
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
               <div className="space-y-4">
                 <DisplayHeading as="h2" level="heading-xl">
                   {item.title}

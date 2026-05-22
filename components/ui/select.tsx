@@ -19,7 +19,7 @@ export const SelectTrigger = React.forwardRef<
       "border border-ash text-body-md text-ink",
       "focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30",
       "disabled:bg-surface-card disabled:text-mute disabled:cursor-not-allowed",
-      "data-[placeholder]:text-ash",
+      "data-[placeholder]:text-mute",
       className
     )}
     {...props}

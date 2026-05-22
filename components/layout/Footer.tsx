@@ -59,7 +59,7 @@ export async function Footer() {
                 <li key={href}>
                   <Link
                     href={href}
-                    className="whitespace-nowrap transition-colors hover:text-ink"
+                    className="inline-block whitespace-nowrap py-0.5 transition-colors hover:text-ink"
                   >
                     {nav(key)}
                   </Link>
@@ -82,7 +82,7 @@ export async function Footer() {
                       {r.href ? (
                         <a
                           href={r.href}
-                          className="transition-colors hover:text-ink"
+                          className="inline-block py-0.5 transition-colors hover:text-ink"
                         >
                           {r.value}
                         </a>
@@ -97,7 +97,7 @@ export async function Footer() {
         </div>
 
         <div className="mt-14 border-t border-hairline-soft pt-6">
-          <p className="text-caption-md text-ash">{foot("copyright")}</p>
+          <p className="text-caption-md text-mute">{foot("copyright")}</p>
         </div>
       </div>
     </footer>
