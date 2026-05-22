@@ -12,9 +12,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EMAIL_DOMAINS } from "@/lib/contact-schema";
+import { FieldError } from "./FieldError";
 
 const CUSTOM = "__custom__";
-const VK = ["required", "invalidEmail", "invalidPhone"];
 
 export function EmailField() {
   const t = useTranslations("contact.form");
@@ -24,7 +24,6 @@ export function EmailField() {
     string,
     { message?: string } | undefined
   >;
-  const err = errors.emailLocal?.message || errors.emailDomain?.message;
 
   return (
     <div>
@@ -78,11 +77,7 @@ export function EmailField() {
           </SelectContent>
         </Select>
       </div>
-      {err && (
-        <p className="mt-1 text-body-sm text-error">
-          {VK.includes(err) ? t(err) : err}
-        </p>
-      )}
+      <FieldError name={["emailLocal", "emailDomain"]} />
     </div>
   );
 }

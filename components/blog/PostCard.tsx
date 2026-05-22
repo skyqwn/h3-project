@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import type { Post } from "@/lib/posts";
 
 export function PostCard({ post }: { post: Post }) {
@@ -16,9 +17,9 @@ export function PostCard({ post }: { post: Post }) {
           className="object-cover transition-transform duration-300 ease-out group-hover:scale-[1.03]"
         />
       </div>
-      <p className="text-caption-md uppercase tracking-wider text-mute mt-3">
+      <Eyebrow className="mt-3">
         {t(`category.${post.category}`)} · {post.publishedAt}
-      </p>
+      </Eyebrow>
       <h2 className="text-heading-md text-ink mt-1 group-hover:text-primary transition-colors">
         {post.title}
       </h2>

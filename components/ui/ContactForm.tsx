@@ -8,6 +8,7 @@ import Script from "next/script";
 import { Loader2 } from "lucide-react";
 import { submitContact } from "@/actions/contact";
 import { Button } from "@/components/ui/Button";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { Step1 } from "@/components/ui/contact/Step1";
 import { Step2 } from "@/components/ui/contact/Step2";
 import {
@@ -202,9 +203,7 @@ export function ContactForm({
         )}
 
         <div className="space-y-2">
-          <p className="text-caption-md uppercase tracking-wider text-mute">
-            {tStep("of", { current: step, total: 2 })}
-          </p>
+          <Eyebrow>{tStep("of", { current: step, total: 2 })}</Eyebrow>
           <div
             className="h-1 w-full overflow-hidden rounded-full bg-secondary-bg"
             role="progressbar"

@@ -4,8 +4,8 @@ import { useTranslations } from "next-intl";
 import { useFormContext } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { FileDropzone } from "./FileDropzone";
+import { FieldError } from "./FieldError";
 
-const VK = ["required", "invalidEmail", "invalidPhone"];
 const MESSAGE_MAX = 2000;
 
 export function Step2({
@@ -15,8 +15,6 @@ export function Step2({
 }) {
   const t = useTranslations("contact.form");
   const { register, watch, formState } = useFormContext();
-  const msgErr = (formState.errors as Record<string, { message?: string }>)
-    .message;
   const msgLen = ((watch("message") as string) || "").length;
 
   return (
@@ -29,27 +27,23 @@ export function Step2({
           id="message"
           rows={6}
           maxLength={MESSAGE_MAX}
-          aria-invalid={!!msgErr}
+          aria-invalid={
+            !!(formState.errors as Record<string, unknown>).message
+          }
           className="w-full px-3 py-3 rounded-md bg-canvas border border-ash text-body-md text-ink focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 aria-[invalid=true]:border-error"
           {...register("message")}
         />
-        <div className="mt-1 flex items-start justify-between gap-3">
-          <span className="text-body-sm text-error">
-            {msgErr?.message
-              ? VK.includes(msgErr.message)
-                ? t(msgErr.message)
-                : msgErr.message
-              : ""}
-          </span>
+        <div className="mt-1 flex justify-end">
           <span
             className={cn(
-              "shrink-0 text-caption-md tabular-nums",
+              "text-caption-md tabular-nums",
               msgLen >= MESSAGE_MAX ? "text-error" : "text-mute"
             )}
           >
             {msgLen} / {MESSAGE_MAX}
           </span>
         </div>
+        <FieldError name="message" />
       </div>
 
       <div>

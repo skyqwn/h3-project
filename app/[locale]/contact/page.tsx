@@ -2,6 +2,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { Mail, Phone } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { ContactForm } from "@/components/ui/ContactForm";
 import { env } from "@/lib/env";
 import { pageMetadata } from "@/lib/seo";
@@ -50,13 +51,11 @@ export default async function ContactPage({
       {/* Mobile-only: process steps + tap-to-call above the form.
           Desktop uses the full sidebar instead. */}
       <div className="mb-8 lg:hidden">
-        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-          {t("aside.processTitle")}
-        </p>
+        <Eyebrow className="mb-3">{t("aside.processTitle")}</Eyebrow>
         <ol className="space-y-2">
           {steps.map((s, i) => (
             <li key={i} className="flex gap-3">
-              <span className="mt-0.5 text-caption-md tabular-nums text-ash">
+              <span className="mt-0.5 text-caption-md tabular-nums text-mute">
                 {`0${i + 1}`}
               </span>
               <span className="text-body-sm text-body leading-relaxed">{s}</span>
@@ -89,16 +88,12 @@ export default async function ContactPage({
               above instead. */}
           <aside className="hidden space-y-8 lg:block">
             <div>
-              <p className="text-caption-md uppercase tracking-wider text-mute mb-2">
-                {t("aside.responseTitle")}
-              </p>
+              <Eyebrow className="mb-2">{t("aside.responseTitle")}</Eyebrow>
               <p className="text-body-sm text-body">{t("aside.responseBody")}</p>
             </div>
 
             <div className="border-t border-hairline pt-6">
-              <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-                {t("aside.directTitle")}
-              </p>
+              <Eyebrow className="mb-3">{t("aside.directTitle")}</Eyebrow>
               <div className="space-y-2">
                 {contacts.map(({ Icon, label, value, href }) => (
                   <a
@@ -115,13 +110,11 @@ export default async function ContactPage({
             </div>
 
             <div className="border-t border-hairline pt-6">
-              <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-                {t("aside.processTitle")}
-              </p>
+              <Eyebrow className="mb-3">{t("aside.processTitle")}</Eyebrow>
               <ol className="space-y-3">
                 {steps.map((s, i) => (
                   <li key={i} className="flex gap-3">
-                    <span className="mt-0.5 text-caption-md tabular-nums text-ash">
+                    <span className="mt-0.5 text-caption-md tabular-nums text-mute">
                       {`0${i + 1}`}
                     </span>
                     <span className="text-body-sm text-body leading-relaxed">
@@ -133,9 +126,7 @@ export default async function ContactPage({
             </div>
 
             <div className="border-t border-hairline pt-6">
-              <p className="text-caption-md uppercase tracking-wider text-mute mb-1">
-                {t("aside.hoursLabel")}
-              </p>
+              <Eyebrow className="mb-1">{t("aside.hoursLabel")}</Eyebrow>
               <p className="text-body-sm text-body">{t("aside.hours")}</p>
             </div>
           </aside>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { DisplayHeading } from "@/components/primitives/DisplayHeading";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 
 type Props = {
   /** Uppercase kicker above the title (e.g. "What we do"). */
@@ -27,9 +28,7 @@ export function PageShell({ eyebrow, title, children, fill = true }: Props) {
   return (
     <div className={`${fill ? "min-h-screen " : ""}bg-canvas py-section`}>
       <div className="max-w-page mx-auto px-6">
-        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-          {eyebrow}
-        </p>
+        <Eyebrow className="mb-3">{eyebrow}</Eyebrow>
         <DisplayHeading level="lg" className="mb-12">
           {title}
         </DisplayHeading>

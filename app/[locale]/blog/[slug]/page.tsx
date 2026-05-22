@@ -7,6 +7,7 @@ import { rehypeImageDimensions } from "@/lib/rehype-image-dimensions";
 import type { Metadata } from "next";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { mdxComponents } from "@/mdx-components";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
 import type { Post } from "@/lib/posts";
@@ -103,10 +104,10 @@ export default async function PostDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <div className="max-w-narrow mx-auto px-6">
-        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
+        <Eyebrow className="mb-3">
           {t(`category.${post.category}`)} · {t("publishedOn")}{" "}
           {post.publishedAt}
-        </p>
+        </Eyebrow>
         <h1 className="text-display-lg text-ink mb-12">{post.title}</h1>
         <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
           <Image

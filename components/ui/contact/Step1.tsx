@@ -11,21 +11,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { EmailField } from "./EmailField";
+import { FieldError } from "./FieldError";
 import { PURPOSES, type Purpose } from "@/lib/contact-schema";
-
-const VK = ["required", "invalidEmail", "invalidPhone"];
-function Err({ name }: { name: string }) {
-  const t = useTranslations("contact.form");
-  const { formState } = useFormContext();
-  const e = (formState.errors as Record<string, { message?: string }>)[name];
-  if (!e?.message) return null;
-  const m = e.message;
-  return (
-    <p className="mt-1 text-body-sm text-error">
-      {VK.includes(m) ? t(m) : m}
-    </p>
-  );
-}
 
 const PURPOSE_KEY: Record<Purpose, string> = {
   product: "purposeProduct",
@@ -51,7 +38,7 @@ export function Step1() {
           aria-invalid={!!(formState.errors as Record<string, unknown>).company}
           {...register("company")}
         />
-        <Err name="company" />
+        <FieldError name="company" />
       </div>
 
       <div>
@@ -69,7 +56,7 @@ export function Step1() {
           }
           {...register("contactName")}
         />
-        <Err name="contactName" />
+        <FieldError name="contactName" />
       </div>
 
       <div>
@@ -83,7 +70,7 @@ export function Step1() {
           aria-invalid={!!(formState.errors as Record<string, unknown>).phone}
           {...register("phone")}
         />
-        <Err name="phone" />
+        <FieldError name="phone" />
       </div>
 
       <EmailField />
@@ -110,7 +97,7 @@ export function Step1() {
             ))}
           </SelectContent>
         </Select>
-        <Err name="purpose" />
+        <FieldError name="purpose" />
       </div>
     </div>
   );

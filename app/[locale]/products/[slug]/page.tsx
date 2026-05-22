@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import type { Metadata } from "next";
 import { getAllProductSlugs, getProduct } from "@/lib/mdx";
 import { mdxComponents } from "@/mdx-components";
+import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { pageMetadata, productJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { getTranslations } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
@@ -84,9 +85,7 @@ export default async function ProductDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <div className="max-w-narrow mx-auto px-6">
-        <p className="text-caption-md uppercase tracking-wider text-mute mb-3">
-          {product.tagline}
-        </p>
+        <Eyebrow className="mb-3">{product.tagline}</Eyebrow>
         <h1 className="text-display-lg text-ink mb-12">{product.title}</h1>
         <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
           <Image
