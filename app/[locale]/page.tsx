@@ -4,12 +4,10 @@ import { pageMetadata } from "@/lib/seo";
 import { Hero } from "@/components/sections/Hero";
 import { FeatureCardRow } from "@/components/sections/FeatureCardRow";
 import { ServiceGrid } from "@/components/sections/ServiceGrid";
-import { ProcessSection } from "@/components/sections/ProcessSection";
-import { ProductShowcase } from "@/components/sections/ProductShowcase";
-import { GallerySection } from "@/components/sections/GallerySection";
+import { ProcessOrbit } from "@/components/sections/ProcessOrbit";
+import { IndustriesSection } from "@/components/sections/IndustriesSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CtaStrip } from "@/components/sections/CtaStrip";
-import { getAllProducts } from "@/lib/mdx";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -36,7 +34,6 @@ export default async function Home({
   setRequestLocale(locale);
 
   const home = await getTranslations("home");
-  const products = await getAllProducts(locale as Locale);
 
   const features = [
     {
@@ -59,13 +56,8 @@ export default async function Home({
       <Hero />
       <FeatureCardRow items={features} />
       <ServiceGrid />
-      <ProcessSection />
-      <ProductShowcase
-        eyebrow={home("products.eyebrow")}
-        title={home("products.title")}
-        products={products.slice(0, 6)}
-      />
-      <GallerySection />
+      <ProcessOrbit />
+      <IndustriesSection />
       <FaqSection />
       <CtaStrip
         title={home("closing.title")}

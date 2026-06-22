@@ -32,32 +32,32 @@
       "cta": "문의하기"
     },
     "services": {
-      "eyebrow": "서비스",
-      "title": "H3의 핵심 역량",
+      "eyebrow": "제품·설비",
+      "title": "H3가 만드는 설비",
       "items": {
-        "design": {
-          "title": "설계·도면",
-          "desc": "현장 실측을 바탕으로 레이아웃과 도면을 설계합니다."
+        "fumehood": {
+          "title": "흄후드",
+          "desc": "화학 공정용 국소배기 흄후드를 제작합니다."
         },
-        "cnc": {
-          "title": "CNC 정밀가공",
-          "desc": "CNC 라우터로 PVC·PP를 정밀하게 가공합니다."
-        },
-        "welding": {
-          "title": "PVC·PP 용접",
-          "desc": "내화학 구조를 위한 전문 열풍 용접."
-        },
-        "fabrication": {
-          "title": "흄후드·부스 제작",
-          "desc": "용도에 맞춘 흄후드와 정련 부스를 제작합니다."
+        "booth": {
+          "title": "정련 부스",
+          "desc": "작업자 보호를 위한 정련·작업 부스."
         },
         "scrubber": {
-          "title": "스크러버·배기배관",
-          "desc": "유해가스 처리 스크러버와 배기 배관 시공."
+          "title": "스크러버",
+          "desc": "유해가스를 세정·중화하는 스크러버."
         },
-        "field": {
-          "title": "현장시공·유지보수",
-          "desc": "현장 설치부터 정기 점검·A/S까지."
+        "duct": {
+          "title": "배기 덕트·배관",
+          "desc": "PVC·PP 내화학 배기 덕트와 배관."
+        },
+        "tank": {
+          "title": "약액조·세정조",
+          "desc": "PVC·PP 약품 저장조와 세정조."
+        },
+        "custom": {
+          "title": "맞춤 제작 설비",
+          "desc": "비표준 PVC·PP 구조물을 맞춤 제작합니다."
         }
       }
     },
@@ -123,6 +123,30 @@
       "title": "우리가 만든 현장",
       "alt": "H3 제작·시공 현장",
       "cta": "사례 자세히 보기"
+    },
+    "industries": {
+      "eyebrow": "산업 분야",
+      "title": "이런 현장에 납품합니다",
+      "items": {
+        "semiconductor": {
+          "name": "반도체",
+          "en": "SEMICONDUCTOR",
+          "desc": "초순수·약액 라인의 내화학 설비와 흄후드를 공급합니다.",
+          "alt": "반도체 공정 설비 현장"
+        },
+        "chemistry": {
+          "name": "화학",
+          "en": "CHEMISTRY",
+          "desc": "부식성 환경을 견디는 PVC·PP 배기·스크러버를 제작합니다.",
+          "alt": "화학 플랜트 설비 현장"
+        },
+        "battery": {
+          "name": "2차전지",
+          "en": "BATTERY",
+          "desc": "전해액·유해가스 처리용 정밀 가공 설비를 시공합니다.",
+          "alt": "2차전지 제조 라인 현장"
+        }
+      }
     }
   },
   "about": {

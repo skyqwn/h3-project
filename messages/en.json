@@ -32,32 +32,32 @@
       "cta": "Contact us"
     },
     "services": {
-      "eyebrow": "Services",
-      "title": "What H3 does",
+      "eyebrow": "Equipment",
+      "title": "What H3 builds",
       "items": {
-        "design": {
-          "title": "Design & drawings",
-          "desc": "Layouts and drawings based on on-site measurement."
+        "fumehood": {
+          "title": "Fume hoods",
+          "desc": "Local-exhaust fume hoods for chemical processes."
         },
-        "cnc": {
-          "title": "CNC machining",
-          "desc": "Precision PVC/PP cutting on CNC routers."
-        },
-        "welding": {
-          "title": "PVC/PP welding",
-          "desc": "Expert hot-air welding for chemical-resistant structures."
-        },
-        "fabrication": {
-          "title": "Fume hoods & booths",
-          "desc": "Custom fume hoods and refining booths."
+        "booth": {
+          "title": "Refining booths",
+          "desc": "Refining and work booths that protect operators."
         },
         "scrubber": {
-          "title": "Scrubbers & ducting",
-          "desc": "Gas-treatment scrubbers and exhaust ducting."
+          "title": "Scrubbers",
+          "desc": "Scrubbers that wash and neutralize exhaust gas."
         },
-        "field": {
-          "title": "Install & maintenance",
-          "desc": "On-site install plus inspection and service."
+        "duct": {
+          "title": "Exhaust ducting",
+          "desc": "Chemical-resistant PVC/PP ducts and piping."
+        },
+        "tank": {
+          "title": "Tanks & baths",
+          "desc": "PVC/PP chemical storage tanks and wash baths."
+        },
+        "custom": {
+          "title": "Custom fabrication",
+          "desc": "Bespoke non-standard PVC/PP structures."
         }
       }
     },
@@ -123,6 +123,30 @@
       "title": "Projects we've built",
       "alt": "H3 fabrication and installation work",
       "cta": "View the case study"
+    },
+    "industries": {
+      "eyebrow": "Industries",
+      "title": "Where our work goes",
+      "items": {
+        "semiconductor": {
+          "name": "Semiconductor",
+          "en": "SEMICONDUCTOR",
+          "desc": "Chemical-resistant equipment and fume hoods for ultrapure and chemical lines.",
+          "alt": "Semiconductor process equipment"
+        },
+        "chemistry": {
+          "name": "Chemistry",
+          "en": "CHEMISTRY",
+          "desc": "PVC/PP exhaust systems and scrubbers built to withstand corrosive environments.",
+          "alt": "Chemical plant equipment"
+        },
+        "battery": {
+          "name": "Battery",
+          "en": "BATTERY",
+          "desc": "Precision-fabricated equipment for electrolyte and hazardous-gas handling.",
+          "alt": "Battery manufacturing line"
+        }
+      }
     }
   },
   "about": {

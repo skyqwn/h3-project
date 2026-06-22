@@ -5,22 +5,22 @@ import { SectionHeader } from "@/components/primitives/SectionHeader";
 import { Stagger } from "@/components/primitives/Stagger";
 import { Section } from "@/components/layout/Section";
 import {
-  PencilRuler,
-  Cpu,
-  Flame,
-  Box,
   Wind,
-  HardHat,
+  Box,
+  Droplets,
+  GitBranch,
+  Container,
+  Hammer,
   type LucideIcon,
 } from "lucide-react";
 
 const SERVICES: { key: string; Icon: LucideIcon }[] = [
-  { key: "design", Icon: PencilRuler },
-  { key: "cnc", Icon: Cpu },
-  { key: "welding", Icon: Flame },
-  { key: "fabrication", Icon: Box },
-  { key: "scrubber", Icon: Wind },
-  { key: "field", Icon: HardHat },
+  { key: "fumehood", Icon: Wind },
+  { key: "booth", Icon: Box },
+  { key: "scrubber", Icon: Droplets },
+  { key: "duct", Icon: GitBranch },
+  { key: "tank", Icon: Container },
+  { key: "custom", Icon: Hammer },
 ];
 
 export function ServiceGrid() {
