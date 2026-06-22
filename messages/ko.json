@@ -250,7 +250,19 @@
       "address": "인천광역시 서구 이든1로 15 (22667)",
       "hoursLabel": "운영 시간",
       "hours": "평일 09:00 – 18:00"
+    },
+    "legal": {
+      "heading": "약관",
+      "terms": "서비스 이용약관",
+      "privacy": "개인정보 처리방침",
+      "consent": "개인정보 수집 및 이용 동의"
     }
+  },
+  "legal": {
+    "effectiveDate": "시행일",
+    "terms": { "eyebrow": "약관", "title": "서비스 이용약관" },
+    "privacy": { "eyebrow": "약관", "title": "개인정보 처리방침" },
+    "consent": { "eyebrow": "약관", "title": "개인정보 수집 및 이용 동의" }
   },
   "notFound": {
     "title": "페이지를 찾을 수 없습니다",

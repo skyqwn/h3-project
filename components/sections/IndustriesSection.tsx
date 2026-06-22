@@ -146,13 +146,17 @@ export function IndustriesSection() {
                 finishes its expand) before this one slides up to cover it. */}
             <div aria-hidden className="h-[60svh]" />
             <section className="sticky top-0 h-[100svh] w-full overflow-hidden bg-surface-dark">
-            <Image
-              src={image}
-              alt={t(`items.${key}.alt`)}
-              fill
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+            {/* next/image `fill` needs a relative/absolute/fixed parent — the
+                section itself is `sticky`, so the image gets its own wrapper. */}
+            <div className="absolute inset-0">
+              <Image
+                src={image}
+                alt={t(`items.${key}.alt`)}
+                fill
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            </div>
             <div className="absolute inset-0" style={{ background: SCRIM }} aria-hidden />
             <div className="absolute inset-0 flex flex-col justify-end pb-16">
               <div className="max-w-page mx-auto w-full px-6">

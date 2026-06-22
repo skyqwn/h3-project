@@ -8,6 +8,12 @@ const NAV = [
   { href: "/contact", key: "contact" },
 ] as const;
 
+const LEGAL = [
+  { href: "/terms", key: "terms" },
+  { href: "/privacy", key: "privacy" },
+  { href: "/consent", key: "consent" },
+] as const;
+
 export async function Footer() {
   const nav = await getTranslations("nav");
   const foot = await getTranslations("footer");
@@ -96,8 +102,20 @@ export async function Footer() {
             </div>
         </div>
 
-        <div className="mt-14 border-t border-hairline-soft pt-6">
+        <div className="mt-14 flex flex-col gap-3 border-t border-hairline-soft pt-6 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-caption-md text-mute">{foot("copyright")}</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-caption-md">
+            {LEGAL.map(({ href, key }) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  className="text-mute transition-colors hover:text-ink"
+                >
+                  {foot(`legal.${key}`)}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>
