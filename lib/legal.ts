@@ -18,7 +18,7 @@ const EFFECTIVE_DATE = "2026-06-22";
 const COMPANY = "H3";
 const CEO = "홍승찬";
 const PHONE = "010-6777-6730";
-const EMAIL = "hyu1045@naver.com";
+const EMAIL = "h3@h3-tech.co.kr";
 const LOCATION = "인천광역시 서구";
 
 const terms: LegalDoc = {
