@@ -71,6 +71,11 @@ export function pageMetadata({
   const urls = urlsFor(path);
   const ownUrl = locale === "ko" ? urls.ko : urls.en;
   const fullTitle = `${title} — ${BRAND}`;
+  // Default share image is the H3 logo card (public/og-default.png). Pages
+  // that pass an explicit `image` (products, blog posts) override it. Without
+  // this, scrapers (KakaoTalk, etc.) fall back to picking a random photo from
+  // the page body.
+  const ogImage = image ?? `${SITE}/og-default.png`;
 
   return {
     metadataBase: new URL(SITE),
@@ -102,7 +107,7 @@ export function pageMetadata({
       url: ownUrl,
       locale: locale === "ko" ? "ko_KR" : "en_US",
       alternateLocale: locale === "ko" ? ["en_US"] : ["ko_KR"],
-      images: image ? [{ url: image, width: 1200, height: 630 }] : undefined,
+      images: [{ url: ogImage, width: 1200, height: 630 }],
       ...(article
         ? {
             publishedTime: article.publishedTime,
@@ -115,7 +120,7 @@ export function pageMetadata({
       card: "summary_large_image",
       title: fullTitle,
       description,
-      images: image ? [image] : undefined,
+      images: [ogImage],
     },
     alternates: {
       canonical: ownUrl,
