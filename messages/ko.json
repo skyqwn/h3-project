@@ -255,7 +255,8 @@
       "heading": "약관",
       "terms": "서비스 이용약관",
       "privacy": "개인정보 처리방침",
-      "consent": "개인정보 수집 및 이용 동의"
+      "consent": "개인정보 수집 및 이용 동의",
+      "notice": "전자공고"
     }
   },
   "legal": {
@@ -263,6 +264,21 @@
     "terms": { "eyebrow": "약관", "title": "서비스 이용약관" },
     "privacy": { "eyebrow": "약관", "title": "개인정보 처리방침" },
     "consent": { "eyebrow": "약관", "title": "개인정보 수집 및 이용 동의" }
+  },
+  "notice": {
+    "eyebrow": "전자공고",
+    "title": "전자공고",
+    "intro": "상법 및 당사 정관에 따른 공고사항을 게시하는 공간입니다.",
+    "columns": {
+      "number": "번호",
+      "title": "제목",
+      "date": "공고일",
+      "attachment": "첨부"
+    },
+    "attachmentBadge": "PDF",
+    "attachmentLabel": "첨부파일",
+    "empty": "현재 게시된 공고가 없습니다.",
+    "back": "목록으로"
   },
   "notFound": {
     "title": "페이지를 찾을 수 없습니다",

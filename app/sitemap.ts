@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 import { getAllProductSlugs } from "@/lib/mdx";
+import { getNotices } from "@/lib/notices";
 import {
   getAllPosts,
   getAllTags,
@@ -9,12 +10,13 @@ import {
 import { PAGE_SIZE } from "@/lib/blog-pagination";
 import { routing } from "@/i18n/routing";
 
-const STATIC_PATHS = ["", "/about", "/products", "/contact"] as const;
+const STATIC_PATHS = ["", "/about", "/products", "/contact", "/notice"] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getAllProductSlugs();
   const productPaths = slugs.map((slug) => `/products/${slug}`);
-  const allPaths = [...STATIC_PATHS, ...productPaths];
+  const noticePaths = getNotices().map((n) => `/notice/${n.id}`);
+  const allPaths = [...STATIC_PATHS, ...productPaths, ...noticePaths];
 
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];

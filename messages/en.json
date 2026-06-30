@@ -255,7 +255,8 @@
       "heading": "Legal",
       "terms": "Terms of Service",
       "privacy": "Privacy Policy",
-      "consent": "Consent to Data Collection"
+      "consent": "Consent to Data Collection",
+      "notice": "Public Notice"
     }
   },
   "legal": {
@@ -263,6 +264,21 @@
     "terms": { "eyebrow": "Legal", "title": "Terms of Service" },
     "privacy": { "eyebrow": "Legal", "title": "Privacy Policy" },
     "consent": { "eyebrow": "Legal", "title": "Consent to Collection and Use of Personal Information" }
+  },
+  "notice": {
+    "eyebrow": "Public Notice",
+    "title": "Public Notice",
+    "intro": "Official company notices published under the Korean Commercial Act and our articles of incorporation.",
+    "columns": {
+      "number": "No.",
+      "title": "Title",
+      "date": "Date",
+      "attachment": "File"
+    },
+    "attachmentBadge": "PDF",
+    "attachmentLabel": "Attachments",
+    "empty": "There are no notices at this time.",
+    "back": "Back to list"
   },
   "notFound": {
     "title": "Page not found",

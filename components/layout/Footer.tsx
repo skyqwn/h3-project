@@ -12,6 +12,7 @@ const LEGAL = [
   { href: "/terms", key: "terms" },
   { href: "/privacy", key: "privacy" },
   { href: "/consent", key: "consent" },
+  { href: "/notice", key: "notice" },
 ] as const;
 
 export async function Footer() {
