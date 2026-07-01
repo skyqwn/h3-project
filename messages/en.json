@@ -6,6 +6,10 @@
     "contact": "Contact"
   },
   "home": {
+    "meta": {
+      "title": "H3 Tech | Semiconductor Automation Equipment · AI Control Systems",
+      "description": "H3 Tech provides automation equipment, AI·AX control systems, factory automation, industrial equipment, and engineering solutions for the semiconductor and display industries."
+    },
     "hero": {
       "eyebrow": "PVC & PP precision fabrication",
       "headline": "Chemical-resistant systems, from design to install",

@@ -6,6 +6,10 @@
     "contact": "문의"
   },
   "home": {
+    "meta": {
+      "title": "H3 Tech | 반도체 자동화 설비 · AI 제어 시스템",
+      "description": "H3 Tech는 반도체 및 디스플레이 산업을 위한 자동화 설비, AI·AX 제어 시스템, 공장 자동화 시스템, 산업용 장비 및 엔지니어링 솔루션을 제공하는 기술 기업입니다."
+    },
     "hero": {
       "eyebrow": "PVC·PP 정밀 가공",
       "headline": "내화학 설비, 설계부터 시공까지",

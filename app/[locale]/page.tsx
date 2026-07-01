@@ -16,12 +16,14 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "home.hero" });
+  const t = await getTranslations({ locale, namespace: "home.meta" });
   return pageMetadata({
     locale: locale as Locale,
     path: "/",
-    title: t("headline"),
-    description: t("eyebrow"),
+    title: t("title"),
+    description: t("description"),
+    // title already carries the brand ("H3 Tech | ...") — don't append "— H3".
+    appendBrand: false,
   });
 }
 

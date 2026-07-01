@@ -51,6 +51,9 @@ type PageMetaArgs = {
   image?: string;
   /** robots index directives — defaults to index,follow */
   noindex?: boolean;
+  /** append " — H3" to the title (default). Set false when `title` already
+   *  contains the brand (e.g. the home page's "H3 Tech | ..."). */
+  appendBrand?: boolean;
   /** when present, og:type becomes "article" with publish/modify times */
   article?: {
     publishedTime: string;
@@ -66,11 +69,12 @@ export function pageMetadata({
   description,
   image,
   noindex = false,
+  appendBrand = true,
   article,
 }: PageMetaArgs): Metadata {
   const urls = urlsFor(path);
   const ownUrl = locale === "ko" ? urls.ko : urls.en;
-  const fullTitle = `${title} — ${BRAND}`;
+  const fullTitle = appendBrand ? `${title} — ${BRAND}` : title;
   // Default share image is the H3 logo card (public/og-default.png). Pages
   // that pass an explicit `image` (products, blog posts) override it. Without
   // this, scrapers (KakaoTalk, etc.) fall back to picking a random photo from
