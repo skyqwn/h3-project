@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
@@ -49,6 +49,20 @@ export default async function LocaleLayout({
 
   const messages = await getMessages();
 
+  // Canonical (Korean) company facts for the Organization structured data —
+  // keeps the KR address/phone stable for Google geocoding regardless of the
+  // page locale.
+  const company = await getTranslations({
+    locale: "ko",
+    namespace: "footer.company",
+  });
+  const organization = organizationJsonLd({
+    phone: company("phone"),
+    email: company("email"),
+    address: company("address"),
+    ceo: company("ceo"),
+  });
+
   return (
     <html lang={locale} className="h-full antialiased" suppressHydrationWarning>
       <head>
@@ -63,7 +77,7 @@ export default async function LocaleLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationJsonLd()),
+            __html: JSON.stringify(organization),
           }}
         />
         <script

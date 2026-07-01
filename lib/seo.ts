@@ -138,13 +138,85 @@ export function pageMetadata({
 // JSON-LD builders
 // -------------------------------------------------------------------
 
-export function organizationJsonLd() {
-  return {
+// Canonical company facts pulled from the `footer.company` message catalog so
+// the structured data never drifts from what the footer/location section shows.
+// Region/country are stable, non-localized, so they live here as constants.
+type CompanyInfo = {
+  phone: string;
+  email: string;
+  /** full display address, e.g. "인천광역시 서구 이든1로 15 (22667)" */
+  address: string;
+  ceo?: string;
+};
+
+// Legal/searchable name and aliases for the Organization node. `BRAND` ("H3")
+// stays the visible wordmark; the org's canonical name is the full "H3 Tech".
+const ORG_NAME = "H3 Tech";
+const ORG_ALTERNATE_NAMES = ["H3", "에이치쓰리", "에이치쓰리테크"];
+const ORG_DESCRIPTION =
+  "H3 Tech는 반도체 및 디스플레이 산업을 위한 자동화 설비, AI·AX 제어 시스템, 공장 자동화 시스템, 산업용 장비 및 엔지니어링 솔루션을 제공하는 기술 기업입니다.";
+const ORG_KEYWORDS = [
+  "반도체",
+  "디스플레이",
+  "자동화 설비",
+  "공장 자동화",
+  "AI 제어 시스템",
+  "AX 제어 시스템",
+  "산업용 장비",
+  "표면처리 장비",
+  "도금 장비",
+  "엔지니어링",
+  "반도체 장비",
+  "H3 Tech",
+  "에이치쓰리테크",
+];
+
+// "010-6777-6730" → "+82-10-6777-6730" (international form Google prefers,
+// keeping human-readable hyphens).
+function toIntlKR(phone: string): string {
+  return phone.replace(/^0/, "+82-");
+}
+
+export function organizationJsonLd(company?: CompanyInfo) {
+  const base = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: BRAND,
+    name: ORG_NAME,
+    alternateName: ORG_ALTERNATE_NAMES,
     url: SITE,
     logo: `${SITE}/icon.png`,
+    description: ORG_DESCRIPTION,
+    keywords: ORG_KEYWORDS,
+    sameAs: [SITE],
+  };
+
+  if (!company) return base;
+
+  const telephone = toIntlKR(company.phone);
+  // Split off the "(22667)" postal code if present.
+  const postal = company.address.match(/\((\d{5})\)/)?.[1];
+  const streetAddress = company.address.replace(/\s*\(\d{5}\)\s*$/, "").trim();
+
+  return {
+    ...base,
+    email: company.email,
+    telephone,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress,
+      addressLocality: "인천",
+      addressRegion: "인천광역시",
+      addressCountry: "KR",
+      ...(postal ? { postalCode: postal } : {}),
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone,
+      email: company.email,
+      contactType: "sales",
+      areaServed: "KR",
+      availableLanguage: ["Korean", "English"],
+    },
   };
 }
 
