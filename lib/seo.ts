@@ -29,6 +29,32 @@ function resolveSiteUrl(): string {
 
 const SITE = resolveSiteUrl();
 const BRAND = "H3";
+const ORG_NAME = "H3 Tech";
+const BRAND_ALIASES = [
+  BRAND,
+  ORG_NAME,
+  "H3Tech",
+  "에이치쓰리",
+  "에이치쓰리테크",
+  "에이치쓰리 테크",
+  "에이치3",
+];
+const SEO_KEYWORDS = [
+  ...BRAND_ALIASES,
+  "h3-tech.co.kr",
+  "내화학 설비",
+  "PVC 가공",
+  "PP 가공",
+  "PVC PP 제작",
+  "흄후드",
+  "스크러버",
+  "배기 덕트",
+  "반도체 설비",
+  "디스플레이 설비",
+  "자동화 설비",
+  "factory automation",
+  "chemical resistant equipment",
+];
 
 // Build the URL pair for a locale-agnostic path. Korean lives at root,
 // English at /en — flip the prefix based on the locale.
@@ -85,10 +111,10 @@ export function pageMetadata({
     metadataBase: new URL(SITE),
     title: fullTitle,
     description,
-    applicationName: BRAND,
-    authors: [{ name: BRAND }],
+    applicationName: ORG_NAME,
+    authors: [{ name: ORG_NAME }],
     generator: "Next.js",
-    keywords: [BRAND, "tech", "product"],
+    keywords: SEO_KEYWORDS,
     referrer: "origin-when-cross-origin",
     robots: noindex
       ? { index: false, follow: false }
@@ -105,7 +131,7 @@ export function pageMetadata({
         },
     openGraph: {
       type: article ? "article" : "website",
-      siteName: BRAND,
+      siteName: ORG_NAME,
       title: fullTitle,
       description,
       url: ownUrl,
@@ -155,8 +181,7 @@ type CompanyInfo = {
 
 // Legal/searchable name and aliases for the Organization node. `BRAND` ("H3")
 // stays the visible wordmark; the org's canonical name is the full "H3 Tech".
-const ORG_NAME = "H3 Tech";
-const ORG_ALTERNATE_NAMES = ["H3", "에이치쓰리", "에이치쓰리테크"];
+const ORG_ALTERNATE_NAMES = BRAND_ALIASES.filter((name) => name !== ORG_NAME);
 const ORG_DESCRIPTION =
   "H3 Tech는 반도체 및 디스플레이 산업을 위한 자동화 설비, AI·AX 제어 시스템, 공장 자동화 시스템, 산업용 장비 및 엔지니어링 솔루션을 제공하는 기술 기업입니다.";
 const ORG_KEYWORDS = [
@@ -172,7 +197,11 @@ const ORG_KEYWORDS = [
   "엔지니어링",
   "반도체 장비",
   "H3 Tech",
+  "H3Tech",
+  "에이치쓰리",
   "에이치쓰리테크",
+  "에이치쓰리 테크",
+  "에이치3",
 ];
 
 // "010-6777-6730" → "+82-10-6777-6730" (international form Google prefers,
@@ -229,7 +258,8 @@ export function websiteJsonLd(locale: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: BRAND,
+    name: ORG_NAME,
+    alternateName: ORG_ALTERNATE_NAMES,
     url: SITE,
     inLanguage,
   };

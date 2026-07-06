@@ -24,6 +24,7 @@ export async function generateMetadata({
   const feed =
     locale === "en" ? `${SITE_URL}/en/rss.xml` : `${SITE_URL}/rss.xml`;
   return {
+    metadataBase: new URL(SITE_URL),
     title: "H3",
     description: "H3 company intro site",
     alternates: {
