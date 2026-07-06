@@ -25,10 +25,14 @@ export function Hero() {
 
       const wordEls = root.querySelectorAll<HTMLElement>("[data-hero-word]");
       const eyebrow = root.querySelector<HTMLElement>("[data-hero-eyebrow]");
+      const body = root.querySelector<HTMLElement>("[data-hero-body]");
       const cta = root.querySelector<HTMLElement>("[data-hero-cta]");
 
       if (reduced) {
-        gsap.set([eyebrow, ...wordEls, cta], { opacity: 1, yPercent: 0 });
+        gsap.set([eyebrow, ...wordEls, body, cta], {
+          opacity: 1,
+          yPercent: 0,
+        });
         return;
       }
 
@@ -56,6 +60,12 @@ export function Hero() {
           { yPercent: 110 },
           { yPercent: 0, duration: 0.9, stagger: 0.08 },
           "-=0.2"
+        )
+        .fromTo(
+          body,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.55 },
+          "-=0.35"
         )
         .fromTo(
           cta,
@@ -107,7 +117,7 @@ export function Hero() {
 
           {/* Accessible full headline for SR/SEO; the animated copy is
               aria-hidden so screen readers don't read it word-by-word. */}
-          <h2 className="text-display-xl max-w-4xl mb-6">
+          <h2 className="text-display-xl max-w-4xl mb-5">
             <span className="sr-only">{headline}</span>
             <span aria-hidden className="block">
               {words.map((word, i) => (
@@ -123,6 +133,13 @@ export function Hero() {
               ))}
             </span>
           </h2>
+
+          <p
+            data-hero-body
+            className="mb-6 max-w-2xl text-body-lg text-on-dark-mute opacity-0"
+          >
+            {t("body")}
+          </p>
 
           <span data-hero-cta className="inline-block opacity-0">
             <Button href="/products" variant="primary" size="md" arrow>

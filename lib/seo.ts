@@ -29,11 +29,12 @@ function resolveSiteUrl(): string {
 
 const SITE = resolveSiteUrl();
 const BRAND = "H3";
+const TITLE_BRAND = "H3Tech";
 const ORG_NAME = "H3 Tech";
 const BRAND_ALIASES = [
   BRAND,
+  TITLE_BRAND,
   ORG_NAME,
-  "H3Tech",
   "에이치쓰리",
   "에이치쓰리테크",
   "에이치쓰리 테크",
@@ -77,7 +78,7 @@ type PageMetaArgs = {
   image?: string;
   /** robots index directives — defaults to index,follow */
   noindex?: boolean;
-  /** append " — H3" to the title (default). Set false when `title` already
+  /** append " — H3Tech" to the title (default). Set false when `title` already
    *  contains the brand (e.g. the home page's "H3 Tech | ..."). */
   appendBrand?: boolean;
   /** when present, og:type becomes "article" with publish/modify times */
@@ -100,7 +101,7 @@ export function pageMetadata({
 }: PageMetaArgs): Metadata {
   const urls = urlsFor(path);
   const ownUrl = locale === "ko" ? urls.ko : urls.en;
-  const fullTitle = appendBrand ? `${title} — ${BRAND}` : title;
+  const fullTitle = appendBrand ? `${title} — ${TITLE_BRAND}` : title;
   // Default share image is the H3 logo card (public/og-default.png). Pages
   // that pass an explicit `image` (products, blog posts) override it. Without
   // this, scrapers (KakaoTalk, etc.) fall back to picking a random photo from

@@ -7,12 +7,13 @@
   },
   "home": {
     "meta": {
-      "title": "H3 Tech | Chemical-Resistant Equipment · PVC PP Fabrication",
-      "description": "H3 Tech, also known as 에이치쓰리, provides chemical-resistant equipment, PVC and PP fabrication, fume hoods, scrubbers, exhaust ducts, automation equipment, and engineering solutions for the semiconductor and display industries."
+      "title": "H3Tech | PVC & PP Chemical-Resistant Equipment Fabrication",
+      "description": "H3Tech, also known as 에이치쓰리, provides PVC and PP chemical-resistant equipment, fume hoods, scrubbers, exhaust ducts, automation equipment, and engineering solutions for the semiconductor and display industries."
     },
     "hero": {
       "eyebrow": "PVC & PP precision fabrication",
       "headline": "Chemical-resistant systems, from design to install",
+      "body": "H3Tech(에이치쓰리) handles PVC and PP chemical-resistant equipment from design and fabrication to on-site installation.",
       "cta": "See products"
     },
     "feature": {
