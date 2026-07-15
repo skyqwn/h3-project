@@ -16,16 +16,16 @@
       "body": "H3Tech(에이치쓰리)는 PVC·PP 내화학 설비를 설계부터 제작, 현장 시공까지 수행합니다.",
       "cta": "제품 보기"
     },
-    "feature": {
-      "tech": {
-        "title": "기술",
-        "body": "우리가 만든 핵심 기술과 그 배경. 어떤 문제를 풀기 위해 어떤 선택을 했는지.",
-        "ctaLabel": "더 알아보기"
-      },
-      "team": {
-        "title": "팀",
-        "body": "미션을 향해 모인 사람들. 우리가 일하는 방식과 만들고 있는 문화.",
-        "ctaLabel": "회사 소개"
+    "solutionReveal": {
+      "eyebrow": "Our Solution",
+      "titlePrefix": "화학공정의 문제를,",
+      "titleBrand": "H3-Tech는",
+      "titleAction": "현장에서부터 설계합니다",
+      "body": "제품·약품·온도·설치 환경이 모두 다른 현장에 맞춰 설계부터 가공, 조립, 제어, 출고까지 하나의 흐름으로 수행합니다.",
+      "imageAlt": "H3-Tech 내화학 설비 제작 현장",
+      "links": {
+        "equipment": "화학공정 장비",
+        "automation": "공정 자동화"
       }
     },
     "products": {

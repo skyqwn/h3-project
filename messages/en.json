@@ -16,16 +16,16 @@
       "body": "H3Tech(에이치쓰리) handles PVC and PP chemical-resistant equipment from design and fabrication to on-site installation.",
       "cta": "See products"
     },
-    "feature": {
-      "tech": {
-        "title": "Technology",
-        "body": "The core technology we built and why it matters. What problems it solves, what tradeoffs we made.",
-        "ctaLabel": "Learn more"
-      },
-      "team": {
-        "title": "Team",
-        "body": "The people behind the mission. How we work and the culture we're building.",
-        "ctaLabel": "About us"
+    "solutionReveal": {
+      "eyebrow": "Our Solution",
+      "titlePrefix": "For chemical process challenges,",
+      "titleBrand": "H3-Tech designs",
+      "titleAction": "from the site up",
+      "body": "For sites where products, chemicals, temperature, and installation conditions all differ, H3-Tech carries the work from design and fabrication to assembly, control, and delivery.",
+      "imageAlt": "H3-Tech chemical-resistant equipment fabrication site",
+      "links": {
+        "equipment": "Chemical Process Equipment",
+        "automation": "Process Automation"
       }
     },
     "products": {
