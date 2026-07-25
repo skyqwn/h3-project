@@ -27,6 +27,12 @@ export async function generateMetadata({
     metadataBase: new URL(SITE_URL),
     title: "H3",
     description: "H3 company intro site",
+    verification: {
+      other: {
+        "naver-site-verification":
+          "8e9d9c8613723dd835bf0ad4d549eb3fac19fc33",
+      },
+    },
     alternates: {
       types: { "application/rss+xml": feed },
     },
