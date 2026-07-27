@@ -27,6 +27,7 @@ export async function Footer() {
       value: foot("company.phone"),
       href: `tel:${phoneDigits}`,
     },
+    { label: foot("company.faxLabel"), value: foot("company.fax") },
     {
       label: foot("company.emailLabel"),
       value: foot("company.email"),

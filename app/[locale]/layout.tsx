@@ -65,6 +65,7 @@ export default async function LocaleLayout({
   });
   const organization = organizationJsonLd({
     phone: company("phone"),
+    fax: company("fax"),
     email: company("email"),
     address: company("address"),
     ceo: company("ceo"),

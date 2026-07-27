@@ -46,6 +46,10 @@ export async function LocationSection() {
               </dd>
             </div>
             <div className="flex gap-3">
+              <dt className="w-16 shrink-0 text-mute">{c("faxLabel")}</dt>
+              <dd className="text-body">{c("fax")}</dd>
+            </div>
+            <div className="flex gap-3">
               <dt className="w-16 shrink-0 text-mute">{c("emailLabel")}</dt>
               <dd>
                 <a

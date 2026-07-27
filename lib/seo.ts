@@ -174,6 +174,7 @@ export function pageMetadata({
 // Region/country are stable, non-localized, so they live here as constants.
 type CompanyInfo = {
   phone: string;
+  fax?: string;
   email: string;
   /** full display address, e.g. "인천광역시 서구 이든1로 15 (22667)" */
   address: string;
@@ -227,6 +228,7 @@ export function organizationJsonLd(company?: CompanyInfo) {
   if (!company) return base;
 
   const telephone = toIntlKR(company.phone);
+  const faxNumber = company.fax ? toIntlKR(company.fax) : undefined;
   // Split off the "(22667)" postal code if present.
   const postal = company.address.match(/\((\d{5})\)/)?.[1];
   const streetAddress = company.address.replace(/\s*\(\d{5}\)\s*$/, "").trim();
@@ -235,6 +237,7 @@ export function organizationJsonLd(company?: CompanyInfo) {
     ...base,
     email: company.email,
     telephone,
+    ...(faxNumber ? { faxNumber } : {}),
     address: {
       "@type": "PostalAddress",
       streetAddress,
