@@ -22,14 +22,14 @@ import {
     );
   }
 
-  // Migrated Naver posts are KO-only (no .en.mdx) — verify SP1's
-  // ko-required / en-optional behavior: a KO-only post is absent from /en.
+  // Blog is Korean-only content: a KO post is shown on /en too (ko body,
+  // en routing). Verify the KO post is PRESENT in the EN list.
   const en = await getAllPosts("en");
   assert.ok(
-    !en.some(
+    en.some(
       (p) => p.slug === "gold-refining-pvc-pp-fumehood-scrubber-duct"
     ),
-    "KO-only post must be absent from the EN list"
+    "KO post must appear in the EN list (ko content on /en)"
   );
 
   const slugs = await getAllPostSlugs();
