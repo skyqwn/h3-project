@@ -6,6 +6,13 @@ import type { Locale } from "@/i18n/routing";
 
 export type PostRow = typeof posts.$inferSelect;
 
+// timestamp 컬럼은 fresh 조회 시 Date이지만, unstable_cache(JSON 직렬화)를
+//거치면 문자열로 돌아온다. 양쪽 모두 "YYYY-MM-DD"로 정규화한다.
+function toDateStr(v: Date | string | null): string | undefined {
+  if (!v) return undefined;
+  return (v instanceof Date ? v.toISOString() : String(v)).slice(0, 10);
+}
+
 // date 컬럼은 드라이버에서 "YYYY-MM-DD" 문자열로, timestamp는 Date로 반환된다.
 export function rowToPost(row: PostRow, locale: Locale): Post {
   return {
@@ -15,9 +22,7 @@ export function rowToPost(row: PostRow, locale: Locale): Post {
     category: row.category as PostCategory,
     tags: row.tags ?? [],
     publishedAt: String(row.publishedAt).slice(0, 10),
-    updatedAt: row.updatedAt
-      ? row.updatedAt.toISOString().slice(0, 10)
-      : undefined,
+    updatedAt: toDateStr(row.updatedAt),
     author: row.author,
     draft: row.draft,
     source: row.source ?? undefined,
