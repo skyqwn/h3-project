@@ -8,5 +8,6 @@ import "./posts.test";
 import "./naver-convert.test";
 import "./rehype-image-dimensions.test";
 import "./contact-schema.test";
+import "./slug.test";
 
 console.log("All unit tests passed.");
