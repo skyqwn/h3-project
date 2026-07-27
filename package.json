@@ -11,7 +11,8 @@
     "test:unit": "tsx tests/unit/run.ts",
     "test:e2e": "playwright test",
     "check:i18n": "tsx scripts/check-i18n-parity.ts",
-    "migrate:naver": "tsx scripts/naver-migrate/run.ts"
+    "migrate:naver": "tsx scripts/naver-migrate/run.ts",
+    "migrate:posts": "node --env-file=.env.local --import tsx scripts/migrate-posts.ts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
