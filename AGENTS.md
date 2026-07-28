@@ -45,6 +45,8 @@ pnpm run lint       # eslint (React-compiler rules are ON)
 pnpm exec tsc --noEmit
 node --env-file=.env.local --import tsx scripts/verify-notify.ts        # live Telegram smoke
 node --env-file=.env.local --import tsx scripts/verify-contact-flow.ts  # full chain smoke
+pnpm run verify:posts       # DB blog smoke (queries Neon)
+pnpm run create:admin <id> <pw>   # create/update an /admin account (upsert)
 ```
 
 ## Hard-won conventions / gotchas (do not relearn these)
@@ -85,6 +87,37 @@ node --env-file=.env.local --import tsx scripts/verify-contact-flow.ts  # full c
 - Live on Vercel; env vars set in the Vercel dashboard.
 - Telegram notify verified end-to-end (group `H3_이메일문의`,
   chat_id `-5120610013`).
+- **Blog is now DB-backed + authored from `/admin`** (see the Admin section
+  above): editor, Blob image upload, drafts/edit/delete, gate+login auth. For
+  the live "where we are / what's next" handoff, read
+  `docs/superpowers/HANDOFF.md`.
+
+## Admin (`/admin`) — blog authoring + auth
+
+The blog is **DB-backed** (Neon Postgres + Drizzle, `lib/db/`); posts are written
+from the site at `/admin`, not from mdx files. `/admin` lives outside `[locale]`
+(Korean-only, `robots: noindex`).
+
+- **Auth = 2 layers:** gate password → account login. `proxy.ts` guards `/admin/*`
+  at the edge with **jose JWT httpOnly cookies** (`admin_gate` 30d, `admin_session`
+  7d, signed with `AUTH_SECRET`). Server actions (`actions/admin/*`) and the
+  blob-upload route also call `requireAdmin()` (`lib/auth/require-admin.ts`) — the
+  redirect alone does not protect non-page entry points. jose-only helpers live in
+  `lib/auth/session.ts` (edge-safe: no `next/headers`/bcrypt/DB import).
+- **Passwords are bcrypt-hashed** in `users.passwordHash` (`$2b$…`, never plaintext;
+  one-way). Login verifies with `bcrypt.compare`. Login id is **`username`** (plain
+  id, not email — the column was renamed from `email`).
+- **Accounts:** no public signup. Create/change with
+  `pnpm run create:admin <id> <pw>` (upsert — re-run same id to change the password).
+- **Authoring:** Tiptap markdown editor (`components/admin/`), cover + body image
+  upload to **Vercel Blob** (`blog/<slug>/…`, store MUST be public — see memory),
+  slug auto-defaults to today's date (editable; server auto-dedupes `-2`), draft vs
+  publish, list/edit/delete. Public site hides drafts in prod (`getAllPosts` +
+  `blog/[slug]` `notFound`).
+- **Env (runtime-required for `/admin`, NOT in `lib/env.ts` build gate):**
+  `AUTH_SECRET`, `ADMIN_GATE_PASSWORD`, `BLOB_READ_WRITE_TOKEN`, `DATABASE_URL`.
+  Missing → only `/admin` breaks, public site still deploys. **Set all in the Vercel
+  dashboard** for production `/admin` to work.
 
 ## Pending / deferred
 
@@ -97,6 +130,12 @@ node --env-file=.env.local --import tsx scripts/verify-contact-flow.ts  # full c
   deploy domain (currently `localhost` + `h3-project.vercel.app`); add custom
   domain there too when it exists.
 - Real `RESEND_API_KEY` / Turnstile keys are live in `.env.local` and Vercel.
+- **Admin auth env on Vercel:** `AUTH_SECRET` + `ADMIN_GATE_PASSWORD` are in
+  `.env.local` but must still be added to the Vercel dashboard before the deployed
+  `/admin` works.
+- **Admin follow-ups (deferred):** web UI for account/password change (only the
+  `create:admin` script exists now), user management / roles, editor image orphan
+  cleanup, drag-drop/paste image upload.
 
 ## Reference docs
 
