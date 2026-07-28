@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { getAllPosts } from "@/lib/posts";
+import { queryAllPosts, rowToPost } from "@/lib/db/posts-repo";
+import { DeletePostButton } from "@/components/admin/DeletePostButton";
 
-// 관리자 대시보드 = 글 목록(체험용). dev에서는 임시저장(draft)도 보인다.
+// 관리자 대시보드 = 글 목록. 배포 환경에서도 임시저장(draft)까지 모두 보여준다
+// (공개 getAllPosts는 프로덕션에서 draft를 거르므로 여기선 직접 조회).
 export default async function AdminHome() {
-  const posts = await getAllPosts("ko");
+  const rows = await queryAllPosts(true);
+  const posts = rows.map((r) => rowToPost(r, "ko"));
 
   return (
     <div>
@@ -29,9 +32,13 @@ export default async function AdminHome() {
               <div>
                 <div className="font-medium">
                   {p.title}
-                  {p.draft && (
+                  {p.draft ? (
                     <span className="ml-2 rounded bg-yellow-100 px-1.5 py-0.5 text-xs text-yellow-800">
                       임시저장
+                    </span>
+                  ) : (
+                    <span className="ml-2 rounded bg-green-100 px-1.5 py-0.5 text-xs text-green-800">
+                      발행
                     </span>
                   )}
                 </div>
@@ -39,12 +46,23 @@ export default async function AdminHome() {
                   {p.publishedAt} · /blog/{p.slug}
                 </div>
               </div>
-              <Link
-                href={`/blog/${p.slug}`}
-                className="text-sm text-blue-600"
-              >
-                보기 →
-              </Link>
+              <div className="flex items-center gap-3">
+                <Link
+                  href={`/admin/posts/${p.slug}/edit`}
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  편집
+                </Link>
+                {!p.draft && (
+                  <Link
+                    href={`/blog/${p.slug}`}
+                    className="text-sm text-gray-500 hover:underline"
+                  >
+                    보기
+                  </Link>
+                )}
+                <DeletePostButton slug={p.slug} />
+              </div>
             </li>
           ))}
         </ul>

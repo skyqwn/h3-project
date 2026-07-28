@@ -1,8 +1,9 @@
 "use server";
 
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq, ne } from "drizzle-orm";
 import { updateTag } from "next/cache";
+import { list, del } from "@vercel/blob";
 import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
 import { isValidSlug } from "@/lib/slug";
@@ -72,4 +73,84 @@ export async function createPost(
   updateTag("posts");
 
   return { ok: true, slug: finalSlug };
+}
+
+export async function updatePost(
+  originalSlug: string,
+  raw: CreatePostInput
+): Promise<CreatePostResult> {
+  const parsed = InputSchema.safeParse(raw);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "입력 오류" };
+  }
+  const input = parsed.data;
+
+  if (!isValidSlug(input.slug)) {
+    return {
+      ok: false,
+      error: "slug는 영문 소문자·숫자·하이픈만 가능합니다 (예: my-post).",
+    };
+  }
+
+  const target = await db
+    .select({ id: posts.id })
+    .from(posts)
+    .where(eq(posts.slug, originalSlug));
+  if (target.length === 0) {
+    return { ok: false, error: "수정할 글을 찾을 수 없습니다." };
+  }
+
+  // slug가 바뀌면 다른 글과 중복되지 않게 -2… 부여(자기 자신 제외).
+  let finalSlug = input.slug;
+  for (let n = 2; ; n++) {
+    const clash = await db
+      .select({ id: posts.id })
+      .from(posts)
+      .where(and(eq(posts.slug, finalSlug), ne(posts.slug, originalSlug)));
+    if (clash.length === 0) break;
+    finalSlug = `${input.slug}-${n}`;
+  }
+
+  await db
+    .update(posts)
+    .set({
+      slug: finalSlug,
+      title: input.title,
+      summary: input.summary,
+      coverImage: input.coverImage,
+      category: input.category,
+      tags: input.tags,
+      body: input.body,
+      draft: input.draft,
+      updatedAt: new Date(),
+    })
+    .where(eq(posts.slug, originalSlug));
+
+  updateTag("posts");
+  return { ok: true, slug: finalSlug };
+}
+
+export async function deletePost(
+  slug: string
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  const target = await db
+    .select({ id: posts.id })
+    .from(posts)
+    .where(eq(posts.slug, slug));
+  if (target.length === 0) {
+    return { ok: false, error: "삭제할 글을 찾을 수 없습니다." };
+  }
+
+  await db.delete(posts).where(eq(posts.slug, slug));
+
+  // 이 글의 Blob 이미지 정리(best-effort). 실패해도 삭제 자체는 성공 처리.
+  try {
+    const { blobs } = await list({ prefix: `blog/${slug}/` });
+    if (blobs.length > 0) await del(blobs.map((b) => b.url));
+  } catch (e) {
+    console.error("[deletePost] blob 정리 실패:", e);
+  }
+
+  updateTag("posts");
+  return { ok: true };
 }

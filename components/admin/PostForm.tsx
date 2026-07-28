@@ -4,7 +4,8 @@ import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { RichTextEditor } from "./RichTextEditor";
 import { CoverImageField } from "./CoverImageField";
-import { createPost } from "@/actions/admin/posts";
+import { createPost, updatePost } from "@/actions/admin/posts";
+import type { CreatePostInput } from "@/actions/admin/posts";
 
 const CATEGORIES = ["news", "article", "update"] as const;
 
@@ -15,32 +16,52 @@ function todayStr(): string {
   return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
 }
 
-export function PostForm() {
+type InitialPost = {
+  slug: string;
+  title: string;
+  summary: string;
+  category: (typeof CATEGORIES)[number];
+  tags: string[];
+  coverImage: string;
+  body: string;
+  draft: boolean;
+};
+
+export function PostForm({
+  mode = "new",
+  initialPost,
+}: {
+  mode?: "new" | "edit";
+  initialPost?: InitialPost;
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const [title, setTitle] = useState("");
-  const [slug, setSlug] = useState("");
-  const [summary, setSummary] = useState("");
-  const [category, setCategory] =
-    useState<(typeof CATEGORIES)[number]>("article");
-  const [tags, setTags] = useState("");
-  const [coverImage, setCoverImage] = useState("/og-default.png");
-  const [body, setBody] = useState("");
+  const [title, setTitle] = useState(initialPost?.title ?? "");
+  const [slug, setSlug] = useState(initialPost?.slug ?? "");
+  const [summary, setSummary] = useState(initialPost?.summary ?? "");
+  const [category, setCategory] = useState<(typeof CATEGORIES)[number]>(
+    initialPost?.category ?? "article"
+  );
+  const [tags, setTags] = useState(initialPost?.tags.join(", ") ?? "");
+  const [coverImage, setCoverImage] = useState(
+    initialPost?.coverImage ?? "/og-default.png"
+  );
+  const [body, setBody] = useState(initialPost?.body ?? "");
 
-  // URL(slug) 기본값 = 오늘 날짜. 정적 프리렌더라 "오늘"은 클라이언트에서만
-  // 정확하므로 마운트 후 채운다(하이드레이션 불일치 방지). 비어있을 때만
-  // 채우고 사용자 수정은 보존.
+  // 새 글일 때만 URL(slug) 기본값을 오늘 날짜로 채운다(편집은 기존 slug 유지).
+  // 정적 프리렌더라 "오늘"은 클라이언트에서만 정확하므로 마운트 후 채운다.
   useEffect(() => {
+    if (initialPost) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- 클라이언트 전용 현재 날짜 주입
     setSlug((cur) => (cur === "" ? todayStr() : cur));
-  }, []);
+  }, [initialPost]);
 
   function submit(draft: boolean) {
     setError(null);
     startTransition(async () => {
-      const result = await createPost({
+      const payload: CreatePostInput = {
         title,
         slug,
         summary,
@@ -52,9 +73,14 @@ export function PostForm() {
         coverImage,
         body,
         draft,
-      });
+      };
+      const result =
+        mode === "edit" && initialPost
+          ? await updatePost(initialPost.slug, payload)
+          : await createPost(payload);
       if (result.ok) {
-        router.push(`/blog/${result.slug}`);
+        // 임시저장은 관리자 목록으로, 발행은 공개 글로 이동.
+        router.push(draft ? "/admin" : `/blog/${result.slug}`);
       } else {
         setError(result.error);
       }
