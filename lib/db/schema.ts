@@ -8,9 +8,10 @@ import {
 } from "drizzle-orm/pg-core";
 
 // 관리자 계정. role: "owner"(계정 관리 가능) | "editor"(글만 작성).
+// username = 로그인 아이디(이메일 형식 강제 없음).
 export const users = pgTable("users", {
   id: uuid("id").defaultRandom().primaryKey(),
-  email: text("email").notNull().unique(),
+  username: text("username").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   name: text("name").notNull(),
   role: text("role").notNull().default("editor"),
