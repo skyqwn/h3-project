@@ -8,6 +8,7 @@ import { routing } from "./i18n/routing";
 export default createMiddleware(routing);
 
 export const config = {
-  // Skip static assets, API routes, and Next.js internals.
-  matcher: ["/((?!api|_next|_vercel|.*\\..*).*)"],
+  // Skip static assets, API routes, admin area, and Next.js internals.
+  // /admin lives outside the [locale] tree, so next-intl must not touch it.
+  matcher: ["/((?!api|admin|_next|_vercel|.*\\..*).*)"],
 };
