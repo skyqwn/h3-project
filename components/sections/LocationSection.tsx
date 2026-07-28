@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 // Korean street address for an accurate Google geocode regardless of UI
 // locale. Keyless embed — no API key required.
-const MAP_QUERY = "인천광역시 서구 이든1로 15";
+const MAP_QUERY = "인천광역시 검단구 이든1로 15";
 
 export async function LocationSection() {
   const t = await getTranslations("about.location");

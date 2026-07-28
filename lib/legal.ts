@@ -20,7 +20,7 @@ const CEO = "홍승찬";
 const PHONE = "010-6777-6730";
 const FAX = "0503-8379-6709";
 const EMAIL = "h3@h3-tech.co.kr";
-const LOCATION = "인천광역시 서구";
+const LOCATION = "인천광역시 검단구";
 
 const terms: LegalDoc = {
   effectiveDate: EFFECTIVE_DATE,
