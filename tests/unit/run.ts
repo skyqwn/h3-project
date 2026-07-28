@@ -9,5 +9,6 @@ import "./naver-convert.test";
 import "./rehype-image-dimensions.test";
 import "./contact-schema.test";
 import "./slug.test";
+import "./image-src.test";
 
 console.log("All unit tests passed.");
