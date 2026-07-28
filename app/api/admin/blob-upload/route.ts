@@ -1,5 +1,6 @@
 import { handleUpload, type HandleUploadBody } from "@vercel/blob/client";
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 // 업로드 경로 화이트리스트: blog/<slug>/<파일명>. slug는 소문자·숫자·하이픈.
 const PATH_RE = /^blog\/[a-z0-9]+(?:-[a-z0-9]+)*\/[^/]+$/;
@@ -8,8 +9,11 @@ const MAX_BYTES = 5 * 1024 * 1024;
 
 // 클라이언트 직접 업로드용 토큰 발급. 비밀키는 서버에만 있고, 브라우저엔
 // 이 라우트가 허가한 "이 경로·이 형식·5MB까지"짜리 단기 토큰만 나간다.
-// NOTE(Phase 2): 로그인 붙으면 여기서 세션을 확인해 무단 업로드를 막는다.
+// 로그인 세션이 없으면 토큰 자체를 안 준다(무단 업로드 차단).
 export async function POST(request: Request): Promise<NextResponse> {
+  if (!(await requireAdmin())) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
   const body = (await request.json()) as HandleUploadBody;
   try {
     const result = await handleUpload({

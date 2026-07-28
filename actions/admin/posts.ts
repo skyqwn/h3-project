@@ -7,6 +7,7 @@ import { list, del } from "@vercel/blob";
 import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
 import { isValidSlug } from "@/lib/slug";
+import { requireAdmin } from "@/lib/auth/require-admin";
 
 const InputSchema = z.object({
   title: z.string().min(1, "제목을 입력하세요."),
@@ -32,6 +33,9 @@ function today(): string {
 export async function createPost(
   raw: CreatePostInput
 ): Promise<CreatePostResult> {
+  if (!(await requireAdmin())) {
+    return { ok: false, error: "로그인이 필요합니다." };
+  }
   const parsed = InputSchema.safeParse(raw);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "입력 오류" };
@@ -79,6 +83,9 @@ export async function updatePost(
   originalSlug: string,
   raw: CreatePostInput
 ): Promise<CreatePostResult> {
+  if (!(await requireAdmin())) {
+    return { ok: false, error: "로그인이 필요합니다." };
+  }
   const parsed = InputSchema.safeParse(raw);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "입력 오류" };
@@ -133,6 +140,9 @@ export async function updatePost(
 export async function deletePost(
   slug: string
 ): Promise<{ ok: true } | { ok: false; error: string }> {
+  if (!(await requireAdmin())) {
+    return { ok: false, error: "로그인이 필요합니다." };
+  }
   const target = await db
     .select({ id: posts.id })
     .from(posts)

@@ -1,6 +1,7 @@
 import "../globals.css";
 import Link from "next/link";
 import type { Metadata } from "next";
+import { logout } from "@/actions/admin/auth";
 
 // 관리자 영역은 [locale] 밖이라 여기서 <html>/<body>를 직접 렌더한다.
 // 내부용이라 마케팅 헤더/푸터/Lenis 없이 심플하게. 검색 비노출.
@@ -40,6 +41,14 @@ export default function AdminLayout({
               <Link href="/blog" className="text-gray-500">
                 블로그 보기 →
               </Link>
+              <form action={logout}>
+                <button
+                  type="submit"
+                  className="text-gray-500 hover:underline"
+                >
+                  로그아웃
+                </button>
+              </form>
             </nav>
           </div>
         </header>
