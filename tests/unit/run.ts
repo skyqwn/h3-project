@@ -10,5 +10,6 @@ import "./rehype-image-dimensions.test";
 import "./contact-schema.test";
 import "./slug.test";
 import "./image-src.test";
+import "./auth-session.test";
 
 console.log("All unit tests passed.");
