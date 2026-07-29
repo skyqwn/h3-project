@@ -1,12 +1,46 @@
 "use client";
 
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import StarterKit from "@tiptap/starter-kit";
 import { Markdown } from "tiptap-markdown";
 import ImageExt from "@tiptap/extension-image";
 import { uploadImage } from "@/lib/blob-upload";
 import { withDims } from "@/lib/image-src";
+
+const ALLOWED_IMG = ["image/jpeg", "image/png", "image/webp", "image/avif"];
+
+// 파일들을 업로드해 에디터에 이미지 노드로 삽입한다(버튼·드롭·붙여넣기 공용).
+// at(문서 위치)이 주어지면 그 위치에, 없으면 현재 커서 위치에 삽입.
+// 이미지 노드 뒤에 문단을 함께 넣어(여러 장일 때) 다음 삽입이 앞 이미지를
+// 덮어쓰지 않게 한다.
+async function insertUploadedImages(
+  editor: Editor,
+  files: FileList | File[],
+  slug: string,
+  at?: number
+): Promise<void> {
+  if (!slug) return;
+  const imgs = Array.from(files).filter((f) => ALLOWED_IMG.includes(f.type));
+  let pos = at;
+  for (const file of imgs) {
+    const { url, width, height } = await uploadImage(file, {
+      slug,
+      kind: "body",
+    });
+    const alt = file.name.replace(/\.[^.]+$/, "");
+    const content = [
+      { type: "image", attrs: { src: withDims(url, width, height), alt } },
+      { type: "paragraph" },
+    ];
+    if (typeof pos === "number") {
+      editor.chain().insertContentAt(pos, content).run();
+      pos = editor.state.selection.to; // 다음 이미지는 방금 삽입 뒤로
+    } else {
+      editor.chain().focus().insertContent(content).run();
+    }
+  }
+}
 
 // 위지윅 리치텍스트 에디터. 편집은 보이는 대로, 저장은 마크다운.
 // value(초기 마크다운) / onChange(마크다운 문자열) 로 상위 폼과 연결한다.
@@ -19,6 +53,10 @@ export function RichTextEditor({
   slug: string;
   onChange: (markdown: string) => void;
 }) {
+  // 드롭/붙여넣기 핸들러가 최신 editor·slug를 참조하도록 ref로 미러링.
+  const editorRef = useRef<Editor | null>(null);
+  const slugRef = useRef(slug);
+
   const editor = useEditor({
     extensions: [
       // StarterKit v3에 Link가 포함돼 있어 별도 확장을 넣지 않는다(중복 방지).
@@ -52,8 +90,44 @@ export function RichTextEditor({
           "[&_code]:bg-gray-100 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 " +
           "[&_img]:my-3 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-md",
       },
+      handleDrop: (_view, event, _slice, moved) => {
+        if (moved) return false; // 에디터 내부 노드 이동은 기본 동작
+        const dt = (event as DragEvent).dataTransfer;
+        const imgs = dt
+          ? Array.from(dt.files).filter((f) => ALLOWED_IMG.includes(f.type))
+          : [];
+        if (imgs.length === 0) return false;
+        event.preventDefault();
+        const ed = editorRef.current;
+        if (!ed) return true;
+        const pos = ed.view.posAtCoords({
+          left: (event as DragEvent).clientX,
+          top: (event as DragEvent).clientY,
+        })?.pos;
+        void insertUploadedImages(ed, imgs, slugRef.current, pos);
+        return true;
+      },
+      handlePaste: (_view, event) => {
+        const cd = (event as ClipboardEvent).clipboardData;
+        const imgs = cd
+          ? Array.from(cd.files).filter((f) => ALLOWED_IMG.includes(f.type))
+          : [];
+        if (imgs.length === 0) return false; // 텍스트 등은 기본 붙여넣기
+        event.preventDefault();
+        const ed = editorRef.current;
+        if (!ed) return true;
+        void insertUploadedImages(ed, imgs, slugRef.current);
+        return true;
+      },
     },
   });
+
+  useEffect(() => {
+    editorRef.current = editor;
+  }, [editor]);
+  useEffect(() => {
+    slugRef.current = slug;
+  }, [slug]);
 
   if (!editor) return null;
 
@@ -174,25 +248,9 @@ function ImageUploadButton({ editor, slug }: { editor: Editor; slug: string }) {
   async function onFiles(files: FileList) {
     setBusy(true);
     try {
-      for (const file of Array.from(files)) {
-        const { url, width, height } = await uploadImage(file, {
-          slug,
-          kind: "body",
-        });
-        const alt = file.name.replace(/\.[^.]+$/, "");
-        // 이미지 노드 + 빈 문단을 함께 삽입한다. setImage만 쓰면 삽입된
-        // 이미지가 선택 상태로 남아, 다음 이미지가 앞 이미지를 덮어쓴다.
-        // focus("end") + 뒤따르는 문단으로 커서를 이미지 뒤로 옮겨 여러 장을
-        // 순서대로 쌓는다.
-        editor
-          .chain()
-          .focus("end")
-          .insertContent([
-            { type: "image", attrs: { src: withDims(url, width, height), alt } },
-            { type: "paragraph" },
-          ])
-          .run();
-      }
+      // 버튼 업로드는 글 끝에 이어붙인다.
+      editor.commands.focus("end");
+      await insertUploadedImages(editor, files, slug);
     } finally {
       setBusy(false);
       if (inputRef.current) inputRef.current.value = "";

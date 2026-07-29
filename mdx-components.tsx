@@ -59,7 +59,7 @@ export const mdxComponents: MDXComponents = {
   // source ever lacks measured dimensions, so a stray image can't crash MDX.
   img: ({ src, alt, width, height }) => {
     const cls =
-      "block w-full h-auto my-8 rounded-md border border-hairline-soft bg-surface-card";
+      "mx-auto block h-auto max-w-full my-8 rounded-md border border-hairline-soft bg-surface-card";
     // 1) 로컬 public 이미지: rehypeImageDimensions가 넣은 width/height 프롭.
     let w = toNum(width);
     let h = toNum(height);
