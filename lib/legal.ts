@@ -17,7 +17,7 @@ const EFFECTIVE_DATE = "2026-06-22";
 // Company details (kept in sync with messages footer.company).
 const COMPANY = "H3";
 const CEO = "홍승찬";
-const PHONE = "010-6777-6730";
+const PHONE = "032-724-8730";
 const FAX = "0503-8379-6709";
 const EMAIL = "h3@h3-tech.co.kr";
 const LOCATION = "인천광역시 검단구";

@@ -206,7 +206,7 @@ const ORG_KEYWORDS = [
   "에이치3",
 ];
 
-// "010-6777-6730" → "+82-10-6777-6730" (international form Google prefers,
+// "032-724-8730" → "+82-32-724-8730" (international form Google prefers,
 // keeping human-readable hyphens).
 function toIntlKR(phone: string): string {
   return phone.replace(/^0/, "+82-");
