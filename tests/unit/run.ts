@@ -11,5 +11,6 @@ import "./contact-schema.test";
 import "./slug.test";
 import "./image-src.test";
 import "./auth-session.test";
+import "./sanitize.test";
 
 console.log("All unit tests passed.");
