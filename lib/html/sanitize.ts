@@ -28,6 +28,12 @@ export function sanitizeBody(html: string): string {
       "code",
       "pre",
       "hr",
+      "table",
+      "thead",
+      "tbody",
+      "tr",
+      "th",
+      "td",
     ],
     allowedAttributes: {
       a: ["href", "target", "rel"],

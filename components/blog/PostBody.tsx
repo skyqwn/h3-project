@@ -125,6 +125,34 @@ const options: HTMLReactParserOptions = {
         return <hr className="my-12 border-0 border-t border-hairline" />;
       case "span":
         return <span style={styleObj(style)}>{kids()}</span>;
+      case "table":
+        return (
+          <div className="my-8 overflow-x-auto rounded-md border border-hairline">
+            <table className="w-full border-collapse text-body-sm">
+              {kids()}
+            </table>
+          </div>
+        );
+      case "thead":
+        return <thead className="bg-surface-card">{kids()}</thead>;
+      case "tr":
+        return (
+          <tr className="border-b border-hairline-soft last:border-0">
+            {kids()}
+          </tr>
+        );
+      case "th":
+        return (
+          <th className="border-r border-hairline-soft px-4 py-3 text-left text-body-strong text-ink last:border-r-0">
+            {kids()}
+          </th>
+        );
+      case "td":
+        return (
+          <td className="border-r border-hairline-soft px-4 py-3 align-top text-body last:border-r-0">
+            {kids()}
+          </td>
+        );
       default:
         return undefined; // li, strong, em, u, s, br, pre 등은 기본 렌더
     }
