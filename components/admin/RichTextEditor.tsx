@@ -1,19 +1,35 @@
 "use client";
 
-import { useEditor, EditorContent, type Editor } from "@tiptap/react";
+import {
+  useEditor,
+  EditorContent,
+  useEditorState,
+  type Editor,
+} from "@tiptap/react";
 import { useEffect, useRef, useState } from "react";
 import StarterKit from "@tiptap/starter-kit";
-import { Markdown } from "tiptap-markdown";
 import ImageExt from "@tiptap/extension-image";
+import { TextStyle, FontSize, Color } from "@tiptap/extension-text-style";
+import TextAlign from "@tiptap/extension-text-align";
 import { uploadImage } from "@/lib/blob-upload";
-import { withDims } from "@/lib/image-src";
 
 const ALLOWED_IMG = ["image/jpeg", "image/png", "image/webp", "image/avif"];
+const FONT_SIZES = [
+  "12px",
+  "14px",
+  "16px",
+  "18px",
+  "20px",
+  "24px",
+  "28px",
+  "32px",
+  "40px",
+];
 
 // 파일들을 업로드해 에디터에 이미지 노드로 삽입한다(버튼·드롭·붙여넣기 공용).
 // at(문서 위치)이 주어지면 그 위치에, 없으면 현재 커서 위치에 삽입.
-// 이미지 노드 뒤에 문단을 함께 넣어(여러 장일 때) 다음 삽입이 앞 이미지를
-// 덮어쓰지 않게 한다.
+// 이미지 뒤에 문단을 함께 넣어(여러 장일 때) 다음 삽입이 앞 이미지를 덮어쓰지
+// 않게 한다. 치수는 실제 width/height 속성으로 저장(HTML).
 async function insertUploadedImages(
   editor: Editor,
   files: FileList | File[],
@@ -30,20 +46,20 @@ async function insertUploadedImages(
     });
     const alt = file.name.replace(/\.[^.]+$/, "");
     const content = [
-      { type: "image", attrs: { src: withDims(url, width, height), alt } },
+      { type: "image", attrs: { src: url, alt, width, height } },
       { type: "paragraph" },
     ];
     if (typeof pos === "number") {
       editor.chain().insertContentAt(pos, content).run();
-      pos = editor.state.selection.to; // 다음 이미지는 방금 삽입 뒤로
+      pos = editor.state.selection.to;
     } else {
       editor.chain().focus().insertContent(content).run();
     }
   }
 }
 
-// 위지윅 리치텍스트 에디터. 편집은 보이는 대로, 저장은 마크다운.
-// value(초기 마크다운) / onChange(마크다운 문자열) 로 상위 폼과 연결한다.
+// 위지윅 리치텍스트 에디터. 편집·저장 모두 HTML.
+// value(초기 HTML) / onChange(HTML 문자열) 로 상위 폼과 연결한다.
 export function RichTextEditor({
   value,
   slug,
@@ -51,7 +67,7 @@ export function RichTextEditor({
 }: {
   value: string;
   slug: string;
-  onChange: (markdown: string) => void;
+  onChange: (html: string) => void;
 }) {
   // 드롭/붙여넣기 핸들러가 최신 editor·slug를 참조하도록 ref로 미러링.
   const editorRef = useRef<Editor | null>(null);
@@ -61,19 +77,17 @@ export function RichTextEditor({
     extensions: [
       // StarterKit v3에 Link가 포함돼 있어 별도 확장을 넣지 않는다(중복 방지).
       StarterKit.configure({ link: { openOnClick: false } }),
-      Markdown,
       ImageExt.configure({ inline: false }),
+      TextStyle,
+      FontSize,
+      Color,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
     content: value,
     // App Router(SSR)에서 하이드레이션 불일치를 막기 위해 즉시 렌더 끔.
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
-      // tiptap-markdown이 editor.storage.markdown을 추가하지만 타입 정의가
-      // 없어 캐스팅해서 마크다운 문자열을 얻는다.
-      const storage = editor.storage as unknown as {
-        markdown?: { getMarkdown: () => string };
-      };
-      onChange(storage.markdown?.getMarkdown() ?? "");
+      onChange(editor.getHTML());
     },
     editorProps: {
       attributes: {
@@ -140,7 +154,7 @@ export function RichTextEditor({
 }
 
 // 툴바 버튼 하나. onMouseDown preventDefault로 에디터 포커스를 뺏지 않아야
-// 블록 변환(제목/목록/인용) 명령이 현재 블록에 정상 적용된다.
+// 블록 변환(제목/목록/인용/정렬) 명령이 현재 블록에 정상 적용된다.
 function ToolbarButton({
   onRun,
   isActive = false,
@@ -209,20 +223,102 @@ function toolbarItems(editor: Editor) {
       run: () => editor.chain().focus().toggleBlockquote().run(),
     },
     {
+      label: "좌",
+      isActive: editor.isActive({ textAlign: "left" }),
+      run: () => editor.chain().focus().setTextAlign("left").run(),
+    },
+    {
+      label: "가운데",
+      isActive: editor.isActive({ textAlign: "center" }),
+      run: () => editor.chain().focus().setTextAlign("center").run(),
+    },
+    {
+      label: "우",
+      isActive: editor.isActive({ textAlign: "right" }),
+      run: () => editor.chain().focus().setTextAlign("right").run(),
+    },
+    {
       label: "링크",
       isActive: editor.isActive("link"),
       run: () => {
-        const url = window.prompt("링크 URL:");
-        if (url) editor.chain().focus().setLink({ href: url }).run();
-        else editor.chain().focus().unsetLink().run();
+        const prev = editor.getAttributes("link").href as string | undefined;
+        const url = window.prompt("링크 URL:", prev ?? "");
+        if (url === null) return;
+        if (url === "") {
+          editor.chain().focus().extendMarkRange("link").unsetLink().run();
+          return;
+        }
+        const { from, to } = editor.state.selection;
+        if (from === to) {
+          editor
+            .chain()
+            .focus()
+            .insertContent(`<a href="${url}">${url}</a>`)
+            .run();
+        } else {
+          editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: url })
+            .run();
+        }
       },
     },
   ];
 }
 
+// 글씨 크기 선택. 현재 선택 위치의 실제 크기를 콤보박스에 표시(커서 이동 시 갱신).
+function FontSizeSelect({ editor }: { editor: Editor }) {
+  const current = useEditorState({
+    editor,
+    selector: ({ editor }) =>
+      (editor.getAttributes("textStyle").fontSize as string | undefined) ?? "",
+  });
+  const value = current && FONT_SIZES.includes(current) ? current : "";
+  return (
+    <select
+      value={value}
+      onChange={(e) => {
+        const v = e.target.value;
+        if (v === "") editor.chain().focus().unsetFontSize().run();
+        else editor.chain().focus().setFontSize(v).run();
+      }}
+      className="rounded border border-gray-300 px-1 py-1 text-sm"
+      title="글씨 크기(px)"
+    >
+      <option value="">크기</option>
+      {FONT_SIZES.map((px) => (
+        <option key={px} value={px}>
+          {px}
+        </option>
+      ))}
+    </select>
+  );
+}
+
+// 글자 색. 색상 선택 + 기본색 되돌리기.
+function ColorControl({ editor }: { editor: Editor }) {
+  return (
+    <>
+      <input
+        type="color"
+        defaultValue="#111827"
+        onMouseDown={(e) => e.stopPropagation()}
+        onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
+        className="h-7 w-8 rounded border border-gray-300 align-middle"
+        title="글자 색"
+      />
+      <ToolbarButton onRun={() => editor.chain().focus().unsetColor().run()}>
+        색 기본
+      </ToolbarButton>
+    </>
+  );
+}
+
 function Toolbar({ editor, slug }: { editor: Editor; slug: string }) {
   return (
-    <div className="flex flex-wrap gap-1 border-b border-gray-200 bg-gray-50 p-2">
+    <div className="flex flex-wrap items-center gap-1 border-b border-gray-200 bg-gray-50 p-2">
       {toolbarItems(editor).map((item) => (
         <ToolbarButton
           key={item.label}
@@ -233,12 +329,14 @@ function Toolbar({ editor, slug }: { editor: Editor; slug: string }) {
           {item.label}
         </ToolbarButton>
       ))}
+      <FontSizeSelect editor={editor} />
+      <ColorControl editor={editor} />
       <ImageUploadButton editor={editor} slug={slug} />
     </div>
   );
 }
 
-// 파일 선택 → 여러 장 순서대로 업로드 → 커서 위치에 이미지 노드 삽입.
+// 파일 선택 → 여러 장 순서대로 업로드 → 글 끝에 이미지 삽입.
 // slug가 없으면 비활성화(폴더가 slug 기준).
 function ImageUploadButton({ editor, slug }: { editor: Editor; slug: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -248,7 +346,6 @@ function ImageUploadButton({ editor, slug }: { editor: Editor; slug: string }) {
   async function onFiles(files: FileList) {
     setBusy(true);
     try {
-      // 버튼 업로드는 글 끝에 이어붙인다.
       editor.commands.focus("end");
       await insertUploadedImages(editor, files, slug);
     } finally {

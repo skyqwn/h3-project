@@ -8,6 +8,7 @@ import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
 import { isValidSlug } from "@/lib/slug";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { sanitizeBody } from "@/lib/html/sanitize";
 
 const InputSchema = z.object({
   title: z.string().min(1, "제목을 입력하세요."),
@@ -68,7 +69,7 @@ export async function createPost(
     coverImage: input.coverImage,
     category: input.category,
     tags: input.tags,
-    body: input.body,
+    body: sanitizeBody(input.body),
     draft: input.draft,
     publishedAt: today(),
   });
@@ -127,7 +128,7 @@ export async function updatePost(
       coverImage: input.coverImage,
       category: input.category,
       tags: input.tags,
-      body: input.body,
+      body: sanitizeBody(input.body),
       draft: input.draft,
       updatedAt: new Date(),
     })
