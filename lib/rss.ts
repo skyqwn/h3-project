@@ -2,6 +2,7 @@ import { remark } from "remark";
 import remarkGfm from "remark-gfm";
 import remarkHtml from "remark-html";
 import { getAllPosts } from "@/lib/posts";
+import { looksLikeHtml } from "@/lib/html/sanitize";
 import { SITE_URL, BRAND_NAME } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
@@ -68,7 +69,9 @@ export async function buildRssXml(locale: Locale): Promise<string> {
   const items = await Promise.all(
     posts.map(async (p) => {
       const url = `${ch.base}/${p.slug}`;
-      const bodyHtml = await markdownToHtml(p.body);
+      const bodyHtml = looksLikeHtml(p.body)
+        ? absolutizeUrls(p.body)
+        : await markdownToHtml(p.body);
       const coverAbs = absolutizeUrls(`src="${p.coverImage}"`).slice(5, -1);
       // Prepend the cover image only when the body doesn't already show it, so
       // posts without an inline lead image still carry a representative image.
