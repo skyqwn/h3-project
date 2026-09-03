@@ -17,9 +17,10 @@ const EFFECTIVE_DATE = "2026-06-22";
 // Company details (kept in sync with messages footer.company).
 const COMPANY = "H3";
 const CEO = "홍승찬";
-const PHONE = "010-6777-6730";
+const PHONE = "032-724-8730";
+const FAX = "0503-8379-6709";
 const EMAIL = "h3@h3-tech.co.kr";
-const LOCATION = "인천광역시 서구";
+const LOCATION = "인천광역시 검단구";
 
 const terms: LegalDoc = {
   effectiveDate: EFFECTIVE_DATE,
@@ -181,7 +182,8 @@ const privacy: LegalDoc = {
         "회사는 개인정보 처리에 관한 업무를 총괄해서 책임지고, 정보주체의 불만 처리 및 피해구제 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.",
         `1. 성명: ${CEO}`,
         `2. 전화번호: ${PHONE}`,
-        `3. 이메일: ${EMAIL}`,
+        `3. 팩스: ${FAX}`,
+        `4. 이메일: ${EMAIL}`,
       ],
     },
   ],

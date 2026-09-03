@@ -21,7 +21,7 @@ contact), on H3's light cream/red brand. No API key, no new dependency.
   with real copy").
 - Footer i18n already holds the address/contact: `footer.address`
   ("인천광역시 서구 이든1로 15 (22667)" / English), plus 대표(홍승찬),
-  phone (010-6777-6730), email (contact@h3.co.kr) — reuse these (DRY).
+  phone (032-724-8730), email (contact@h3.co.kr) — reuse these (DRY).
 - Brand: light fixed theme, cream/white + `#e60023`, DESIGN.md tokens.
   i18n ko/en parity enforced.
 

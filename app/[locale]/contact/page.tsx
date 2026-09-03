@@ -1,6 +1,6 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, Printer } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
 import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { ContactForm } from "@/components/ui/ContactForm";
@@ -38,6 +38,7 @@ export default async function ContactPage({
   // desktop sidebar so both render identically.
   const contacts = [
     { Icon: Phone, label: c("phoneLabel"), value: c("phone"), href: `tel:${tel}` },
+    { Icon: Printer, label: c("faxLabel"), value: c("fax"), href: undefined },
     {
       Icon: Mail,
       label: c("emailLabel"),
@@ -63,17 +64,31 @@ export default async function ContactPage({
           ))}
         </ol>
         <div className="mt-5 space-y-2">
-          {contacts.map(({ Icon, label, value, href }) => (
-            <a
-              key={href}
-              href={href}
-              className="flex items-center gap-2 text-body-sm text-ink transition-colors hover:text-primary"
-            >
-              <Icon aria-hidden className="size-4 shrink-0 text-mute" />
-              <span className="text-mute">{label}</span>
-              <span>{value}</span>
-            </a>
-          ))}
+          {contacts.map(({ Icon, label, value, href }) => {
+            const inner = (
+              <>
+                <Icon aria-hidden className="size-4 shrink-0 text-mute" />
+                <span className="text-mute">{label}</span>
+                <span>{value}</span>
+              </>
+            );
+            return href ? (
+              <a
+                key={label}
+                href={href}
+                className="flex items-center gap-2 text-body-sm text-ink transition-colors hover:text-primary"
+              >
+                {inner}
+              </a>
+            ) : (
+              <div
+                key={label}
+                className="flex items-center gap-2 text-body-sm text-ink"
+              >
+                {inner}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -95,17 +110,31 @@ export default async function ContactPage({
             <div className="border-t border-hairline pt-6">
               <Eyebrow className="mb-3">{t("aside.directTitle")}</Eyebrow>
               <div className="space-y-2">
-                {contacts.map(({ Icon, label, value, href }) => (
-                  <a
-                    key={href}
-                    href={href}
-                    className="flex items-center gap-2 text-body-sm text-ink transition-colors hover:text-primary"
-                  >
-                    <Icon aria-hidden className="size-4 shrink-0 text-mute" />
-                    <span className="text-mute">{label}</span>
-                    <span>{value}</span>
-                  </a>
-                ))}
+                {contacts.map(({ Icon, label, value, href }) => {
+                  const inner = (
+                    <>
+                      <Icon aria-hidden className="size-4 shrink-0 text-mute" />
+                      <span className="text-mute">{label}</span>
+                      <span>{value}</span>
+                    </>
+                  );
+                  return href ? (
+                    <a
+                      key={label}
+                      href={href}
+                      className="flex items-center gap-2 text-body-sm text-ink transition-colors hover:text-primary"
+                    >
+                      {inner}
+                    </a>
+                  ) : (
+                    <div
+                      key={label}
+                      className="flex items-center gap-2 text-body-sm text-ink"
+                    >
+                      {inner}
+                    </div>
+                  );
+                })}
               </div>
             </div>
 

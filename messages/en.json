@@ -26,7 +26,7 @@
   "home": {
     "meta": {
       "title": "H3 Tech | Semiconductor Automation Equipment · AI Control Systems",
-      "description": "H3 Tech (에이치쓰리) provides automation equipment, AI·AX control systems, factory automation, industrial equipment, and engineering solutions for the semiconductor and display industries."
+      "description": "H3 Tech provides automation equipment, AI control systems, and factory automation solutions for the semiconductor and display industries."
     },
     "hero": {
       "eyebrow": "PVC & PP precision fabrication",
@@ -290,11 +290,13 @@
       "ceoLabel": "CEO",
       "ceo": "Seung-chan Hong",
       "phoneLabel": "Phone",
-      "phone": "010-6777-6730",
+      "phone": "032-724-8730",
+      "faxLabel": "Fax",
+      "fax": "0503-8379-6709",
       "emailLabel": "Email",
       "email": "h3@h3-tech.co.kr",
       "addressLabel": "Address",
-      "address": "15 Eden 1-ro, Seo-gu, Incheon 22667, South Korea",
+      "address": "15 Eden 1-ro, Geomdan-gu, Incheon 23517, South Korea",
       "hoursLabel": "Hours",
       "hours": "Weekdays 09:00 – 18:00"
     },

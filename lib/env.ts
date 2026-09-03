@@ -6,6 +6,9 @@ const EnvSchema = z.object({
   CONTACT_FROM_EMAIL: z.string().email(),
   TURNSTILE_SECRET_KEY: z.string().min(1),
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1),
+  // Neon Postgres connection string (injected by the Vercel Neon
+  // integration; pulled into .env.local for local dev).
+  DATABASE_URL: z.string().min(1),
   // Optional: when set it must be a valid URL (custom-domain override).
   // When unset, lib/seo.ts auto-resolves from Vercel system env vars or
   // falls back to localhost — see resolveSiteUrl().
@@ -18,6 +21,7 @@ export const env = EnvSchema.parse({
   CONTACT_FROM_EMAIL: process.env.CONTACT_FROM_EMAIL,
   TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
   NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+  DATABASE_URL: process.env.DATABASE_URL,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
 });
 

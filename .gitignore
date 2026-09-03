@@ -44,3 +44,6 @@ next-env.d.ts
 
 # impeccable critique snapshots (local tooling cache)
 .impeccable/
+
+.vercel
+.env*

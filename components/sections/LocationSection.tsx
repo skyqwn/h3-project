@@ -2,7 +2,7 @@ import { getTranslations } from "next-intl/server";
 
 // Korean street address for an accurate Google geocode regardless of UI
 // locale. Keyless embed — no API key required.
-const MAP_QUERY = "인천광역시 서구 이든1로 15";
+const MAP_QUERY = "인천광역시 검단구 이든1로 15";
 
 export async function LocationSection() {
   const t = await getTranslations("about.location");
@@ -44,6 +44,10 @@ export async function LocationSection() {
                   {c("phone")}
                 </a>
               </dd>
+            </div>
+            <div className="flex gap-3">
+              <dt className="w-16 shrink-0 text-mute">{c("faxLabel")}</dt>
+              <dd className="text-body">{c("fax")}</dd>
             </div>
             <div className="flex gap-3">
               <dt className="w-16 shrink-0 text-mute">{c("emailLabel")}</dt>

@@ -4,9 +4,13 @@
 import "./mdx.test";
 import "./turnstile.test";
 import "./notify.test";
-import "./posts.test";
+import "./blog-pagination.test";
 import "./naver-convert.test";
 import "./rehype-image-dimensions.test";
 import "./contact-schema.test";
+import "./slug.test";
+import "./image-src.test";
+import "./auth-session.test";
+import "./sanitize.test";
 
 console.log("All unit tests passed.");

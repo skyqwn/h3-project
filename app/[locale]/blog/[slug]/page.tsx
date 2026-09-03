@@ -7,6 +7,8 @@ import { rehypeImageDimensions } from "@/lib/rehype-image-dimensions";
 import type { Metadata } from "next";
 import { getAllPosts, getPost } from "@/lib/posts";
 import { mdxComponents } from "@/mdx-components";
+import { PostBody } from "@/components/blog/PostBody";
+import { looksLikeHtml } from "@/lib/html/sanitize";
 import { Eyebrow } from "@/components/primitives/Eyebrow";
 import { pageMetadata, articleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { routing, type Locale } from "@/i18n/routing";
@@ -119,16 +121,20 @@ export default async function PostDetailPage({
             className="object-cover"
           />
         </div>
-        <MDXRemote
-          source={post.body}
-          components={mdxComponents}
-          options={{
-            mdxOptions: {
-              remarkPlugins: [remarkGfm],
-              rehypePlugins: [rehypeImageDimensions],
-            },
-          }}
-        />
+        {looksLikeHtml(post.body) ? (
+          <PostBody html={post.body} />
+        ) : (
+          <MDXRemote
+            source={post.body}
+            components={mdxComponents}
+            options={{
+              mdxOptions: {
+                remarkPlugins: [remarkGfm],
+                rehypePlugins: [rehypeImageDimensions],
+              },
+            }}
+          />
+        )}
       </div>
     </article>
   );

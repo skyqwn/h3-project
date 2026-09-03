@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { MDXComponents } from "mdx/types";
+import { dimsFromSrc } from "@/lib/image-src";
 
 function toNum(v: unknown): number | undefined {
   if (typeof v === "number") return v;
@@ -57,10 +58,19 @@ export const mdxComponents: MDXComponents = {
   // shift) and serves AVIF/WebP + srcset. Falls back to a plain img only if a
   // source ever lacks measured dimensions, so a stray image can't crash MDX.
   img: ({ src, alt, width, height }) => {
-    const w = toNum(width);
-    const h = toNum(height);
     const cls =
-      "block w-full h-auto my-8 rounded-md border border-hairline-soft bg-surface-card";
+      "mx-auto block h-auto max-w-full my-8 rounded-md border border-hairline-soft bg-surface-card";
+    // 1) 로컬 public 이미지: rehypeImageDimensions가 넣은 width/height 프롭.
+    let w = toNum(width);
+    let h = toNum(height);
+    // 2) 원격(Blob) 이미지: 업로드 때 실은 ?w&h 쿼리에서 파싱.
+    if ((!w || !h) && typeof src === "string") {
+      const dims = dimsFromSrc(src);
+      if (dims) {
+        w = dims.width;
+        h = dims.height;
+      }
+    }
     if (src && w && h) {
       return (
         <Image
