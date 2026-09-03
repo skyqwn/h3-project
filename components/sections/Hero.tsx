@@ -1,7 +1,6 @@
 "use client";
 
 import { useRef } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { useGSAP, gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
@@ -9,7 +8,6 @@ import { Button } from "@/components/ui/Button";
 export function Hero() {
   const t = useTranslations("home.hero");
   const rootRef = useRef<HTMLElement | null>(null);
-  const imgRef = useRef<HTMLDivElement | null>(null);
 
   const headline = t("headline");
   const words = headline.split(" ");
@@ -24,42 +22,23 @@ export function Hero() {
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       const wordEls = root.querySelectorAll<HTMLElement>("[data-hero-word]");
-      const eyebrow = root.querySelector<HTMLElement>("[data-hero-eyebrow]");
       const body = root.querySelector<HTMLElement>("[data-hero-body]");
       const cta = root.querySelector<HTMLElement>("[data-hero-cta]");
 
       if (reduced) {
-        gsap.set([eyebrow, ...wordEls, body, cta], {
+        gsap.set([...wordEls, body, cta], {
           opacity: 1,
           yPercent: 0,
         });
         return;
       }
 
-      // Ambient background zoom (subtle, infinite).
-      if (imgRef.current) {
-        gsap.to(imgRef.current, {
-          scale: 1.05,
-          duration: 8,
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-        });
-      }
-
-      // Choreographed entrance: eyebrow → headline words rise from behind
-      // their mask → CTA.
+      // Choreographed entrance: headline words rise from behind their mask.
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.fromTo(
-        eyebrow,
-        { opacity: 0, y: 12 },
-        { opacity: 1, y: 0, duration: 0.6 }
-      )
-        .fromTo(
           wordEls,
           { yPercent: 110 },
           { yPercent: 0, duration: 0.9, stagger: 0.08 },
-          "-=0.2"
         )
         .fromTo(
           body,
@@ -80,44 +59,13 @@ export function Hero() {
   return (
     <section
       ref={rootRef}
-      className="relative h-[calc(100vh-4rem)] w-full overflow-hidden bg-surface-dark"
+      className="relative h-[calc(100vh-5rem)] min-h-[620px] w-full overflow-hidden bg-transparent"
     >
-      {/* Hero photo (next/image, LCP → priority). The ambient zoom animates
-          this wrapper, so only the image scales — not the scrim. */}
-      <div ref={imgRef} className="absolute inset-0" aria-hidden>
-        <Image
-          src="/hero.webp"
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-center"
-        />
-      </div>
-
-      {/* Bottom-heavy translucent scrim so the image shows through while the
-          bottom-left headline stays legible. */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 35%, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.05) 100%)",
-        }}
-        aria-hidden
-      />
-
-      <div className="absolute inset-0 flex flex-col justify-end p-16 text-on-dark">
-        <div className="max-w-page mx-auto w-full">
-          <p
-            data-hero-eyebrow
-            className="text-caption-md uppercase tracking-wider text-on-dark-mute mb-3 opacity-0"
-          >
-            {t("eyebrow")}
-          </p>
-
+      <div className="relative z-10 flex h-full flex-col justify-end px-6 py-12 text-ink md:py-16 lg:px-[120px]">
+        <div className="w-full">
           {/* Accessible full headline for SR/SEO; the animated copy is
               aria-hidden so screen readers don't read it word-by-word. */}
-          <h2 className="text-display-xl max-w-4xl mb-5">
+          <h2 className="mb-5 max-w-4xl text-display-xl">
             <span className="sr-only">{headline}</span>
             <span aria-hidden className="block">
               {words.map((word, i) => (
@@ -136,13 +84,19 @@ export function Hero() {
 
           <p
             data-hero-body
-            className="mb-6 max-w-2xl text-body-lg text-on-dark-mute opacity-0"
+            className="mb-6 max-w-2xl text-body-md text-body opacity-0 md:text-[18px] md:leading-8"
           >
             {t("body")}
           </p>
 
           <span data-hero-cta className="inline-block opacity-0">
-            <Button href="/products" variant="primary" size="md" arrow>
+            <Button
+              href="/products"
+              variant="primary"
+              size="md"
+              className="!bg-[#5f6f82] !text-white hover:!bg-[#4f5f73]"
+              arrow
+            >
               {t("cta")}
             </Button>
           </span>

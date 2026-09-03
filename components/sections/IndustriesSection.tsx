@@ -101,7 +101,7 @@ export function IndustriesSection() {
       <div className="relative">
         <section
           data-panel-expand
-          className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden bg-canvas"
+          className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden bg-white/56"
         >
           <div
             data-expand
@@ -124,7 +124,7 @@ export function IndustriesSection() {
           </div>
 
           <div className="pointer-events-none absolute inset-0 flex flex-col justify-end pb-16">
-            <div className="max-w-page mx-auto w-full px-6">
+            <div className="w-full px-6 lg:px-[120px]">
               <div data-expand-label className="max-w-xl" style={{ opacity: 0 }}>
                 <span className="text-caption-md tabular-nums text-on-dark-mute">
                   {String(1).padStart(2, "0")} / {String(total).padStart(2, "0")}
@@ -159,7 +159,7 @@ export function IndustriesSection() {
             </div>
             <div className="absolute inset-0" style={{ background: SCRIM }} aria-hidden />
             <div className="absolute inset-0 flex flex-col justify-end pb-16">
-              <div className="max-w-page mx-auto w-full px-6">
+              <div className="w-full px-6 lg:px-[120px]">
                 <div data-copy className="max-w-xl">
                   <span className="text-caption-md tabular-nums text-on-dark-mute">
                     {String(i + 2).padStart(2, "0")} / {String(total).padStart(2, "0")}

@@ -138,7 +138,7 @@ export function ProcessOrbit() {
                 {/* Orbiting marker */}
                 <div
                   ref={markerRef}
-                  className="absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_0_5px_rgba(230,0,35,0.12)] lg:size-4 lg:shadow-[0_0_0_6px_rgba(230,0,35,0.12)]"
+                  className="absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_0_5px_rgba(110,162,243,0.22)] lg:size-4 lg:shadow-[0_0_0_6px_rgba(110,162,243,0.22)]"
                   style={{ left: "50%", top: "12%" }}
                   aria-hidden
                 />

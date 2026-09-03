@@ -51,9 +51,9 @@ export function HomeSolutionReveal() {
           },
         })
         .to(media, {
-          left: "43%",
+          left: "50%",
           top: "14%",
-          width: "57%",
+          width: "48%",
           height: "72%",
           borderRadius: 16,
           ease: "none",
@@ -96,8 +96,8 @@ export function HomeSolutionReveal() {
 
   return (
     <>
-      <section className="bg-canvas py-section md:hidden">
-        <div className="mx-auto max-w-page px-6">
+      <section className="bg-transparent py-section md:hidden">
+        <div className="w-full px-6 lg:px-[120px]">
           <span className="mb-7 inline-flex h-11 items-center rounded-sm border border-ink px-4 text-body-sm-strong text-ink">
             {t("eyebrow")}
           </span>
@@ -148,11 +148,11 @@ export function HomeSolutionReveal() {
         </div>
       </section>
 
-      <section ref={rootRef} className="relative hidden bg-canvas md:block md:h-[180svh]">
+      <section ref={rootRef} className="relative hidden bg-transparent md:block md:h-[180svh]">
       <div className="md:sticky md:top-0 md:h-svh md:overflow-hidden">
-        <div className="relative min-h-svh overflow-hidden bg-canvas md:h-full">
-          <div className="pointer-events-none relative z-10 grid min-h-svh w-full items-center gap-10 px-6 py-section md:grid-cols-[0.46fr_0.54fr] md:py-0 md:pl-[7vw] md:pr-0 xl:pl-[11vw]">
-            <div className="max-w-[680px] md:pr-6">
+        <div className="relative min-h-svh overflow-hidden bg-transparent md:h-full">
+          <div className="pointer-events-none relative z-10 grid min-h-svh w-full items-center gap-10 px-6 py-section md:grid-cols-[0.42fr_0.58fr] md:py-0 lg:px-[120px]">
+            <div className="max-w-[620px] md:pr-10">
               <span
                 data-solution-copy
                 className="mb-8 inline-flex h-12 items-center rounded-sm border border-ink px-5 text-body-sm-strong text-ink"
@@ -172,7 +172,7 @@ export function HomeSolutionReveal() {
               </h2>
               <p
                 data-solution-copy
-                className="mt-8 max-w-md text-body-md font-semibold leading-relaxed text-body"
+                className="mt-8 max-w-md break-keep text-[18px] font-extrabold leading-relaxed text-ink"
               >
                 {t("body")}
               </p>

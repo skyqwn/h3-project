@@ -37,7 +37,7 @@ export default async function PostOgImage({
       >
         <div
           style={{
-            color: "#e60023",
+            color: "#6ea2f3",
             fontSize: 36,
             fontWeight: 800,
             letterSpacing: -1.0,

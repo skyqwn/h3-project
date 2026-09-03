@@ -15,7 +15,7 @@ export type FeatureItem = {
 export function FeatureCardRow({ items }: { items: FeatureItem[] }) {
   return (
     <section className="py-section bg-surface-soft">
-      <div className="max-w-page mx-auto px-6 space-y-section">
+      <div className="w-full px-6 space-y-section lg:px-[120px]">
         {items.map((item, i) => (
           <ScrollReveal key={i}>
             <div

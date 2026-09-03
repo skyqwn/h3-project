@@ -4,7 +4,7 @@ import en from "../messages/en.json";
 function flatten(obj: unknown, prefix = ""): string[] {
   if (typeof obj !== "object" || obj === null) return [prefix];
   return Object.entries(obj as Record<string, unknown>).flatMap(([k, v]) =>
-    flatten(v, prefix ? `${prefix}.${k}` : k)
+    flatten(v, prefix ? `${prefix}.${k}` : k),
   );
 }
 

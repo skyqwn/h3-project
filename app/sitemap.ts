@@ -10,7 +10,14 @@ import {
 import { PAGE_SIZE } from "@/lib/blog-pagination";
 import { routing } from "@/i18n/routing";
 
-const STATIC_PATHS = ["", "/about", "/products", "/contact", "/notice"] as const;
+const STATIC_PATHS = [
+  "",
+  "/about",
+  "/about/history",
+  "/products",
+  "/contact",
+  "/notice",
+] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const slugs = await getAllProductSlugs();

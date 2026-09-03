@@ -2,12 +2,12 @@
 version: alpha
 name: h3-design-system
 description: |
-  A photography-first marketing system organized around the brand red (#e60023) CTA, full-bleed media-driven hero sections, and a warm-cream/white chrome that gets out of the imagery's way. Adapted from the Pinterest design language as the brand source of truth. Structure references SpaceX-style scroll-driven full-bleed storytelling for the homepage hero band, but every chrome decision — typography, color, radius, components — follows the tokens below.
+  A photography-first marketing system organized around the brand sky blue (#6ea2f3) CTA, full-bleed media-driven hero sections, and a warm-cream/white chrome that gets out of the imagery's way. Adapted from the Pinterest design language as the brand source of truth. Structure references SpaceX-style scroll-driven full-bleed storytelling for the homepage hero band, but every chrome decision — typography, color, radius, components — follows the tokens below.
 
 colors:
-  primary: "#e60023"
-  on-primary: "#ffffff"
-  primary-pressed: "#cc001f"
+  primary: "#6ea2f3"
+  on-primary: "#07164f"
+  primary-pressed: "#4f86d9"
   ink: "#000000"
   ink-soft: "#211922"
   body: "#33332e"
@@ -271,9 +271,9 @@ components:
 
 ## Overview
 
-This is the design system for the H3 company-intro site. The brand identity is anchored on a single saturated red (`{colors.primary}` — `#e60023`) used exclusively for primary CTAs and the brand wordmark, on a warm-cream / true-white chrome that recedes behind photography. Display tier is Pin Sans (Inter as the open-source substitute) with tight negative tracking at the largest sizes. Radius vocabulary is three values only — 16px, 32px, and pill. There is no dark mode and no shadow elevation beyond the modal layer.
+This is the design system for the H3 company-intro site. The brand identity is anchored on a clear sky blue (`{colors.primary}` — `#6ea2f3`) used exclusively for primary CTAs and the brand wordmark, on a warm-cream / true-white chrome that recedes behind photography. Display tier is Pin Sans (Inter as the open-source substitute) with tight negative tracking at the largest sizes. Radius vocabulary is three values only — 16px, 32px, and pill. There is no dark mode and no shadow elevation beyond the modal layer.
 
-Structurally, the homepage follows a SpaceX-inspired pattern of full-bleed scroll-driven sections, but the visual chrome of every section, button, card, and form follows the tokens above. The hero band is a full-viewport photograph or autoplaying video; everything beneath returns to the warm-cream magazine treatment with the red CTA always anchored in the upper right of the sticky nav.
+Structurally, the homepage follows a SpaceX-inspired pattern of full-bleed scroll-driven sections, but the visual chrome of every section, button, card, and form follows the tokens above. The hero band is a full-viewport photograph or autoplaying video; everything beneath returns to the warm-cream magazine treatment with the sky-blue CTA always anchored in the upper right of the sticky nav.
 
 The site is bilingual (Korean default at the root, English at `/en`) and the design tokens are identical across locales.
 
@@ -295,7 +295,7 @@ The homepage hero is a full-viewport (100vh) photograph or autoplaying video. Ty
 
 - Eyebrow microtext in `{typography.caption-md}` (uppercase, on-dark variant if photography is dark)
 - Headline in `{typography.display-xl}` (allowed to render in `{colors.on-dark}` over dark photography)
-- One `{component.button-primary}` red CTA OR one `{component.button-pill-on-image}` white pill, depending on photography contrast
+- One `{component.button-primary}` sky-blue CTA OR one `{component.button-pill-on-image}` white pill, depending on photography contrast
 
 Below the hero band, the page returns to standard light chrome (`{colors.canvas}`).
 
@@ -312,6 +312,6 @@ Below the hero band, the page returns to standard light chrome (`{colors.canvas}
 1. Pull a component's YAML entry and verify every token reference resolves before editing.
 2. Reference tokens directly (`{colors.primary}`, `{rounded.md}`, `{component.button-primary}`) — do not paraphrase.
 3. Add new states as separate component entries (`-pressed`, `-disabled`, `-focused`).
-4. Keep `{colors.primary}` scarce — at most one Pinterest-red CTA per fold (nav, hero, and feature card combined).
-5. Before adding a new component or token, ask whether the existing 16px-radius / cream-surface / red-CTA vocabulary covers it.
+4. Keep `{colors.primary}` scarce — at most one sky-blue CTA per fold (nav, hero, and feature card combined).
+5. Before adding a new component or token, ask whether the existing 16px-radius / cream-surface / sky-blue-CTA vocabulary covers it.
 6. No dark mode token layer — the brand is light-fixed.

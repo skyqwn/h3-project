@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { LenisProvider } from "@/components/layout/LenisProvider";
 import { TopButton } from "@/components/layout/TopButton";
 import { organizationJsonLd, websiteJsonLd, SITE_URL } from "@/lib/seo";
@@ -95,9 +96,12 @@ export default async function LocaleLayout({
         />
         <NextIntlClientProvider messages={messages}>
           <LenisProvider>
+            <AmbientBackground />
             <Header />
-            <main className="pt-16">{children}</main>
-            <Footer />
+            <main className="relative z-10 pt-20">{children}</main>
+            <div className="relative z-10">
+              <Footer />
+            </div>
             <TopButton />
           </LenisProvider>
         </NextIntlClientProvider>

@@ -1,9 +1,27 @@
 {
   "nav": {
-    "about": "About",
+    "home": "Home",
+    "about": "Company",
     "products": "Products",
     "blog": "Blog",
-    "contact": "Contact"
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "mega": {
+      "about": {
+        "overview": "Company",
+        "history": "History"
+      },
+      "products": {
+        "lineup": "Product lineup",
+        "equipment": "Chemical equipment",
+        "automation": "Process automation"
+      },
+      "blog": {
+        "articles": "Blog",
+        "notice": "Notice"
+      }
+    }
   },
   "home": {
     "meta": {
@@ -160,6 +178,30 @@
     "lead": "H3 is a specialist fabricator of PVC/PP fume hoods, refining booths, scrubbers, and exhaust ducting for chemical processes — from design through fabrication, installation, and maintenance.",
     "body1": "We design from on-site surveys and build chemical-resistant, durable custom equipment with precision CNC machining and expert hot-air welding.",
     "body2": "From small components to full turnkey installation, we deliver to each client's process and site conditions.",
+    "history": {
+      "title": "History",
+      "subtitle": "History",
+      "lead": "H3-Tech was founded on engineering experience accumulated in chemical process and automation equipment sites. We are building a manufacturing base that can handle design, machining, fabrication, assembly, and control as a one-stop workflow while expanding around chemical-process parts and equipment.",
+      "imageAlt": "H3-Tech chemical-resistant equipment fabrication site",
+      "items": {
+        "may": {
+          "month": "05",
+          "body": "Selected for the 2026 Preliminary Startup Package program"
+        },
+        "june": {
+          "month": "06",
+          "body": "H3 Tech Co., Ltd. established"
+        },
+        "july": {
+          "month": "07",
+          "body": "Manufacturing facility established and factory registration completed"
+        },
+        "august": {
+          "month": "08",
+          "body": "Certified as a youth enterprise and filed one patent application"
+        }
+      }
+    },
     "location": {
       "title": "Visit us",
       "viewLarger": "View larger map"

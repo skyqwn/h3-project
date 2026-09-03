@@ -196,7 +196,7 @@ export function ContactForm({
         {state && !state.ok && (
           <div
             role="alert"
-            className="bg-error-deep text-on-primary rounded-md p-3 text-body-sm"
+            className="bg-error-deep text-white rounded-md p-3 text-body-sm"
           >
             {t("error")}
           </div>

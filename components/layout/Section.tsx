@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 const tones = {
-  canvas: "bg-canvas",
-  soft: "bg-surface-soft",
+  canvas: "bg-white/56",
+  soft: "bg-white/64",
   dark: "bg-surface-dark",
 } as const;
 
@@ -24,7 +24,7 @@ type Props = {
 export function Section({ tone = "canvas", className, children }: Props) {
   return (
     <section className={cn(tones[tone], "py-section")}>
-      <div className={cn("max-w-page mx-auto px-6", className)}>{children}</div>
+      <div className={cn("w-full px-6 lg:px-[120px]", className)}>{children}</div>
     </section>
   );
 }

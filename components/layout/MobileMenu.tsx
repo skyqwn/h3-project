@@ -83,10 +83,10 @@ export function MobileMenu() {
   );
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
-        aria-label={open ? "Close menu" : "Open menu"}
+        aria-label={open ? t("closeMenu") : t("openMenu")}
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         className="relative z-[60] flex h-11 w-11 cursor-pointer flex-col items-center justify-center gap-1.5"

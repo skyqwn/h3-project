@@ -27,7 +27,7 @@ type Props = {
 export function PageShell({ eyebrow, title, children, fill = true }: Props) {
   return (
     <div className={`${fill ? "min-h-screen " : ""}bg-canvas py-section`}>
-      <div className="max-w-page mx-auto px-6">
+      <div className="w-full px-6 lg:px-[120px]">
         <Eyebrow className="mb-3">{eyebrow}</Eyebrow>
         <DisplayHeading level="lg" className="mb-12">
           {title}
