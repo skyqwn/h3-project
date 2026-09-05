@@ -96,7 +96,7 @@ export function HomeSolutionReveal() {
 
   return (
     <>
-      <section className="bg-transparent py-section md:hidden">
+      <section className="isolate bg-transparent py-section md:hidden">
         <div className="w-full px-6 lg:px-[120px]">
           <span className="mb-7 inline-flex h-11 items-center rounded-sm border border-ink px-4 text-body-sm-strong text-ink">
             {t("eyebrow")}
@@ -148,7 +148,7 @@ export function HomeSolutionReveal() {
         </div>
       </section>
 
-      <section ref={rootRef} className="relative hidden bg-transparent md:block md:h-[180svh]">
+      <section ref={rootRef} className="relative isolate hidden bg-transparent md:block md:h-[180svh]">
       <div className="md:sticky md:top-0 md:h-svh md:overflow-hidden">
         <div className="relative min-h-svh overflow-hidden bg-transparent md:h-full">
           <div className="pointer-events-none relative z-10 grid min-h-svh w-full items-center gap-10 px-6 py-section md:grid-cols-[0.42fr_0.58fr] md:py-0 lg:px-[120px]">
