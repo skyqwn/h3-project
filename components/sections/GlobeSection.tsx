@@ -144,14 +144,15 @@ export function GlobeSection() {
   const [containerRef, containerWidth] = useContainerWidth();
   const globeMaterial = useDayNightMaterial();
 
-  // Pinned scroll-in: the card starts small and offset above its resting
-  // spot, then scales/slides down to full size while the section stays
-  // pinned — settling into place exactly as the pin releases (end matches
-  // the wrapper's full extra scroll height, so "card fully grown" and
-  // "section unpins" happen at the same scroll position). Desktop only —
-  // mirrors HomeSolutionReveal's own reduced/mobile bail-out — a pinned
-  // scrub feels janky on a mobile viewport, so mobile keeps a plain static
-  // section.
+  // Scroll-in growth: the card starts small and offset above its resting
+  // spot, then scales/slides down to full size WHILE the section scrolls
+  // into view from below — same timing as HomeSolutionReveal's own media
+  // reveal (`top bottom` → `top top`) — so growth is visible from the
+  // moment the section arrives, and it has already settled at full size by
+  // the time the section locks into its pinned position (rather than only
+  // starting to grow after it's already pinned). Desktop only — mirrors
+  // HomeSolutionReveal's own reduced/mobile bail-out — a pinned scrub feels
+  // janky on a mobile viewport, so mobile keeps a plain static section.
   useGSAP(
     () => {
       const root = rootRef.current;
@@ -167,7 +168,7 @@ export function GlobeSection() {
         return;
       }
 
-      gsap.set(card, { scale: 0.6, yPercent: -40, transformOrigin: "50% 0%" });
+      gsap.set(card, { scale: 0.55, yPercent: -55, transformOrigin: "50% 0%" });
 
       gsap.to(card, {
         scale: 1,
@@ -175,8 +176,8 @@ export function GlobeSection() {
         ease: "none",
         scrollTrigger: {
           trigger: root,
-          start: "top top",
-          end: "bottom bottom",
+          start: "top bottom",
+          end: "top top",
           scrub: 1,
         },
       });
