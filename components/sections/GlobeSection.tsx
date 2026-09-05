@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
+import { gsap, useGSAP } from "@/lib/gsap";
 import type { GlobeMethods } from "react-globe.gl";
 
 const Globe = dynamic(() => import("react-globe.gl"), { ssr: false });
@@ -138,9 +139,50 @@ function useDayNightMaterial() {
 
 export function GlobeSection() {
   const t = useTranslations("home.globe");
+  const rootRef = useRef<HTMLElement | null>(null);
   const globeRef = useRef<GlobeMethods | undefined>(undefined);
   const [containerRef, containerWidth] = useContainerWidth();
   const globeMaterial = useDayNightMaterial();
+
+  // Pinned scroll-in: the card starts small and offset above its resting
+  // spot, then scales/slides down to full size while the section stays
+  // pinned — settling into place exactly as the pin releases (end matches
+  // the wrapper's full extra scroll height, so "card fully grown" and
+  // "section unpins" happen at the same scroll position). Desktop only —
+  // mirrors HomeSolutionReveal's own reduced/mobile bail-out — a pinned
+  // scrub feels janky on a mobile viewport, so mobile keeps a plain static
+  // section.
+  useGSAP(
+    () => {
+      const root = rootRef.current;
+      const card = containerRef.current;
+      if (!root || !card) return;
+
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (reduced || window.matchMedia("(max-width: 767px)").matches) {
+        // Nothing has been tweened yet at this point (unlike
+        // HomeSolutionReveal's desktop-only markup, this card is the same
+        // DOM node rendered on every breakpoint) — clearProps here would
+        // wipe its own inline `height` style, not just gsap's.
+        return;
+      }
+
+      gsap.set(card, { scale: 0.6, yPercent: -40, transformOrigin: "50% 0%" });
+
+      gsap.to(card, {
+        scale: 1,
+        yPercent: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: root,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        },
+      });
+    },
+    { scope: rootRef }
+  );
 
   // `onGlobeReady` firing does not guarantee `globeRef.current` is already
   // attached in THIS same callback tick. Routing it through state forces a
@@ -221,72 +263,76 @@ export function GlobeSection() {
     : 900;
 
   return (
-    <section className="relative z-10 px-6 py-section lg:px-[120px]">
-      <div
-        ref={containerRef}
-        className="relative w-full overflow-hidden rounded-[32px] bg-[#050b1a]"
-        style={{ height: "clamp(480px, 62vw, 680px)" }}
-      >
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/2 bg-gradient-to-t from-[#050b1a] via-[#050b1a]/70 to-transparent"
-        />
-
-        <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-6 px-6 pb-14 text-center">
-          <h2 className="max-w-2xl text-balance text-heading-xl text-on-dark md:text-display-lg">
-            {t("headline")}
-          </h2>
-          <Link
-            href="/about"
-            className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-2.5 text-body-sm font-bold text-on-dark transition-colors hover:border-white hover:bg-white/10"
+    <section ref={rootRef} className="relative isolate z-10 bg-transparent md:h-[180svh]">
+      <div className="md:sticky md:top-0 md:h-svh md:overflow-hidden">
+        <div className="px-6 py-section lg:px-[120px] md:flex md:h-full md:items-center md:py-0">
+          <div
+            ref={containerRef}
+            className="relative w-full overflow-hidden rounded-[32px] bg-[#050b1a]"
+            style={{ height: "clamp(480px, 62vw, 680px)" }}
           >
-            {t("cta")}
-            <span aria-hidden>→</span>
-          </Link>
-        </div>
-
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 -translate-x-1/2"
-          style={{
-            bottom: `-${Math.round(globeSize * 0.52)}px`,
-            width: globeSize,
-            height: globeSize,
-          }}
-        >
-          {globeMaterial && (
-            <Globe
-              ref={globeRef}
-              width={globeSize}
-              height={globeSize}
-              backgroundColor="rgba(0,0,0,0)"
-              globeMaterial={globeMaterial}
-              showAtmosphere
-              atmosphereColor="#cfe2fb"
-              atmosphereAltitude={0.14}
-              arcsData={ARCS}
-              arcColor="color"
-              arcAltitudeAutoScale={0.55}
-              arcStroke={0.28}
-              arcDashLength={0.4}
-              arcDashGap={0.25}
-              arcDashInitialGap="initialGap"
-              arcDashAnimateTime={1800}
-              pointsData={POINTS}
-              pointColor={() => "#ffe9c2"}
-              pointAltitude={0.012}
-              pointRadius={0.14}
-              pointResolution={12}
-              ringsData={RINGS}
-              ringColor={() => (tt: number) =>
-                `rgba(255,225,178,${0.85 * (1 - tt)})`
-              }
-              ringMaxRadius={3.2}
-              ringPropagationSpeed={2.5}
-              ringRepeatPeriod={650}
-              onGlobeReady={() => setReady(true)}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-1/2 bg-gradient-to-t from-[#050b1a] via-[#050b1a]/70 to-transparent"
             />
-          )}
+
+            <div className="absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-6 px-6 pb-14 text-center">
+              <h2 className="max-w-2xl text-balance text-heading-xl text-on-dark md:text-display-lg">
+                {t("headline")}
+              </h2>
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 rounded-full border border-white/40 px-5 py-2.5 text-body-sm font-bold text-on-dark transition-colors hover:border-white hover:bg-white/10"
+              >
+                {t("cta")}
+                <span aria-hidden>→</span>
+              </Link>
+            </div>
+
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-1/2 -translate-x-1/2"
+              style={{
+                bottom: `-${Math.round(globeSize * 0.52)}px`,
+                width: globeSize,
+                height: globeSize,
+              }}
+            >
+              {globeMaterial && (
+                <Globe
+                  ref={globeRef}
+                  width={globeSize}
+                  height={globeSize}
+                  backgroundColor="rgba(0,0,0,0)"
+                  globeMaterial={globeMaterial}
+                  showAtmosphere
+                  atmosphereColor="#cfe2fb"
+                  atmosphereAltitude={0.14}
+                  arcsData={ARCS}
+                  arcColor="color"
+                  arcAltitudeAutoScale={0.55}
+                  arcStroke={0.28}
+                  arcDashLength={0.4}
+                  arcDashGap={0.25}
+                  arcDashInitialGap="initialGap"
+                  arcDashAnimateTime={1800}
+                  pointsData={POINTS}
+                  pointColor={() => "#ffe9c2"}
+                  pointAltitude={0.012}
+                  pointRadius={0.14}
+                  pointResolution={12}
+                  ringsData={RINGS}
+                  ringColor={() => (tt: number) =>
+                    `rgba(255,225,178,${0.85 * (1 - tt)})`
+                  }
+                  ringMaxRadius={3.2}
+                  ringPropagationSpeed={2.5}
+                  ringRepeatPeriod={650}
+                  onGlobeReady={() => setReady(true)}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </section>
