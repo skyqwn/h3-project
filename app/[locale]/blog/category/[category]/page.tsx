@@ -7,13 +7,16 @@ import { PageShell } from "@/components/layout/PageShell";
 import { PostGrid } from "@/components/blog/PostGrid";
 import { routing, type Locale } from "@/i18n/routing";
 
-const VALID = ["news", "article", "update"] as const;
+// "news" now lives at the top-level /news route instead of here.
+const VALID = ["blog", "update"] as const;
 
 export async function generateStaticParams() {
   const params: { locale: string; category: string }[] = [];
   for (const locale of routing.locales) {
     for (const category of await getAllCategories(locale)) {
-      params.push({ locale, category });
+      if (VALID.includes(category as (typeof VALID)[number])) {
+        params.push({ locale, category });
+      }
     }
   }
   return params;
@@ -47,7 +50,6 @@ export default async function CategoryArchivePage({
   if (!VALID.includes(category as (typeof VALID)[number])) notFound();
   const t = await getTranslations("blog");
   const posts = await getPostsByCategory(category, locale as Locale);
-  if (posts.length === 0) notFound();
 
   return (
     <PageShell eyebrow={t("categoryLabel")} title={t(`category.${category}`)}>

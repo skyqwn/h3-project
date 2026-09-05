@@ -23,7 +23,7 @@ type Props = {
  */
 export function Section({ tone = "canvas", className, children }: Props) {
   return (
-    <section className={cn(tones[tone], "py-section")}>
+    <section className={cn("relative z-10", tones[tone], "py-section")}>
       <div className={cn("w-full px-6 lg:px-[120px]", className)}>{children}</div>
     </section>
   );

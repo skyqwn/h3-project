@@ -7,36 +7,7 @@ import { useTranslations } from "next-intl";
 import { LocaleSwitcher } from "./LocaleSwitcher";
 import { MobileMenu } from "./MobileMenu";
 import { cn } from "@/lib/utils";
-
-const NAV = [
-  {
-    href: "/about",
-    key: "about",
-    children: [
-      { href: "/about", key: "overview" },
-      { href: "/about/history", key: "history" },
-    ],
-  },
-  {
-    href: "/products",
-    key: "products",
-    children: [
-      { href: "/products", key: "lineup" },
-      { href: "/products", key: "equipment" },
-      { href: "/contact", key: "automation" },
-    ],
-  },
-  {
-    href: "/blog",
-    key: "blog",
-    children: [
-      { href: "/blog", key: "articles" },
-      { href: "/notice", key: "notice" },
-    ],
-  },
-] as const;
-
-type NavKey = (typeof NAV)[number]["key"];
+import { NAV, type NavKey } from "./nav-items";
 
 export function Header() {
   const t = useTranslations("nav");
@@ -114,9 +85,9 @@ export function Header() {
           <LocaleSwitcher />
         </div>
 
-        {/* Mobile: locale switcher to the left of the hamburger */}
-        <div className="flex items-center gap-3 lg:hidden">
-          <LocaleSwitcher />
+        {/* Mobile: locale switching lives inside the MobileMenu overlay
+            (Samsung SDI-style pills at the top), not in the header bar. */}
+        <div className="flex items-center lg:hidden">
           <MobileMenu />
         </div>
       </div>

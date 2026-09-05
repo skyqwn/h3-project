@@ -26,6 +26,8 @@ export default async function EditPostPage({
           coverImage: post.coverImage,
           body: post.body,
           draft: post.draft,
+          source: post.source,
+          sourceUrl: post.sourceUrl,
         }}
       />
     </div>

@@ -3,14 +3,15 @@
     "home": "Home",
     "about": "Company",
     "products": "Products",
-    "blog": "Blog",
+    "blog": "News",
     "contact": "Contact",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "mega": {
       "about": {
         "overview": "Company",
-        "history": "History"
+        "history": "History",
+        "location": "Visit Us"
       },
       "products": {
         "lineup": "Product lineup",
@@ -19,6 +20,7 @@
       },
       "blog": {
         "articles": "Blog",
+        "news": "News",
         "notice": "Notice"
       }
     }
@@ -29,9 +31,11 @@
       "description": "H3 Tech provides automation equipment, AI control systems, and factory automation solutions for the semiconductor and display industries."
     },
     "hero": {
-      "eyebrow": "PVC & PP precision fabrication",
-      "headline": "Chemical-resistant systems, from design to install",
-      "body": "H3Tech(에이치쓰리) handles PVC and PP chemical-resistant equipment from design and fabrication to on-site installation.",
+      "eyebrow": "Chemical Process Engineering",
+      "headlineMain": "Chemical process equipment, from design to ",
+      "headlineAccent": "automation",
+      "headlineSuffix": "",
+      "body": "We supply chemical-process parts and automation equipment for semiconductor, display, and surface-treatment, one-stop.",
       "cta": "See products"
     },
     "solutionReveal": {
@@ -53,36 +57,6 @@
     "closing": {
       "title": "Ready to build together?",
       "cta": "Contact us"
-    },
-    "services": {
-      "eyebrow": "Equipment",
-      "title": "What H3 builds",
-      "items": {
-        "fumehood": {
-          "title": "Fume hoods",
-          "desc": "Local-exhaust fume hoods for chemical processes."
-        },
-        "booth": {
-          "title": "Refining booths",
-          "desc": "Refining and work booths that protect operators."
-        },
-        "scrubber": {
-          "title": "Scrubbers",
-          "desc": "Scrubbers that wash and neutralize exhaust gas."
-        },
-        "duct": {
-          "title": "Exhaust ducting",
-          "desc": "Chemical-resistant PVC/PP ducts and piping."
-        },
-        "tank": {
-          "title": "Tanks & baths",
-          "desc": "PVC/PP chemical storage tanks and wash baths."
-        },
-        "custom": {
-          "title": "Custom fabrication",
-          "desc": "Bespoke non-standard PVC/PP structures."
-        }
-      }
     },
     "process": {
       "eyebrow": "Process",
@@ -147,37 +121,90 @@
       "alt": "H3 fabrication and installation work",
       "cta": "View the case study"
     },
-    "industries": {
-      "eyebrow": "Industries",
-      "title": "Where our work goes",
-      "items": {
-        "semiconductor": {
-          "name": "Semiconductor",
-          "en": "SEMICONDUCTOR",
-          "desc": "Chemical-resistant equipment and fume hoods for ultrapure and chemical lines.",
-          "alt": "Semiconductor process equipment"
-        },
-        "chemistry": {
-          "name": "Chemistry",
-          "en": "CHEMISTRY",
-          "desc": "PVC/PP exhaust systems and scrubbers built to withstand corrosive environments.",
-          "alt": "Chemical plant equipment"
-        },
-        "battery": {
-          "name": "Battery",
-          "en": "BATTERY",
-          "desc": "Precision-fabricated equipment for electrolyte and hazardous-gas handling.",
-          "alt": "Battery manufacturing line"
-        }
-      }
+    "globe": {
+      "headline": "Proven at Korea's core industrial sites — now reaching for the world",
+      "cta": "See our global vision"
+    },
+    "news": {
+      "eyebrow": "News",
+      "title": "Newsroom",
+      "cta": "More news",
+      "empty": "No news yet."
     }
   },
   "about": {
     "title": "About",
     "subtitle": "What we do",
-    "lead": "H3 is a specialist fabricator of PVC/PP fume hoods, refining booths, scrubbers, and exhaust ducting for chemical processes — from design through fabrication, installation, and maintenance.",
-    "body1": "We design from on-site surveys and build chemical-resistant, durable custom equipment with precision CNC machining and expert hot-air welding.",
-    "body2": "From small components to full turnkey installation, we deliver to each client's process and site conditions.",
+    "domains": {
+      "eyebrow": "What We Do",
+      "title": "Parts and equipment for chemical-process-critical industries",
+      "body": "We deliver chemical-resistant parts and custom automation equipment for semiconductor, display, and surface-treatment processes — from design through installation.",
+      "items": {
+        "parts": {
+          "idx": "01 — PARTS",
+          "title": "Chemical-resistant parts",
+          "body": "We design and machine parts with materials and geometry optimized for chemical-exposure environments, for repeat supply.",
+          "tag": "Semiconductor · Display · Surface treatment"
+        },
+        "equipment": {
+          "idx": "02 — EQUIPMENT",
+          "title": "Custom automation equipment",
+          "body": "We build and install chemical-process equipment optimized for each site — design through assembly and control, one stop.",
+          "tag": "Design · Machining · Assembly · Control"
+        },
+        "ax": {
+          "idx": "03 — AX SYSTEM",
+          "title": "Process-optimization AX system",
+          "body": "We analyze equipment process data and operating conditions with AI to recommend optimal settings and manage quality, output, and equipment health.",
+          "tag": "In development"
+        }
+      }
+    },
+    "strengths": {
+      "eyebrow": "Why H3-Tech",
+      "title": "All-round capability across field, design, and research",
+      "body": "With interdisciplinary engineering spanning three fields and our own one-stop production system, we deliver parts and equipment optimized for each site, fast.",
+      "items": {
+        "tech": {
+          "title": "Interdisciplinary engineering",
+          "body": "Our all-round, one-stop production system delivers engineering services roughly 20% faster than the industry standard."
+        },
+        "model": {
+          "title": "Business model",
+          "body": "We supply chemical-resistant parts and custom equipment fitted to each client's environment, building steady revenue through equipment builds and repeat parts supply."
+        },
+        "network": {
+          "title": "Network",
+          "body": "We've signed MOUs with 4 automation-equipment makers and secured 15 existing accounts — a sales base built for collaborative production and repeat orders."
+        },
+        "future": {
+          "title": "Future service",
+          "body": "We're developing an AX system that analyzes equipment process data and operating conditions with AI to recommend optimal process conditions."
+        }
+      }
+    },
+    "vision": {
+      "eyebrow": "Where We're Headed",
+      "title": "Growing into an AX technology company on a foundation of manufacturing revenue",
+      "body": "We secure cash flow from custom equipment and parts revenue, and continuously reinvest it in developing AI technology for chemical-process optimization.",
+      "phases": {
+        "p1": {
+          "label": "PHASE 1",
+          "title": "Building the company foundation",
+          "body": "Establishing an R&D division, venture-company and ISO 9001 certification, and securing manufacturing revenue and references"
+        },
+        "p2": {
+          "label": "PHASE 2",
+          "title": "Developing and validating AX technology",
+          "body": "Developing process data collection/control systems and AI vision, validated through government R&D and PoCs"
+        },
+        "p3": {
+          "label": "PHASE 3",
+          "title": "Scaling AX and evaluating commercialization",
+          "body": "Advancing process-condition optimization and expanding the business model into new channels such as open innovation and the public sector"
+        }
+      }
+    },
     "history": {
       "title": "History",
       "subtitle": "History",
@@ -204,7 +231,9 @@
     },
     "location": {
       "title": "Visit us",
-      "viewLarger": "View larger map"
+      "viewLarger": "View larger map",
+      "description": "H3-Tech's headquarters location and contact information.",
+      "cta": "Get directions"
     }
   },
   "products": {
@@ -224,9 +253,12 @@
     "categoryLabel": "Category",
     "category": {
       "news": "News",
-      "article": "Article",
+      "blog": "Blog",
       "update": "Update"
-    }
+    },
+    "sourceLabel": "Source",
+    "viewOriginal": "View original",
+    "newsEmpty": "No news yet."
   },
   "contact": {
     "title": "Contact",
@@ -310,9 +342,18 @@
   },
   "legal": {
     "effectiveDate": "Effective date",
-    "terms": { "eyebrow": "Legal", "title": "Terms of Service" },
-    "privacy": { "eyebrow": "Legal", "title": "Privacy Policy" },
-    "consent": { "eyebrow": "Legal", "title": "Consent to Collection and Use of Personal Information" }
+    "terms": {
+      "eyebrow": "Legal",
+      "title": "Terms of Service"
+    },
+    "privacy": {
+      "eyebrow": "Legal",
+      "title": "Privacy Policy"
+    },
+    "consent": {
+      "eyebrow": "Legal",
+      "title": "Consent to Collection and Use of Personal Information"
+    }
   },
   "notice": {
     "eyebrow": "Public Notice",

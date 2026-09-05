@@ -7,7 +7,7 @@ import { CoverImageField } from "./CoverImageField";
 import { createPost, updatePost } from "@/actions/admin/posts";
 import type { CreatePostInput } from "@/actions/admin/posts";
 
-const CATEGORIES = ["news", "article", "update"] as const;
+const CATEGORIES = ["news", "blog", "update"] as const;
 
 // URL(slug) 기본값용 오늘 날짜(YYYY-MM-DD).
 function todayStr(): string {
@@ -25,6 +25,8 @@ type InitialPost = {
   coverImage: string;
   body: string;
   draft: boolean;
+  source?: string;
+  sourceUrl?: string;
 };
 
 export function PostForm({
@@ -42,13 +44,15 @@ export function PostForm({
   const [slug, setSlug] = useState(initialPost?.slug ?? "");
   const [summary, setSummary] = useState(initialPost?.summary ?? "");
   const [category, setCategory] = useState<(typeof CATEGORIES)[number]>(
-    initialPost?.category ?? "article"
+    initialPost?.category ?? "blog"
   );
   const [tags, setTags] = useState(initialPost?.tags.join(", ") ?? "");
   const [coverImage, setCoverImage] = useState(
     initialPost?.coverImage ?? "/og-default.png"
   );
   const [body, setBody] = useState(initialPost?.body ?? "");
+  const [source, setSource] = useState(initialPost?.source ?? "");
+  const [sourceUrl, setSourceUrl] = useState(initialPost?.sourceUrl ?? "");
 
   // 새 글일 때만 URL(slug) 기본값을 오늘 날짜로 채운다(편집은 기존 slug 유지).
   // 정적 프리렌더라 "오늘"은 클라이언트에서만 정확하므로 마운트 후 채운다.
@@ -73,6 +77,8 @@ export function PostForm({
         coverImage,
         body,
         draft,
+        source: source.trim() || undefined,
+        sourceUrl: sourceUrl.trim() || undefined,
       };
       const result =
         mode === "edit" && initialPost
@@ -166,6 +172,29 @@ export function PostForm({
           />
         </div>
       </div>
+
+      {category === "news" && (
+        <div className="flex gap-4 rounded-md border border-gray-200 bg-gray-50 p-3">
+          <div className="flex-1">
+            <label className={label}>출처(매체명)</label>
+            <input
+              className={input}
+              value={source}
+              onChange={(e) => setSource(e.target.value)}
+              placeholder="예: 전자신문"
+            />
+          </div>
+          <div className="flex-1">
+            <label className={label}>원문 링크</label>
+            <input
+              className={input}
+              value={sourceUrl}
+              onChange={(e) => setSourceUrl(e.target.value)}
+              placeholder="https://..."
+            />
+          </div>
+        </div>
+      )}
 
       <CoverImageField value={coverImage} slug={slug} onChange={setCoverImage} />
 

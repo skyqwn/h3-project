@@ -1,12 +1,11 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
+import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { Hero } from "@/components/sections/Hero";
 import { HomeSolutionReveal } from "@/components/sections/HomeSolutionReveal";
-import { ServiceGrid } from "@/components/sections/ServiceGrid";
-import { ProcessOrbit } from "@/components/sections/ProcessOrbit";
-import { IndustriesSection } from "@/components/sections/IndustriesSection";
-import { FaqSection } from "@/components/sections/FaqSection";
+import { GlobeSection } from "@/components/sections/GlobeSection";
+import { NewsSection } from "@/components/sections/NewsSection";
 import { CtaStrip } from "@/components/sections/CtaStrip";
 import type { Locale } from "@/i18n/routing";
 
@@ -39,12 +38,11 @@ export default async function Home({
 
   return (
     <>
+      <AmbientBackground />
       <Hero />
       <HomeSolutionReveal />
-      <ServiceGrid />
-      <ProcessOrbit />
-      <IndustriesSection />
-      <FaqSection />
+      <GlobeSection />
+      <NewsSection />
       <CtaStrip
         title={home("closing.title")}
         ctaLabel={home("closing.cta")}

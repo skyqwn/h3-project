@@ -27,7 +27,7 @@ export const posts = pgTable("posts", {
   title: text("title").notNull(),
   summary: text("summary").notNull(),
   coverImage: text("cover_image").notNull(),
-  category: text("category").notNull(), // "news" | "article" | "update"
+  category: text("category").notNull(), // "news" | "blog" | "update"
   tags: text("tags").array().notNull().default([]),
   body: text("body").notNull(),
   author: text("author").notNull().default("H3"),

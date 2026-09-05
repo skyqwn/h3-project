@@ -29,9 +29,7 @@ export function NoticeList({
       </p>
 
       {notices.length === 0 ? (
-        <div className="rounded-lg border border-hairline bg-surface-card px-6 py-16 text-center">
-          <p className="text-body-md text-mute">{labels.empty}</p>
-        </div>
+        <p className="text-body-md text-mute">{labels.empty}</p>
       ) : (
         <>
           {/* Column header — desktop only; rows stack into cards on mobile. */}

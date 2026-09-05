@@ -14,11 +14,15 @@ const InputSchema = z.object({
   title: z.string().min(1, "제목을 입력하세요."),
   slug: z.string().min(1, "slug를 입력하세요."),
   summary: z.string().min(1, "요약을 입력하세요."),
-  category: z.enum(["news", "article", "update"]),
+  category: z.enum(["news", "blog", "update"]),
   tags: z.array(z.string()),
   coverImage: z.string().min(1, "커버 이미지를 입력하세요."),
   body: z.string().min(1, "본문을 입력하세요."),
   draft: z.boolean(),
+  // 뉴스(category: "news")일 때만 의미 있는 출처 표기 — 실제 언론사 기사를
+  // 정리해 올릴 때 매체명·원문 링크를 남겨 상세페이지에 "원문 보기"로 노출.
+  source: z.string().optional(),
+  sourceUrl: z.string().optional(),
 });
 
 export type CreatePostInput = z.infer<typeof InputSchema>;
@@ -72,6 +76,8 @@ export async function createPost(
     body: sanitizeBody(input.body),
     draft: input.draft,
     publishedAt: today(),
+    source: input.source || null,
+    sourceUrl: input.sourceUrl || null,
   });
 
   // 목록/상세/RSS/사이트맵 캐시 일괄 무효화(Next 16 태그 무효화 API).
@@ -131,6 +137,8 @@ export async function updatePost(
       body: sanitizeBody(input.body),
       draft: input.draft,
       updatedAt: new Date(),
+      source: input.source || null,
+      sourceUrl: input.sourceUrl || null,
     })
     .where(eq(posts.slug, originalSlug));
 

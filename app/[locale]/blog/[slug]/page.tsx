@@ -110,7 +110,20 @@ export default async function PostDetailPage({
           {t(`category.${post.category}`)} · {t("publishedOn")}{" "}
           {post.publishedAt}
         </Eyebrow>
-        <h1 className="text-display-lg text-ink mb-12">{post.title}</h1>
+        <h1 className="text-display-lg text-ink mb-6">{post.title}</h1>
+        {post.sourceUrl && (
+          <p className="text-body-sm text-mute mb-6">
+            {post.source && <>{t("sourceLabel")}: {post.source} · </>}
+            <a
+              href={post.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              {t("viewOriginal")} ↗
+            </a>
+          </p>
+        )}
         <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
           <Image
             src={post.coverImage}

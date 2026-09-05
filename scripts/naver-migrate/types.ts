@@ -3,7 +3,7 @@ export type NaverMigrateEntry = {
   url: string;
   /** human-readable, e.g. gold-refining-pvc-pp-fumehood */
   slug: string;
-  category: "news" | "article" | "update";
+  category: "news" | "blog" | "update";
   tags: string[];
   /** ISO date override; if absent, parsed from post, else today */
   publishedAt?: string;

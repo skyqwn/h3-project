@@ -6,6 +6,7 @@ import {
   getAllPosts,
   getAllTags,
   getAllCategories,
+  getPostsByCategory,
 } from "@/lib/posts";
 import { PAGE_SIZE } from "@/lib/blog-pagination";
 import { routing } from "@/i18n/routing";
@@ -14,9 +15,11 @@ const STATIC_PATHS = [
   "",
   "/about",
   "/about/history",
+  "/about/location",
   "/products",
   "/contact",
   "/notice",
+  "/news",
 ] as const;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -98,9 +101,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.5,
       });
     }
+    // "news" moved to the top-level /news route (see STATIC_PATHS above).
     for (const cat of await getAllCategories(loc)) {
+      if (cat === "news") continue;
       entries.push({
         url: `${base}/blog/category/${cat}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.5,
+      });
+    }
+
+    const newsPosts = await getPostsByCategory("news", loc);
+    const newsTotalPages = Math.max(1, Math.ceil(newsPosts.length / PAGE_SIZE));
+    for (let p = 2; p <= newsTotalPages; p++) {
+      entries.push({
+        url: `${base}/news/page/${p}`,
         lastModified: now,
         changeFrequency: "weekly",
         priority: 0.5,

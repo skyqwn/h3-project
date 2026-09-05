@@ -2,7 +2,7 @@ import { unstable_cache } from "next/cache";
 import type { Locale } from "@/i18n/routing";
 import { queryAllPosts, queryPostBySlug, rowToPost } from "@/lib/db/posts-repo";
 
-export type PostCategory = "news" | "article" | "update";
+export type PostCategory = "news" | "blog" | "update";
 
 // 글 한 건의 콘텐츠 형태. DB 행을 이 형태로 매핑한다(rowToPost).
 export type PostFrontmatter = {

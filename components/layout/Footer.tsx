@@ -39,7 +39,7 @@ export async function Footer() {
   ];
 
   return (
-    <footer className="border-t border-hairline/70 bg-white/58 text-body-sm text-body">
+    <footer className="border-t border-hairline/70 text-body-sm text-body">
       <div className="w-full px-6 py-14 md:py-16 lg:px-[120px]">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
           <div className="lg:col-span-5">
