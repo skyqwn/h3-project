@@ -12,6 +12,9 @@ type Props = {
   /** delay in seconds (default 0) */
   delay?: number;
   className?: string;
+  /** Play once and stay revealed (default), or reverse back out when you
+   *  scroll back up past the trigger point and replay on the way back down. */
+  once?: boolean;
 };
 
 export function ScrollReveal({
@@ -20,6 +23,7 @@ export function ScrollReveal({
   duration = 0.6,
   delay = 0,
   className = "",
+  once = true,
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -42,15 +46,18 @@ export function ScrollReveal({
           duration,
           delay,
           ease: "power2.out",
-          scrollTrigger: {
-            trigger: ref.current,
-            start: "top 85%",
-            once: true,
-          },
+          scrollTrigger: once
+            ? { trigger: ref.current, start: "top 85%", once: true }
+            : {
+                trigger: ref.current,
+                start: "top 85%",
+                end: "bottom top",
+                toggleActions: "play none none reverse",
+              },
         }
       );
     },
-    { scope: ref }
+    { scope: ref, dependencies: [once] }
   );
 
   return (

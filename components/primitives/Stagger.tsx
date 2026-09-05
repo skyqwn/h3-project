@@ -12,6 +12,9 @@ type Props = {
   /** delay between siblings in seconds (default 0.08) */
   stagger?: number;
   className?: string;
+  /** Play once and stay revealed (default), or reverse back out when you
+   *  scroll back up past the trigger point and replay on the way back down. */
+  once?: boolean;
 };
 
 /**
@@ -25,6 +28,7 @@ export function Stagger({
   y = 20,
   stagger = 0.08,
   className = "",
+  once = true,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
 
@@ -53,11 +57,18 @@ export function Stagger({
           duration: 0.6,
           stagger,
           ease: "power2.out",
-          scrollTrigger: { trigger: el, start: "top 82%", once: true },
+          scrollTrigger: once
+            ? { trigger: el, start: "top 82%", once: true }
+            : {
+                trigger: el,
+                start: "top 82%",
+                end: "bottom top",
+                toggleActions: "play none none reverse",
+              },
         }
       );
     },
-    { scope: ref }
+    { scope: ref, dependencies: [once] }
   );
 
   return (

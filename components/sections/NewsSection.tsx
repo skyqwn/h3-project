@@ -19,7 +19,10 @@ export async function NewsSection() {
 
   return (
     <section className="relative z-10 px-6 py-section lg:px-[120px]">
-      <ScrollReveal className="mb-10 flex flex-wrap items-center justify-between gap-4">
+      <ScrollReveal
+        once={false}
+        className="mb-10 flex flex-wrap items-center justify-between gap-4"
+      >
         <h2 className="text-heading-xl text-ink md:text-display-lg">
           {t("title")}
         </h2>
@@ -32,7 +35,10 @@ export async function NewsSection() {
         </Link>
       </ScrollReveal>
 
-      <Stagger className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger
+        once={false}
+        className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
+      >
         {news.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
             <p className="text-body-sm font-bold text-primary">
