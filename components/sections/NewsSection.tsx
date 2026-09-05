@@ -2,6 +2,8 @@ import { getTranslations, getLocale } from "next-intl/server";
 import Image from "next/image";
 import { Link } from "@/i18n/routing";
 import { getPostsByCategory } from "@/lib/posts";
+import { ScrollReveal } from "@/components/primitives/ScrollReveal";
+import { Stagger } from "@/components/primitives/Stagger";
 import type { Locale } from "@/i18n/routing";
 
 // Homepage teaser for real press coverage (category: "news" — see
@@ -17,7 +19,7 @@ export async function NewsSection() {
 
   return (
     <section className="relative z-10 px-6 py-section lg:px-[120px]">
-      <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
+      <ScrollReveal className="mb-10 flex flex-wrap items-center justify-between gap-4">
         <h2 className="text-heading-xl text-ink md:text-display-lg">
           {t("title")}
         </h2>
@@ -28,9 +30,9 @@ export async function NewsSection() {
           {t("cta")}
           <span aria-hidden>→</span>
         </Link>
-      </div>
+      </ScrollReveal>
 
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <Stagger className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {news.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`} className="group block">
             <p className="text-body-sm font-bold text-primary">
@@ -50,7 +52,7 @@ export async function NewsSection() {
             </div>
           </Link>
         ))}
-      </div>
+      </Stagger>
     </section>
   );
 }
