@@ -26,16 +26,18 @@ export const NAV = [
       { href: "/notice", key: "notice" },
     ],
   },
+  {
+    href: "/contact",
+    key: "contact",
+    // No `children` → renders as a plain top-level link with no mega-menu
+    // panel (see Header.tsx) and a plain accordion row on mobile.
+    children: [],
+  },
 ] as const;
 
 export type NavKey = (typeof NAV)[number]["key"];
 
-/** Mobile overlay only: adds the standalone "contact" row (no desktop top
- *  nav / mega-menu entry exists for it — see Header.tsx). No `children`,
- *  so the accordion renders it as a plain link. */
-export const MOBILE_NAV = [
-  ...NAV,
-  { href: "/contact", key: "contact", children: [] },
-] as const;
+/** Mobile overlay shares the same items as the desktop nav. */
+export const MOBILE_NAV = NAV;
 
-export type MobileNavKey = (typeof MOBILE_NAV)[number]["key"];
+export type MobileNavKey = NavKey;

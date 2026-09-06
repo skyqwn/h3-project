@@ -25,6 +25,7 @@ export function Header() {
   const isActive = (href: string) =>
     pathname === href || (href !== "/" && pathname.startsWith(href));
   const activeNav = NAV.find((item) => item.key === activeMenu);
+  const showMega = !!activeNav && activeNav.children.length > 0;
 
   return (
     <header
@@ -95,12 +96,12 @@ export function Header() {
       <div
         className={cn(
           "absolute left-0 top-full hidden w-full border-b border-hairline bg-white shadow-sm transition-[opacity,visibility,transform] duration-200 lg:block",
-          activeNav
+          showMega
             ? "visible translate-y-0 opacity-100"
             : "invisible -translate-y-2 opacity-0"
         )}
         onMouseEnter={() => {
-          if (activeNav) setActiveMenu(activeNav.key);
+          if (showMega) setActiveMenu(activeNav.key);
         }}
       >
         <nav className="flex min-h-36 items-center justify-center gap-20 px-[120px] text-[17px] font-bold text-ink">
