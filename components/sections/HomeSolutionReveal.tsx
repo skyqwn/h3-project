@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 import { gsap, useGSAP } from "@/lib/gsap";
+import { EngineeringVisual } from "@/components/three/EngineeringVisual";
 
 const SOLUTION_LINKS = [
   { key: "equipment", href: "/products" },
@@ -27,7 +27,8 @@ export function HomeSolutionReveal() {
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       if (reduced || window.matchMedia("(max-width: 767px)").matches) {
-        gsap.set([media, copyItems, actions], { clearProps: "all" });
+        gsap.set([copyItems, actions], { clearProps: "all" });
+        gsap.set(media, { left: "50%", top: "14%", width: "48%", height: "72%", borderRadius: 16 });
         return;
       }
 
@@ -69,27 +70,10 @@ export function HomeSolutionReveal() {
             ease: "power3.out",
           },
           0.45
-        );
+        )
+        .to(actions, { opacity: 1, y: 0, duration: 0.3, stagger: 0.05 }, 0.7);
 
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: root,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 1,
-          },
-        })
-        .to(
-          actions,
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.28,
-            ease: "power3.out",
-          },
-          0.28
-        );
+
     },
     { scope: rootRef }
   );
@@ -117,14 +101,8 @@ export function HomeSolutionReveal() {
           </p>
 
           <div className="relative mt-10 overflow-hidden rounded-md bg-surface-card">
-            <div className="relative aspect-[4/3]">
-              <Image
-                src="/feature-fabrication.jpg"
-                alt={t("imageAlt")}
-                fill
-                sizes="(max-width: 767px) calc(100vw - 48px)"
-                className="object-cover"
-              />
+            <div className="relative aspect-[5/6] sm:aspect-[4/3]">
+              <EngineeringVisual />
             </div>
           </div>
 
@@ -148,7 +126,7 @@ export function HomeSolutionReveal() {
         </div>
       </section>
 
-      <section ref={rootRef} className="relative isolate hidden bg-transparent md:block md:h-[180svh]">
+      <section ref={rootRef} id="engineering" className="relative isolate hidden bg-transparent md:block md:h-[180svh]">
       <div className="md:sticky md:top-0 md:h-svh md:overflow-hidden">
         <div className="relative min-h-svh overflow-hidden bg-transparent md:h-full">
           <div className="pointer-events-none relative z-10 grid min-h-svh w-full items-center gap-10 px-6 py-section md:grid-cols-[0.42fr_0.58fr] md:py-0 lg:px-[120px]">
@@ -172,7 +150,7 @@ export function HomeSolutionReveal() {
               </h2>
               <p
                 data-solution-copy
-                className="mt-8 max-w-md break-keep text-[18px] font-extrabold leading-relaxed text-ink"
+                className="mt-8 max-w-md break-keep text-[18px] font-medium leading-relaxed text-body"
               >
                 {t("body")}
               </p>
@@ -183,34 +161,25 @@ export function HomeSolutionReveal() {
 
           <div
             data-solution-media
-            className="relative mx-6 mb-section aspect-[4/3] overflow-hidden rounded-md bg-surface-card md:absolute md:inset-0 md:m-0 md:aspect-auto md:rounded-none"
+            className="relative mx-6 mb-section aspect-[4/3] overflow-hidden rounded-md border border-[#dce6ed] bg-surface-card md:absolute md:inset-0 md:m-0 md:aspect-auto md:rounded-none"
           >
-            <Image
-              src="/feature-fabrication.jpg"
-              alt={t("imageAlt")}
-              fill
-              sizes="(max-width: 767px) calc(100vw - 48px), 100vw"
-              className="object-cover"
-              priority={false}
-            />
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/35 to-black/15 md:from-black/60 md:via-black/25 md:to-transparent"
-              aria-hidden
-            />
-            <div className="absolute inset-x-0 bottom-0 grid gap-3 md:inset-y-[34%] md:left-[7%] md:right-[12%] md:bottom-auto md:grid-cols-2 md:gap-6">
+            <div className="absolute inset-x-0 bottom-20 top-0">
+              <EngineeringVisual />
+            </div>
+            <div className="absolute inset-x-0 bottom-0 grid h-20 grid-cols-2 border-t border-hairline-soft bg-white">
               {SOLUTION_LINKS.map(({ key, href }) => (
                 <Link
                   key={key}
                   href={href}
                   data-solution-action
-                  className="group flex min-h-28 items-center justify-between border border-white/25 bg-black/30 px-8 text-on-dark backdrop-blur-sm transition-colors duration-200 hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus-inner md:min-h-36 lg:min-h-40"
+                  className="group flex items-center justify-between gap-3 border-r border-hairline-soft px-5 text-ink transition-colors duration-200 last:border-r-0 hover:bg-surface-card focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-focus-outer lg:px-7"
                 >
-                  <span className="text-heading-lg font-bold">
+                  <span className="text-body-sm font-semibold lg:text-body-md">
                     {t(`links.${key}`)}
                   </span>
                   <ArrowRight
                     aria-hidden
-                    className="size-9 shrink-0 transition-transform duration-200 group-hover:translate-x-2"
+                    className="size-5 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
                   />
                 </Link>
               ))}

@@ -1,0 +1,91 @@
+import {chromium} from '@playwright/test';
+import {createRequire} from 'node:module';
+import {writeFile} from 'node:fs/promises';
+const require = createRequire(import.meta.url);
+const nextRequire = createRequire(require.resolve('next/package.json'));
+const sharp = nextRequire('sharp');
+const browser = await chromium.launch({headless:true});
+const errors = [];
+try {
+ const page = await browser.newPage({viewport:{width:1600,height:1000},deviceScaleFactor:1,reducedMotion:'reduce'});
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://localhost:3000',{waitUntil:'domcontentloaded'});
+ await page.locator('#engineering').scrollIntoViewIfNeeded();
+ const visual=page.locator('#engineering [data-engineering-visual]');
+ const canvas=visual.locator('canvas');
+ await canvas.waitFor({state:'visible',timeout:60000});
+ if(process.argv.includes('--posters')) {
+   await canvas.evaluate(el=>{
+     const marker=document.createElement('span'); marker.id='drawing-marker';
+     const host=el.parentElement; host.before(marker);
+     const stage=document.createElement('div'); stage.id='drawing-stage';
+     stage.style.cssText='position:fixed;inset:0 auto auto 0;width:1100px;height:800px;z-index:2147483647';
+     document.body.append(stage); stage.append(host);
+     const style=document.createElement('style'); style.id='drawing-style';
+     style.textContent='html,body{background:transparent!important}body>:not(#drawing-stage){visibility:hidden!important}#drawing-stage,#drawing-stage *{visibility:visible!important}';
+     document.head.append(style);
+   });
+   await page.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+   const png=await page.locator('#drawing-stage').screenshot({omitBackground:true});
+   const poster=await sharp(png).webp({quality:94,alphaQuality:100}).toBuffer();
+   await writeFile('public/industries/engineering-concept.webp',poster);
+   console.log('Drawing poster:',poster.byteLength,'bytes');
+   await page.evaluate(()=>{
+     document.querySelector('#drawing-marker').replaceWith(document.querySelector('#drawing-stage>div'));
+     document.querySelector('#drawing-stage').remove();document.querySelector('#drawing-style').remove();
+   });
+ }
+ await page.evaluate(()=>window.scrollTo(0,document.querySelector('#engineering').offsetTop+180));
+ await page.waitForTimeout(250);
+ await page.screenshot({path:'/tmp/h3-engineering-desktop.png'});
+ await visual.screenshot({path:'/tmp/h3-engineering-detail.png'});
+ const reducedA=await canvas.screenshot();
+ await page.waitForTimeout(700);
+ const reducedB=await canvas.screenshot();
+ if(!reducedA.equals(reducedB)) throw new Error('Reduced-motion canvas is changing');
+ console.log('Reduced motion: static canvas verified');
+ await page.emulateMedia({reducedMotion:'no-preference'});
+ await page.waitForTimeout(3000);
+ const animatedA=await canvas.screenshot();
+ await page.waitForTimeout(1200);
+ const animatedB=await canvas.screenshot();
+ if(animatedA.equals(animatedB)) throw new Error('Animation is not changing the rendered canvas');
+ await visual.getByRole('button',{name:'설계 애니메이션 일시정지'}).click();
+ await page.waitForTimeout(150);
+ const pausedA=await canvas.screenshot();
+ await page.waitForTimeout(700);
+ const pausedB=await canvas.screenshot();
+ if(!pausedA.equals(pausedB)) throw new Error('Pause does not stop rendering changes');
+ await visual.getByRole('button',{name:'설계 애니메이션 재생'}).click();
+ await page.waitForTimeout(500);
+ const resumed=await canvas.screenshot();
+ if(resumed.equals(pausedB)) throw new Error('Resume does not restart animation');
+ console.log('Animation, pause and resume: pixel changes verified');
+ await visual.getByRole('button',{name:'설계 애니메이션 일시정지'}).click();
+ await page.screenshot({path:'/tmp/h3-engineering-animated.png'});
+ // Context-loss fallback.
+ await canvas.evaluate(el=>el.getContext('webgl2').getExtension('WEBGL_lose_context').loseContext());
+ const poster=visual.locator('img');
+ await poster.waitFor({state:'visible'}); await poster.evaluate(el=>el.decode());
+ console.log('WebGL context-loss fallback verified');
+ await page.close();
+ // Fresh mobile load, avoiding stale desktop scroll-animation state.
+ const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,reducedMotion:'reduce'});
+ mobile.on('pageerror',e=>errors.push(e.message));
+ await mobile.goto('http://localhost:3000',{waitUntil:'domcontentloaded'});
+ const mv=mobile.locator('[data-engineering-visual]:visible');
+ await mv.scrollIntoViewIfNeeded();
+ await mv.locator('canvas').waitFor({state:'visible',timeout:60000});
+ await mv.screenshot({path:'/tmp/h3-engineering-mobile.png'});
+ if(await mobile.evaluate(()=>document.documentElement.scrollWidth>innerWidth)) throw new Error('Mobile horizontal overflow');
+ await mobile.close();
+ const en=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+ en.on('pageerror',e=>errors.push(e.message));
+ await en.goto('http://localhost:3000/en',{waitUntil:'domcontentloaded'});
+ await en.locator('#engineering').scrollIntoViewIfNeeded();
+ await en.locator('#engineering canvas').waitFor({state:'visible',timeout:60000});
+ await en.locator('#engineering [data-engineering-visual]').screenshot({path:'/tmp/h3-engineering-en.png'});
+ console.log('English title:',await en.locator('#engineering [data-engineering-visual]').innerText());
+ if(errors.length) throw new Error(errors.join('\n'));
+ console.log('PASS: desktop/mobile, KR/EN, animation, pause/resume, reduced motion, fallback, no page errors.');
+} finally {await browser.close();}

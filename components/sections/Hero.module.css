@@ -1,0 +1,54 @@
+.hero {
+  position: relative;
+  isolation: isolate;
+  min-height: 660px;
+  height: calc(100svh - 80px);
+  max-height: 1080px;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(110deg, #ffffff 0%, #fbfdff 48%, #eef5ff 100%);
+}
+
+.hero::before {
+  position: absolute;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 76% 46%, #cfdefb77, transparent 43%);
+}
+
+.layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: center;
+  height: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 64px clamp(32px, 6vw, 120px);
+}
+
+.copy { position: relative; z-index: 2; padding: 0 0 12px; }
+.heading { max-width: 780px; margin-bottom: 26px; font-size: clamp(40px, 4vw, 74px); font-weight: 650; line-height: 1.13; letter-spacing: -0.04em; }
+.body { max-width: 530px; margin-bottom: 32px; font-size: 17px; line-height: 1.85; color: var(--color-body); word-break: keep-all; }
+.visual { position: relative; height: min(650px, 65vh); min-height: 450px; width: 115%; margin-left: -4%; transform: translateY(-14px); }
+.visual::before { position: absolute; content: ""; width: 60%; height: 6%; left: 24%; bottom: 5%; border-radius: 50%; background: #283d8524; filter: blur(23px); transform: rotate(-6deg); pointer-events: none; }
+.visual::after { position: absolute; content: ""; inset: 9% 2% 7% 6%; border: 1px solid #8facd61a; border-radius: 50%; transform: rotate(-20deg) scaleX(1.12); pointer-events: none; }
+
+@media (max-width: 1100px) and (min-width: 768px) {
+  .layout { padding-inline: 36px; grid-template-columns: 1.05fr 1fr; }
+  .heading { font-size: 45px; }
+  .body { font-size: 15px; max-width: 390px; }
+  .visual { min-height: 400px; height: 480px; }
+}
+
+@media (max-width: 767px) {
+  .hero { height: auto; min-height: calc(100svh - 80px); max-height: none; }
+  .layout { display: flex; flex-direction: column; align-items: stretch; gap: 0; padding: 24px 24px 48px; }
+  .copy { order: 2; padding: 0; }
+  .heading { max-width: 570px; margin-bottom: 18px; font-size: clamp(36px, 8.8vw, 54px); }
+  .body { margin-bottom: 24px; font-size: 15px; line-height: 1.75; }
+  .visual { order: 1; align-self: center; width: min(100%, 420px); height: clamp(260px, 68vw, 390px); min-height: 0; margin: 0 0 16px; transform: none; }
+  .visual::before { filter: blur(15px); }
+}

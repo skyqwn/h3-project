@@ -1,0 +1,88 @@
+.workspace {
+  container-type: inline-size;
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 280px;
+  flex-direction: column;
+  overflow: hidden;
+  background: #fbfcfc;
+  color: #647c8a;
+  font-variant-numeric: tabular-nums;
+}
+
+.header {
+  z-index: 2;
+  display: flex;
+  min-height: 52px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 22px;
+  border-bottom: 1px solid #dfe8ed;
+  background: #ffffffdd;
+}
+
+.document { display: flex; align-items: center; gap: 10px; color: #243e50; font-size: 12px; font-weight: 600; }
+.document svg { color: #6594ba; }
+.revision { margin-left: auto; color: #7991a1; font-size: 10px; letter-spacing: 0.08em; }
+.pause { display: grid; width: 30px; height: 30px; place-items: center; border: 1px solid #d7e2e9; border-radius: 5px; color: #557c98; }
+.pause:hover { background: #e8f1f8; }
+.pause:focus-visible { outline: 2px solid #6ea2f3; outline-offset: 3px; }
+.pause:disabled { opacity: 0.3; }
+
+.viewport {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  background: radial-gradient(ellipse at 45% 45%, #ffffff 10%, #edf4f9 100%);
+}
+
+.viewport::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background-image: linear-gradient(#5d8aaa08 1px, transparent 1px), linear-gradient(90deg, #5d8aaa08 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+}
+
+.scene, .canvas { position: absolute; inset: 0; }
+.scene { right: 0; }
+.poster { object-fit: contain; }
+.hidden { visibility: hidden; }
+.viewLabel { position: absolute; top: 21px; left: 23px; z-index: 1; display: flex; gap: 8px; align-items: center; font-size: 10px; letter-spacing: 0.1em; color: #688da7; }
+.projections { position: absolute; right: 18px; bottom: 16px; display: flex; gap: 8px; width: 174px; }
+.projections > div { width: 83px; padding: 6px 3px 0; border: 1px solid #cfdfe8; border-radius: 4px; color: #6790a8; background: #ffffffbb; }
+.projections span { display: block; padding: 0 5px; font-size: 9px; letter-spacing: 0.06em; }
+.projections svg { width: 100%; }
+.detail { position: absolute; bottom: 20px; left: 24px; display: flex; gap: 8px; align-items: center; color: #6e8797; font-size: 10px; }
+.statusDot { width: 5px; height: 5px; border-radius: 50%; background: #71a4ad; }
+.axis { position: absolute; right: 29px; top: 37px; width: 28px; height: 28px; }
+.axis i { position: absolute; bottom: 0; left: 0; display: block; height: 1px; width: 23px; transform-origin: left; background: #6499ac; }
+.axis i:nth-child(1) { transform: rotate(-90deg); background: #77baa6; }
+.axis i:nth-child(2) { transform: rotate(25deg); background: #c59165; }
+.axis i:nth-child(3) { transform: rotate(145deg); }
+.footer { position: relative; border-top: 1px solid #dfe8ed; padding: 16px 23px 13px; background: #ffffffc9; }
+.steps { display: flex; justify-content: space-between; gap: 14px; }
+.steps span { display: flex; align-items: center; gap: 7px; color: #7b8d99; font-size: 11px; transition: color 400ms; }
+.steps i { width: 5px; height: 5px; border: 1px solid currentColor; border-radius: 50%; }
+.steps .active { color: #3f78a4; }
+.active i { background: #6ea2f3; }
+.footer p { margin-top: 10px; font-size: 9px; color: #8295a2; }
+
+@container (max-width: 460px) {
+  .header { padding: 0 14px; min-height: 46px; gap: 8px; }
+  .document { font-size: 10px; gap: 7px; }
+  .revision { display: none; }
+  .pause { margin-left: auto; }
+  .projections { display: none; }
+  .scene { right: 0; }
+  .viewLabel { left: 16px; top: 15px; font-size: 9px; }
+  .detail { left: 16px; bottom: 12px; font-size: 9px; }
+  .axis { right: 25px; top: 28px; }
+  .footer { padding: 12px 15px; }
+  .steps { gap: 8px; }
+  .steps span { font-size: 10px; gap: 5px; }
+}

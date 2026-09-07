@@ -4,6 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 import { AmbientBackground } from "@/components/layout/AmbientBackground";
 import { Hero } from "@/components/sections/Hero";
 import { HomeSolutionReveal } from "@/components/sections/HomeSolutionReveal";
+import { IndustryShowcase } from "@/components/sections/IndustryShowcase";
 import { GlobeSection } from "@/components/sections/GlobeSection";
 import { NewsSection } from "@/components/sections/NewsSection";
 import { CtaStrip } from "@/components/sections/CtaStrip";
@@ -41,6 +42,7 @@ export default async function Home({
       <AmbientBackground />
       <Hero />
       <HomeSolutionReveal />
+      <IndustryShowcase />
       <GlobeSection />
       <NewsSection />
       <CtaStrip

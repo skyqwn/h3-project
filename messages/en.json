@@ -36,7 +36,8 @@
       "headlineAccent": "automation",
       "headlineSuffix": "",
       "body": "We supply chemical-process parts and automation equipment for semiconductor, display, and surface-treatment, one-stop.",
-      "cta": "See products"
+      "cta": "See products",
+      "logoAlt": "A three-dimensional H3 symbol formed by six aligned navy and sky-blue pieces"
     },
     "solutionReveal": {
       "eyebrow": "Our Solution",
@@ -44,10 +45,31 @@
       "titleBrand": "H3-Tech designs",
       "titleAction": "from the site up",
       "body": "For sites where products, chemicals, temperature, and installation conditions all differ, H3-Tech carries the work from design and fabrication to assembly, control, and delivery.",
-      "imageAlt": "H3-Tech chemical-resistant equipment fabrication site",
       "links": {
         "equipment": "Chemical Process Equipment",
         "automation": "Process Automation"
+      },
+      "drawing": {
+        "title": "Automation · Assembly design",
+        "revision": "ENGINEERING STUDY",
+        "view": "ISOMETRIC VIEW",
+        "plan": "PLAN VIEW",
+        "elevation": "FRONT VIEW",
+        "material": "Transfer · Drive · Control modules",
+        "steps": {
+          "shape": "System layout",
+          "piping": "Motion study",
+          "review": "Assembly review"
+        },
+        "pause": "Pause design animation",
+        "resume": "Play design animation",
+        "note": "Concept visualization of the design process. Dimensions are illustrative.",
+        "imageAlt": "Animated 3D assembly drawing of an automation line with structural frames, linear guideways, moving process heads, material reels, and control cabinets",
+        "dimensions": {
+          "width": "6,800 mm",
+          "height": "2,400 mm",
+          "depth": "2,600 mm"
+        }
       }
     },
     "products": {
@@ -130,6 +152,25 @@
       "title": "Newsroom",
       "cta": "More news",
       "empty": "No news yet."
+    },
+    "industries": {
+      "label": "Industry process solutions",
+      "cta": "Discuss your process",
+      "note": "Concept illustrations of industries and processes. Actual equipment and products may differ.",
+      "semiconductor": {
+        "eyebrow": "SEMICONDUCTORS · AUTOMATION",
+        "title": "Semiconductor automation",
+        "tagline": "Precise transfer. Connected processes.",
+        "body": "From wafer transfer to chemical supply, process equipment and automation designed around your site.",
+        "imageAlt": "3D concept of a semiconductor workcell connecting a wafer transfer robot, open process chamber, and chemical supply tanks"
+      },
+      "battery": {
+        "eyebrow": "BATTERIES · CHEMICAL PROCESSES",
+        "title": "Battery process solutions",
+        "tagline": "Engineering behind the energy.",
+        "body": "Chemical-resistant parts and custom equipment configurations for processes that handle materials and chemicals.",
+        "imageAlt": "3D concept of three metallic cylindrical battery cells and two pouch cells, with an illustrative electrode cross-section"
+      }
     }
   },
   "about": {

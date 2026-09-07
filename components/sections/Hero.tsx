@@ -4,6 +4,8 @@ import { useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useGSAP, gsap } from "@/lib/gsap";
 import { Button } from "@/components/ui/Button";
+import { HeroLogo } from "@/components/three/HeroLogo";
+import styles from "./Hero.module.css";
 
 export function Hero() {
   const t = useTranslations("home.hero");
@@ -79,10 +81,11 @@ export function Hero() {
   return (
     <section
       ref={rootRef}
-      className="relative h-[calc(100vh-5rem)] min-h-[620px] w-full overflow-hidden bg-transparent"
+      className={styles.hero}
+      data-home-hero
     >
-      <div className="relative z-10 flex h-full flex-col justify-end px-6 py-12 text-ink md:py-16 lg:px-[120px]">
-        <div className="w-full">
+      <div className={styles.layout}>
+        <div className={styles.copy}>
           <p
             data-hero-eyebrow
             className="mb-4 text-caption-md uppercase tracking-wider text-mute opacity-0"
@@ -92,7 +95,7 @@ export function Hero() {
 
           {/* Accessible full headline for SR/SEO; the animated copy is
               aria-hidden so screen readers don't read it word-by-word. */}
-          <h2 className="mb-5 max-w-2xl text-display-xl">
+          <h2 className={`${styles.heading} text-ink`}>
             <span className="sr-only">{fullHeadline}</span>
             <span aria-hidden className="flex flex-wrap items-baseline gap-x-[0.28em]">
               {words.map((word, i) => (
@@ -120,7 +123,7 @@ export function Hero() {
 
           <p
             data-hero-body
-            className="mb-6 max-w-2xl text-body-md text-body opacity-0 md:text-[18px] md:leading-8"
+            className={`${styles.body} opacity-0`}
           >
             {t("body")}
           </p>
@@ -129,13 +132,16 @@ export function Hero() {
             <Button
               href="/products"
               variant="primary"
-              size="md"
-              className="!bg-[#5f6f82] !text-white hover:!bg-[#4f5f73]"
+              size="lg"
+              className="!rounded-full !text-white"
               arrow
             >
               {t("cta")}
             </Button>
           </span>
+        </div>
+        <div className={styles.visual}>
+          <HeroLogo label={t("logoAlt")} />
         </div>
       </div>
     </section>
