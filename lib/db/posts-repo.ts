@@ -43,6 +43,12 @@ export async function queryAllPosts(
   return includeDrafts ? rows : rows.filter((r) => !r.draft);
 }
 
+// 세션이 "방금 그 글"을 잊어버렸을 때(대화 30분 유휴 만료 등) 에이전트가 fallback으로
+// 쓴다 — 가장 최근에 만들어지거나 수정된 draft를 후보로 돌려준다. 발행된 글은 제외.
+export async function listRecentDrafts(limit = 5): Promise<PostRow[]> {
+  return db.select().from(posts).where(eq(posts.draft, true)).orderBy(desc(posts.updatedAt)).limit(limit);
+}
+
 export async function queryPostBySlug(slug: string): Promise<PostRow | null> {
   const rows = await db.select().from(posts).where(eq(posts.slug, slug));
   return rows[0] ?? null;

@@ -2,7 +2,20 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { requireAgentKey } from "@/lib/auth/require-agent";
 import { isValidSlug } from "@/lib/slug";
-import { insertPost } from "@/lib/db/posts-repo";
+import { insertPost, listRecentDrafts } from "@/lib/db/posts-repo";
+
+// 세션이 "방금 그 글"을 잊어버렸을 때 에이전트가 참고할 최근 draft 목록.
+// 발행된 글은 안 나온다 — 최근 만든 draft만.
+export async function GET(request: Request): Promise<NextResponse> {
+  if (!requireAgentKey(request)) {
+    return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
+  }
+  const drafts = await listRecentDrafts(5);
+  return NextResponse.json({
+    ok: true,
+    drafts: drafts.map((row) => ({ slug: row.slug, title: row.title, updatedAt: row.updatedAt })),
+  });
+}
 
 // H3 Agent(Cloudflare Worker) 전용 draft 생성 API. x-agent-key로 인증한다
 // (세션 쿠키를 쓰는 관리자 화면의 createPost와는 별개 경로 — 계획: docs/BLOG_AGENT_PLAN.md).
