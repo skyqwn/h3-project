@@ -6,6 +6,7 @@ import { updateTag } from "next/cache";
 import { list, del } from "@vercel/blob";
 import { db } from "@/lib/db";
 import { posts } from "@/lib/db/schema";
+import { insertPost } from "@/lib/db/posts-repo";
 import { isValidSlug } from "@/lib/slug";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { sanitizeBody } from "@/lib/html/sanitize";
@@ -30,11 +31,6 @@ export type CreatePostResult =
   | { ok: true; slug: string }
   | { ok: false; error: string };
 
-// 오늘 날짜(YYYY-MM-DD). 서버 액션 런타임이라 Date 사용 가능.
-function today(): string {
-  return new Date().toISOString().slice(0, 10);
-}
-
 export async function createPost(
   raw: CreatePostInput
 ): Promise<CreatePostResult> {
@@ -54,36 +50,10 @@ export async function createPost(
     };
   }
 
-  // slug가 이미 있으면 에러 대신 -2, -3...을 붙여 빈 주소를 찾는다.
-  // (기본값이 날짜라 같은 날 여러 글을 써도 자동으로 구분된다.)
-  let finalSlug = input.slug;
-  for (let n = 2; ; n++) {
-    const existing = await db
-      .select({ id: posts.id })
-      .from(posts)
-      .where(eq(posts.slug, finalSlug));
-    if (existing.length === 0) break;
-    finalSlug = `${input.slug}-${n}`;
-  }
-
-  await db.insert(posts).values({
-    slug: finalSlug,
-    title: input.title,
-    summary: input.summary,
-    coverImage: input.coverImage,
-    category: input.category,
-    tags: input.tags,
-    body: sanitizeBody(input.body),
-    draft: input.draft,
-    publishedAt: today(),
-    source: input.source || null,
-    sourceUrl: input.sourceUrl || null,
-  });
-
-  // 목록/상세/RSS/사이트맵 캐시 일괄 무효화(Next 16 태그 무효화 API).
-  updateTag("posts");
-
-  return { ok: true, slug: finalSlug };
+  // slug 중복 처리·sanitize·캐시 무효화는 lib/db/posts-repo.ts의 insertPost가
+  // 담당한다 — 에이전트 전용 API 라우트(app/api/admin/agent/posts)와 공유.
+  const { slug } = await insertPost({ ...input, aiGenerated: false });
+  return { ok: true, slug };
 }
 
 export async function updatePost(

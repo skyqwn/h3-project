@@ -1,6 +1,8 @@
 import { desc, eq } from "drizzle-orm";
+import { updateTag } from "next/cache";
 import { db } from "./index";
 import { posts } from "./schema";
+import { sanitizeBody } from "@/lib/html/sanitize";
 import type { Post, PostCategory } from "@/lib/posts";
 import type { Locale } from "@/i18n/routing";
 
@@ -44,4 +46,52 @@ export async function queryAllPosts(
 export async function queryPostBySlug(slug: string): Promise<PostRow | null> {
   const rows = await db.select().from(posts).where(eq(posts.slug, slug));
   return rows[0] ?? null;
+}
+
+export type NewPostInput = {
+  title: string;
+  slug: string;
+  summary: string;
+  category: PostCategory;
+  tags: string[];
+  coverImage: string;
+  body: string;
+  draft: boolean;
+  aiGenerated: boolean;
+  source?: string | null;
+  sourceUrl?: string | null;
+};
+
+function today(): string {
+  return new Date().toISOString().slice(0, 10);
+}
+
+// slug/sanitize/캐시무효화 로직을 한 곳에 모은다. 사람이 쓰는 `createPost`
+// server action과 에이전트 전용 API 라우트가 이 함수 하나를 공유한다 —
+// 입력 경로가 둘이어도 검증·정화 로직은 하나로 유지해 drift를 막는다.
+export async function insertPost(input: NewPostInput): Promise<{ slug: string }> {
+  let finalSlug = input.slug;
+  for (let n = 2; ; n++) {
+    const existing = await db.select({ id: posts.id }).from(posts).where(eq(posts.slug, finalSlug));
+    if (existing.length === 0) break;
+    finalSlug = `${input.slug}-${n}`;
+  }
+
+  await db.insert(posts).values({
+    slug: finalSlug,
+    title: input.title,
+    summary: input.summary,
+    coverImage: input.coverImage,
+    category: input.category,
+    tags: input.tags,
+    body: sanitizeBody(input.body),
+    draft: input.draft,
+    aiGenerated: input.aiGenerated,
+    publishedAt: today(),
+    source: input.source || null,
+    sourceUrl: input.sourceUrl || null,
+  });
+
+  updateTag("posts");
+  return { slug: finalSlug };
 }
