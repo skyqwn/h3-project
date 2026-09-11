@@ -186,7 +186,7 @@ type CompanyInfo = {
 // stays the visible wordmark; the org's canonical name is the full "H3 Tech".
 const ORG_ALTERNATE_NAMES = BRAND_ALIASES.filter((name) => name !== ORG_NAME);
 const ORG_DESCRIPTION =
-  "H3 Tech는 반도체 및 디스플레이 산업을 위한 자동화 설비, AI·AX 제어 시스템, 공장 자동화 시스템, 산업용 장비 및 엔지니어링 솔루션을 제공하는 기술 기업입니다.";
+  "H3 Tech는 반도체·디스플레이 산업과 화학공정 현장을 위한 자동화 설비, AI·AX 제어 시스템, 공장 자동화 시스템, 산업용 장비 및 엔지니어링 솔루션을 제공하는 기술 기업입니다.";
 const ORG_KEYWORDS = [
   "화학공정", // 블로그 콘텐츠는 전부 이 주제인데 회사 키워드엔 빠져있었음(2026-09-12)
   "화학공정 장비",
