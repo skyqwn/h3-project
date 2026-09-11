@@ -1,5 +1,5 @@
 import { desc, eq } from "drizzle-orm";
-import { updateTag } from "next/cache";
+import { revalidateTag } from "next/cache";
 import { db } from "./index";
 import { posts } from "./schema";
 import { sanitizeBody } from "@/lib/html/sanitize";
@@ -69,6 +69,8 @@ function today(): string {
 // slug/sanitize/캐시무효화 로직을 한 곳에 모은다. 사람이 쓰는 `createPost`
 // server action과 에이전트 전용 API 라우트가 이 함수 하나를 공유한다 —
 // 입력 경로가 둘이어도 검증·정화 로직은 하나로 유지해 drift를 막는다.
+// 캐시 무효화는 revalidateTag를 쓴다 — updateTag는 Server Action 전용이라
+// Route Handler(에이전트 라우트)에서 부르면 그대로 throw한다(2026-09-11 실사용 중 확인).
 export async function insertPost(input: NewPostInput): Promise<{ slug: string }> {
   let finalSlug = input.slug;
   for (let n = 2; ; n++) {
@@ -92,6 +94,6 @@ export async function insertPost(input: NewPostInput): Promise<{ slug: string }>
     sourceUrl: input.sourceUrl || null,
   });
 
-  updateTag("posts");
+  revalidateTag("posts", {});
   return { slug: finalSlug };
 }
