@@ -97,3 +97,42 @@ export async function insertPost(input: NewPostInput): Promise<{ slug: string }>
   revalidateTag("posts", {});
   return { slug: finalSlug };
 }
+
+export type PostContentPatch = Partial<
+  Pick<NewPostInput, "title" | "summary" | "category" | "tags" | "coverImage" | "body">
+>;
+
+export type UpdatePostContentResult =
+  | { ok: true }
+  | { ok: false; error: "not_found" | "already_published" };
+
+// 에이전트 피드백 수정 전용. slug는 절대 안 바꾼다(링크 깨짐 방지, dedupe 로직도 불필요).
+// 이미 발행된(draft:false) 글은 거부한다 — 발행 후에는 사람이 직접 관리자에서 고치게 한다.
+// 매 쓰기마다 draft:true를 강제 재적용한다 — 이 경로로 발행 상태를 바꿀 수 없게 하는 것과
+// 같은 이유(에이전트가 공개 여부를 절대 못 건드리게).
+export async function updatePostContent(
+  slug: string,
+  patch: PostContentPatch
+): Promise<UpdatePostContentResult> {
+  const rows = await db.select().from(posts).where(eq(posts.slug, slug));
+  const row = rows[0];
+  if (!row) return { ok: false, error: "not_found" };
+  if (!row.draft) return { ok: false, error: "already_published" };
+
+  await db
+    .update(posts)
+    .set({
+      ...(patch.title !== undefined ? { title: patch.title } : {}),
+      ...(patch.summary !== undefined ? { summary: patch.summary } : {}),
+      ...(patch.category !== undefined ? { category: patch.category } : {}),
+      ...(patch.tags !== undefined ? { tags: patch.tags } : {}),
+      ...(patch.coverImage !== undefined ? { coverImage: patch.coverImage } : {}),
+      ...(patch.body !== undefined ? { body: sanitizeBody(patch.body) } : {}),
+      draft: true,
+      updatedAt: new Date(),
+    })
+    .where(eq(posts.slug, slug));
+
+  revalidateTag("posts", {});
+  return { ok: true };
+}
