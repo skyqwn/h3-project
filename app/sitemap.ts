@@ -1,5 +1,13 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
+
+// Without this, Next treats this route as static (no dynamic APIs used) and
+// only regenerates it on deploy — new/published posts wouldn't show up in
+// the sitemap until the next deploy even though revalidateTag("posts")
+// invalidates the inner getAllPosts() data cache. Confirmed stale in
+// production (2026-09-12): x-vercel-cache: HIT on a day-old snapshot missing
+// a post published hours earlier.
+export const dynamic = "force-dynamic";
 import { getAllProductSlugs } from "@/lib/mdx";
 import { getNotices } from "@/lib/notices";
 import {

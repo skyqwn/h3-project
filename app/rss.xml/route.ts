@@ -1,5 +1,8 @@
 import { buildRssXml } from "@/lib/rss";
 
+// See app/sitemap.ts for why this is needed — same static-caching staleness risk.
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const xml = await buildRssXml("ko");
   return new Response(xml, {
