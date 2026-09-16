@@ -15,6 +15,10 @@ const intl = createMiddleware(routing);
 export default async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
+  // Google OAuth 동의 화면용 정적 페이지 — [locale] 트리 밖이라 next-intl 라우팅을
+  // 거치면 404가 난다(내부적으로 [locale] 세그먼트를 채우려다 매칭 실패). 그대로 통과.
+  if (pathname === "/h3-agent-privacy") return NextResponse.next();
+
   // /admin 2겹 가드(엣지): 게이트 쿠키 → 세션 쿠키.
   if (pathname.startsWith("/admin")) {
     if (pathname === "/admin/gate") return NextResponse.next();
