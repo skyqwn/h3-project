@@ -64,6 +64,7 @@ export default async function LocaleLayout({
     namespace: "footer.company",
   });
   const organization = organizationJsonLd({
+    description: (await getTranslations({ locale, namespace: "about.meta" }))("description"),
     phone: company("phone"),
     fax: company("fax"),
     email: company("email"),

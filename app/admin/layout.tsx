@@ -6,7 +6,7 @@ import { logout } from "@/actions/admin/auth";
 // 관리자 영역은 [locale] 밖이라 여기서 <html>/<body>를 직접 렌더한다.
 // 내부용이라 마케팅 헤더/푸터/Lenis 없이 심플하게. 검색 비노출.
 export const metadata: Metadata = {
-  title: "관리자 — H3",
+  title: "관리자 | H3",
   robots: { index: false, follow: false },
 };
 

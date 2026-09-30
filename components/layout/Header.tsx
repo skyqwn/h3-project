@@ -40,10 +40,8 @@ export function Header() {
         scrolled ? "border-hairline shadow-sm" : "border-hairline-soft"
       )}
     >
-      {/* SEO h1 — brand name as the primary semantic heading on every page.
-          Visually hidden so the visible wordmark below stays the only mark
-          users see. */}
-      <h1 className="sr-only">H3</h1>
+      {/* The about page has its own visible company heading. */}
+      {pathname !== "/about" && <h1 className="sr-only">H3</h1>}
 
       <div className="flex h-full w-full items-center justify-between gap-6 px-6 lg:px-[120px]">
         {/* Brand wordmark — clickable home link with accessible label. */}

@@ -61,7 +61,7 @@ export function NoticeList({
                       {n.date}
                     </span>
                     <span className="text-body-sm text-mute sm:text-right">
-                      {hasFile ? labels.attachmentBadge : "—"}
+                      {hasFile ? labels.attachmentBadge : "-"}
                     </span>
                   </Link>
                 </li>

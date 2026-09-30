@@ -15,7 +15,7 @@ export default function H3AgentPrivacyPage() {
     <main className="mx-auto max-w-2xl px-6 py-20 text-neutral-800">
       <h1 className="text-2xl font-semibold">H3 Agent 개인정보처리방침</h1>
       <p className="mt-2 text-sm text-neutral-500">
-        (주)에이치쓰리테크 — 사내 업무 자동화 도구 &ldquo;H3 Agent&rdquo; 전용
+        (주)에이치쓰리테크 사내 업무 자동화 도구 &ldquo;H3 Agent&rdquo; 전용
       </p>
 
       <div className="mt-10 space-y-8 text-[15px] leading-7">

@@ -13,5 +13,6 @@ import "./image-src.test";
 import "./auth-session.test";
 import "./sanitize.test";
 import "./require-agent.test";
+import "./about-content.test";
 
 console.log("All unit tests passed.");

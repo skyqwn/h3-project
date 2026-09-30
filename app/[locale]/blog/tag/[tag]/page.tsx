@@ -29,7 +29,7 @@ export async function generateMetadata({
     locale: locale as Locale,
     path: `/blog/tag/${tag}`,
     title: `${t("tagLabel")}: ${decoded}`,
-    description: `${t("title")} — ${t("tagLabel")} ${decoded}`,
+    description: `${t("title")}: ${t("tagLabel")} ${decoded}`,
   });
 }
 

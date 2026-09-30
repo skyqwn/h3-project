@@ -36,7 +36,7 @@ export async function generateMetadata({
     locale: locale as Locale,
     path: `/blog/category/${category}`,
     title: `${t("categoryLabel")}: ${label}`,
-    description: `${t("title")} — ${label}`,
+    description: `${t("title")}: ${label}`,
   });
 }
 

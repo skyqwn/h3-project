@@ -126,7 +126,7 @@
       },
       "q4": {
         "q": "Do you handle on-site installation?",
-        "a": "Yes — from fabrication to on-site install and exhaust ducting, all in one."
+        "a": "Yes. We handle fabrication, on-site installation, and exhaust ducting together."
       },
       "q5": {
         "q": "What about service and maintenance?",
@@ -144,7 +144,7 @@
       "cta": "View the case study"
     },
     "globe": {
-      "headline": "Proven at Korea's core industrial sites — now reaching for the world",
+      "headline": "From Korea's industrial sites to international markets",
       "cta": "See our global vision"
     },
     "news": {
@@ -176,75 +176,132 @@
   "about": {
     "title": "About",
     "subtitle": "What we do",
+    "meta": {
+      "title": "About | Chemical Process Equipment and AX Development",
+      "description": "H3-Tech designs and builds chemical-resistant parts and custom automation equipment for semiconductor, display, and surface-treatment sites. Explore our manufacturing work and chemical-process AI transformation (AX) development."
+    },
+    "intro": {
+      "eyebrow": "About the company",
+      "title": "H3-Tech",
+      "subtitle": "Chemical process equipment, automation, and AX development",
+      "body": "We design and build chemical-resistant parts and custom automation equipment for semiconductor, display, and surface-treatment sites. Drawing on our understanding of equipment and operating conditions, we are developing chemical-process AI transformation (AX) technology that uses process data.",
+      "contact": "Discuss equipment",
+      "development": "Explore AX development"
+    },
     "domains": {
       "eyebrow": "What We Do",
-      "title": "Parts and equipment for chemical-process-critical industries",
-      "body": "We deliver chemical-resistant parts and custom automation equipment for semiconductor, display, and surface-treatment processes — from design through installation.",
+      "title": "Parts and equipment for your site",
+      "body": "We review chemicals, operating conditions, and installation space before agreeing on the scope. Parts supply and equipment fabrication are our current business. Chemical-process AX is in development.",
       "items": {
         "parts": {
-          "idx": "01 — PARTS",
+          "idx": "01 / PARTS",
           "title": "Chemical-resistant parts",
           "body": "We design and machine parts with materials and geometry optimized for chemical-exposure environments, for repeat supply.",
-          "tag": "Semiconductor · Display · Surface treatment"
+          "tag": "Semiconductor · Display · Surface treatment",
+          "cta": "View products"
         },
         "equipment": {
-          "idx": "02 — EQUIPMENT",
+          "idx": "02 / EQUIPMENT",
           "title": "Custom automation equipment",
-          "body": "We build and install chemical-process equipment optimized for each site — design through assembly and control, one stop.",
-          "tag": "Design · Machining · Assembly · Control"
+          "body": "We build and install chemical-process equipment for each site's requirements, covering design, assembly, and control.",
+          "tag": "Design · Machining · Assembly · Control",
+          "cta": "View equipment"
         },
         "ax": {
-          "idx": "03 — AX SYSTEM",
-          "title": "Process-optimization AX system",
-          "body": "We analyze equipment process data and operating conditions with AI to recommend optimal settings and manage quality, output, and equipment health.",
-          "tag": "In development"
+          "idx": "03 / AX SYSTEM",
+          "title": "Chemical-process AX development",
+          "body": "We are developing a system that analyzes process data and operating conditions with AI to support operational decisions. Its scope and performance will require validation for each process.",
+          "tag": "In development",
+          "cta": "Explore development"
         }
       }
     },
     "strengths": {
       "eyebrow": "Why H3-Tech",
-      "title": "All-round capability across field, design, and research",
-      "body": "With interdisciplinary engineering spanning three fields and our own one-stop production system, we deliver parts and equipment optimized for each site, fast.",
+      "title": "From drawings to site requirements",
+      "body": "Whether the request is for a single part or an equipment installation, we start by reviewing the scope and site conditions.",
       "items": {
         "tech": {
-          "title": "Interdisciplinary engineering",
-          "body": "Our all-round, one-stop production system delivers engineering services roughly 20% faster than the industry standard."
+          "title": "Design for fabrication and installation",
+          "body": "We consider design, machining, assembly, and control together. Installation space, connected equipment, and on-site work are discussed as part of the scope."
         },
         "model": {
-          "title": "Business model",
-          "body": "We supply chemical-resistant parts and custom equipment fitted to each client's environment, building steady revenue through equipment builds and repeat parts supply."
+          "title": "Parts for operating conditions",
+          "body": "We review materials and geometry for chemical exposure and intended use. For repeat orders, we check the existing specification and any requested changes."
         },
         "network": {
-          "title": "Network",
-          "body": "We've signed MOUs with 4 automation-equipment makers and secured 15 existing accounts — a sales base built for collaborative production and repeat orders."
+          "title": "Coordinated fabrication",
+          "body": "We coordinate work with automation-equipment manufacturing partners. Fabrication, control, and installation responsibilities are defined during project discussions."
         },
         "future": {
-          "title": "Future service",
-          "body": "We're developing an AX system that analyzes equipment process data and operating conditions with AI to recommend optimal process conditions."
+          "title": "AX grounded in manufacturing",
+          "body": "Our understanding of equipment and processes informs AI development. We distinguish work in progress from validated results and assess applications step by step."
         }
       }
     },
     "vision": {
-      "eyebrow": "Where We're Headed",
-      "title": "Growing into an AX technology company on a foundation of manufacturing revenue",
-      "body": "We secure cash flow from custom equipment and parts revenue, and continuously reinvest it in developing AI technology for chemical-process optimization.",
+      "eyebrow": "Chemical-process AX development",
+      "title": "Connecting manufacturing experience with process data and AI",
+      "body": "Within manufacturing AI transformation, H3-Tech focuses on chemical-process equipment and operating conditions. We are developing technology to collect and analyze process data to support operational decisions.",
+      "status": "This technology is in development. The stages below describe our development and validation direction, not commercially available capabilities or verified performance improvements. Applicability and collaboration scope require a process-specific review.",
+      "cta": "Discuss technical collaboration",
       "phases": {
         "p1": {
-          "label": "PHASE 1",
-          "title": "Building the company foundation",
-          "body": "Establishing an R&D division, venture-company and ISO 9001 certification, and securing manufacturing revenue and references"
+          "label": "01 / DATA",
+          "title": "Understand the process and data",
+          "body": "Our direction is to document equipment and operating conditions, identify available data, and determine what is needed for analysis."
         },
         "p2": {
-          "label": "PHASE 2",
-          "title": "Developing and validating AX technology",
-          "body": "Developing process data collection/control systems and AI vision, validated through government R&D and PoCs"
+          "label": "02 / TEST",
+          "title": "Evaluate a limited application",
+          "body": "We plan to define the problem and evaluation criteria, then validate the analysis approach and applicability using a limited process and dataset."
         },
         "p3": {
-          "label": "PHASE 3",
-          "title": "Scaling AX and evaluating commercialization",
-          "body": "Advancing process-condition optimization and expanding the business model into new channels such as open innovation and the public sector"
+          "label": "03 / BUILD",
+          "title": "Develop further from validated results",
+          "body": "We plan to improve decision-support functions within the validated scope and assess integration with existing controls and operating procedures."
         }
       }
+    },
+    "work": {
+      "eyebrow": "Fabrication and installation",
+      "title": "A look at our manufacturing work",
+      "fabrication": {
+        "title": "Chemical-resistant equipment fabrication",
+        "body": "Tanks and structures during fabrication. Material, dimensions, and operating conditions inform the agreed specification.",
+        "alt": "Chemical-resistant equipment tanks and structures arranged in a workshop"
+      },
+      "site": {
+        "title": "On-site ductwork and equipment layout",
+        "body": "Exhaust ducts and piping installed on site. We review the available space and connections to existing equipment.",
+        "alt": "Exhaust ducts and piping installed along the ceiling of a factory"
+      },
+      "stories": "Read our project stories",
+      "history": "Company history"
+    },
+    "faq": {
+      "eyebrow": "Frequently asked questions",
+      "title": "Before you get in touch",
+      "scope": {
+        "q": "Which industries and processes does H3-Tech work with?",
+        "a": "We work on chemical-resistant parts and custom automation equipment for sites using process chemicals, including semiconductor, display, and surface-treatment operations. Feasibility depends on the chemicals, temperature, dimensions, and installation conditions."
+      },
+      "delivery": {
+        "q": "Can you handle design, fabrication, and installation?",
+        "a": "You can consult us on parts design and machining, as well as equipment design, assembly, control, and installation. The delivery scope is agreed after reviewing the work required, partner responsibilities, and site conditions."
+      },
+      "ax": {
+        "q": "What stage is your chemical-process AX system at?",
+        "a": "It is in development. The aim is to analyze process data and operating conditions with AI to support decisions. Commercial availability and performance have not been established. Technical collaboration can be discussed based on the process and available data."
+      },
+      "preparation": {
+        "q": "What should I prepare for an equipment inquiry?",
+        "a": "Intended use, chemicals and operating conditions, dimensions, quantities, installation space, and your target schedule help us review a request. If drawings are not available, start with site photos and requirements. Agree on the scope and transfer method before sharing confidential or personal information."
+      }
+    },
+    "closing": {
+      "title": "Tell us about your equipment and site requirements",
+      "cta": "Discuss your project"
     },
     "history": {
       "title": "History",

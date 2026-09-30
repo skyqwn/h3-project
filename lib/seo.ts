@@ -79,7 +79,7 @@ type PageMetaArgs = {
   image?: string;
   /** robots index directives — defaults to index,follow */
   noindex?: boolean;
-  /** append " — H3Tech" to the title (default). Set false when `title` already
+  /** append " | H3Tech" to the title (default). Set false when `title` already
    *  contains the brand (e.g. the home page's "H3 Tech | ..."). */
   appendBrand?: boolean;
   /** when present, og:type becomes "article" with publish/modify times */
@@ -102,7 +102,7 @@ export function pageMetadata({
 }: PageMetaArgs): Metadata {
   const urls = urlsFor(path);
   const ownUrl = locale === "ko" ? urls.ko : urls.en;
-  const fullTitle = appendBrand ? `${title} — ${TITLE_BRAND}` : title;
+  const fullTitle = appendBrand ? `${title} | ${TITLE_BRAND}` : title;
   // Default share image is the H3 logo card (public/og-default.png). Pages
   // that pass an explicit `image` (products, blog posts) override it. Without
   // this, scrapers (KakaoTalk, etc.) fall back to picking a random photo from
@@ -174,6 +174,7 @@ export function pageMetadata({
 // the structured data never drifts from what the footer/location section shows.
 // Region/country are stable, non-localized, so they live here as constants.
 type CompanyInfo = {
+  description?: string;
   phone: string;
   fax?: string;
   email: string;
@@ -185,8 +186,6 @@ type CompanyInfo = {
 // Legal/searchable name and aliases for the Organization node. `BRAND` ("H3")
 // stays the visible wordmark; the org's canonical name is the full "H3 Tech".
 const ORG_ALTERNATE_NAMES = BRAND_ALIASES.filter((name) => name !== ORG_NAME);
-const ORG_DESCRIPTION =
-  "H3 Tech는 반도체·디스플레이 산업과 화학공정 현장을 위한 자동화 설비, AI·AX 제어 시스템, 공장 자동화 시스템, 산업용 장비 및 엔지니어링 솔루션을 제공하는 기술 기업입니다.";
 const ORG_KEYWORDS = [
   "화학공정", // 블로그 콘텐츠는 전부 이 주제인데 회사 키워드엔 빠져있었음(2026-09-12)
   "화학공정 장비",
@@ -227,7 +226,7 @@ export function organizationJsonLd(company?: CompanyInfo) {
     alternateName: ORG_ALTERNATE_NAMES,
     url: SITE,
     logo: `${SITE}/icon.png`,
-    description: ORG_DESCRIPTION,
+    description: company?.description ?? ORG_NAME,
     keywords: ORG_KEYWORDS,
     sameAs: [SITE],
   };

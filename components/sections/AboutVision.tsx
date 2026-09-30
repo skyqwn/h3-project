@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { SectionHeader } from "@/components/primitives/SectionHeader";
 import { Stagger } from "@/components/primitives/Stagger";
 import { Section } from "@/components/layout/Section";
+import { Button } from "@/components/ui/Button";
 
 const PHASES = ["p1", "p2", "p3"] as const;
 
@@ -9,15 +10,20 @@ export async function AboutVision() {
   const t = await getTranslations("about.vision");
 
   return (
+    <div id="ax-development" className="scroll-mt-24">
     <Section tone="dark" className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
       <div>
         <SectionHeader
-          index="03"
+          index="04"
           eyebrow={t("eyebrow")}
           title={t("title")}
           tone="dark"
         />
         <p className="max-w-[48ch] text-body-md text-on-dark-mute">{t("body")}</p>
+        <p className="mt-5 max-w-[48ch] text-body-sm leading-relaxed text-on-dark-mute">{t("status")}</p>
+        <Button href="/contact" variant="secondary" arrow className="mt-6">
+          {t("cta")}
+        </Button>
       </div>
 
       <Stagger as="ol" className="flex flex-col">
@@ -30,9 +36,9 @@ export async function AboutVision() {
               {t(`phases.${key}.label`)}
             </span>
             <div>
-              <h4 className="text-body-strong text-on-dark">
+              <h3 className="text-body-strong text-on-dark">
                 {t(`phases.${key}.title`)}
-              </h4>
+              </h3>
               <p className="mt-1 text-body-sm text-on-dark-mute">
                 {t(`phases.${key}.body`)}
               </p>
@@ -41,5 +47,6 @@ export async function AboutVision() {
         ))}
       </Stagger>
     </Section>
+    </div>
   );
 }

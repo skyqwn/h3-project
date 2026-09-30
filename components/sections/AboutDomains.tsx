@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { SectionHeader } from "@/components/primitives/SectionHeader";
 import { Stagger } from "@/components/primitives/Stagger";
 import { Section } from "@/components/layout/Section";
+import { Button } from "@/components/ui/Button";
 
 const ITEMS = ["parts", "equipment", "ax"] as const;
 
@@ -23,9 +24,15 @@ export async function AboutDomains() {
             <p className="text-body-sm leading-relaxed text-body">
               {t(`items.${key}.body`)}
             </p>
-            <span className="mt-auto w-fit bg-primary/10 px-2.5 py-1 text-caption-md text-primary-pressed">
+            <span className="mt-auto w-fit bg-primary/10 px-2.5 py-1 text-caption-md text-ink">
               {t(`items.${key}.tag`)}
             </span>
+            <Button
+              href={key === "ax" ? "/about#ax-development" : "/products"}
+              variant="tertiary" arrow className="w-fit !px-0"
+            >
+              {t(`items.${key}.cta`)}
+            </Button>
           </div>
         ))}
       </Stagger>

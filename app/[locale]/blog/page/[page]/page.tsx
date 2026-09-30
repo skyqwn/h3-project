@@ -31,7 +31,7 @@ export async function generateMetadata({
   return pageMetadata({
     locale: locale as Locale,
     path: `/blog/page/${page}`,
-    title: `${t("title")} — ${t("pageLabel")} ${page}`,
+    title: `${t("title")} | ${t("pageLabel")} ${page}`,
     description: t("subtitle"),
   });
 }
@@ -58,7 +58,7 @@ export default async function BlogPaginatedPage({
   return (
     <PageShell
       eyebrow={t("subtitle")}
-      title={`${t("title")} — ${t("pageLabel")} ${pageNum}`}
+      title={`${t("title")} | ${t("pageLabel")} ${pageNum}`}
     >
       <PostGrid posts={result.items} />
       <nav className="mt-12 flex justify-center gap-6">
