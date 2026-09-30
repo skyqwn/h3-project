@@ -9,7 +9,7 @@ export default defineConfig({
   outputDir: "/private/tmp/h3-about-test-results",
   use: {
     baseURL: process.env.ABOUT_TEST_URL ?? "http://localhost:3000",
-    reducedMotion: "reduce",
+    contextOptions: { reducedMotion: "reduce" },
     trace: "retain-on-failure",
   },
   projects: [
