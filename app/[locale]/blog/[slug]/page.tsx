@@ -110,7 +110,9 @@ export default async function PostDetailPage({
           {t(`category.${post.category}`)} · {t("publishedOn")}{" "}
           {post.publishedAt}
         </Eyebrow>
-        <h1 className="text-display-lg text-ink mb-6">{post.title}</h1>
+        <h1 className="text-display-lg text-ink mb-6 whitespace-pre-line break-keep">
+          {post.displayTitle}
+        </h1>
         {post.sourceUrl && (
           <p className="text-body-sm text-mute mb-6">
             {post.source && <>{t("sourceLabel")}: {post.source} · </>}
@@ -124,18 +126,22 @@ export default async function PostDetailPage({
             </a>
           </p>
         )}
-        <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
-          <Image
-            src={post.coverImage}
-            alt={post.title}
-            fill
-            priority
-            sizes="(min-width: 800px) 768px, 100vw"
-            className="object-cover"
-          />
-        </div>
+        {/* 본문에 유튜브 영상이 있으면 커버(재생 버튼이 찍힌 썸네일일 수 있음)를
+            상세 페이지에서 숨긴다. 목록 카드·OG 이미지에는 계속 쓰인다. */}
+        {!post.body.includes("data-youtube-video") && (
+          <div className="relative mb-12 aspect-[16/10] w-full overflow-hidden rounded-lg bg-surface-card">
+            <Image
+              src={post.coverImage}
+              alt={post.title}
+              fill
+              priority
+              sizes="(min-width: 800px) 768px, 100vw"
+              className="object-cover"
+            />
+          </div>
+        )}
         {looksLikeHtml(post.body) ? (
-          <PostBody html={post.body} />
+          <PostBody html={post.body} videoTitle={t("videoTitle")} />
         ) : (
           <MDXRemote
             source={post.body}

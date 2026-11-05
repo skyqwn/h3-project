@@ -19,7 +19,7 @@ export default async function EditPostPage({
         mode="edit"
         initialPost={{
           slug: post.slug,
-          title: post.title,
+          title: post.displayTitle,
           summary: post.summary,
           category: post.category,
           tags: post.tags,

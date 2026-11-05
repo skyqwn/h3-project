@@ -18,7 +18,10 @@ function toDateStr(v: Date | string | null): string | undefined {
 // date 컬럼은 드라이버에서 "YYYY-MM-DD" 문자열로, timestamp는 Date로 반환된다.
 export function rowToPost(row: PostRow, locale: Locale): Post {
   return {
-    title: row.title,
+    // 제목의 줄바꿈은 상세 페이지 큰 제목(displayTitle)에서만 쓰고,
+    // 목록·메타데이터·RSS 등에서는 한 줄로 합친다.
+    title: row.title.replace(/\s*\n\s*/g, " ").trim(),
+    displayTitle: row.title.trim(),
     summary: row.summary,
     coverImage: row.coverImage,
     category: row.category as PostCategory,

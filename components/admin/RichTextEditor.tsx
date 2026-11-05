@@ -11,7 +11,9 @@ import StarterKit from "@tiptap/starter-kit";
 import ImageExt from "@tiptap/extension-image";
 import { TextStyle, FontSize, Color } from "@tiptap/extension-text-style";
 import TextAlign from "@tiptap/extension-text-align";
+import Youtube from "@tiptap/extension-youtube";
 import { uploadImage } from "@/lib/blob-upload";
+import { parseYoutubeInput, formatStart, parseStart } from "@/lib/youtube";
 
 const ALLOWED_IMG = ["image/jpeg", "image/png", "image/webp", "image/avif"];
 const FONT_SIZES = [
@@ -82,6 +84,8 @@ export function RichTextEditor({
       FontSize,
       Color,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
+      // 유튜브 임베드. 시작 시간(start)은 노드 속성으로 저장된다.
+      Youtube.configure({ nocookie: true, width: 640, height: 360 }),
     ],
     content: value,
     // App Router(SSR)에서 하이드레이션 불일치를 막기 위해 즉시 렌더 끔.
@@ -102,7 +106,8 @@ export function RichTextEditor({
           "[&_blockquote]:border-l-4 [&_blockquote]:border-gray-300 [&_blockquote]:pl-3 [&_blockquote]:italic [&_blockquote]:my-3 " +
           "[&_a]:text-blue-600 [&_a]:underline " +
           "[&_code]:bg-gray-100 [&_code]:rounded [&_code]:px-1 [&_code]:py-0.5 " +
-          "[&_img]:my-3 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-md",
+          "[&_img]:my-3 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-md " +
+          "[&_iframe]:my-3 [&_iframe]:w-full [&_iframe]:h-auto [&_iframe]:aspect-video [&_iframe]:rounded-md",
       },
       handleDrop: (_view, event, _slice, moved) => {
         if (moved) return false; // 에디터 내부 노드 이동은 기본 동작
@@ -332,8 +337,40 @@ function Toolbar({ editor, slug }: { editor: Editor; slug: string }) {
       <FontSizeSelect editor={editor} />
       <ColorControl editor={editor} />
       <ImageUploadButton editor={editor} slug={slug} />
+      <ToolbarButton onRun={() => insertYoutube(editor)}>유튜브</ToolbarButton>
     </div>
   );
+}
+
+// 유튜브 링크 입력 → 시작 시간 입력(링크에 t= 가 있으면 미리 채움) → 커서 위치에 삽입.
+function insertYoutube(editor: Editor) {
+  const raw = window.prompt(
+    "유튜브 링크를 붙여넣으세요 (예: https://www.youtube.com/watch?v=...)"
+  );
+  if (!raw) return;
+  const parsed = parseYoutubeInput(raw);
+  if (!parsed) {
+    window.alert("유튜브 링크를 인식하지 못했습니다.");
+    return;
+  }
+  const startRaw = window.prompt(
+    "시작 시간 (예: 6:27, 비우면 처음부터)",
+    parsed.start ? formatStart(parsed.start) : ""
+  );
+  if (startRaw === null) return;
+  const start = parseStart(startRaw);
+  if (start === null) {
+    window.alert("시작 시간 형식이 올바르지 않습니다. 예: 6:27 또는 387");
+    return;
+  }
+  editor
+    .chain()
+    .focus()
+    .setYoutubeVideo({
+      src: `https://www.youtube.com/watch?v=${parsed.id}`,
+      start,
+    })
+    .run();
 }
 
 // 파일 선택 → 여러 장 순서대로 업로드 → 글 끝에 이미지 삽입.

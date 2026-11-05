@@ -5,7 +5,33 @@ export function looksLikeHtml(body: string): boolean {
   return /^\s*</.test(body);
 }
 
+const YT_HOSTS = new Set([
+  "www.youtube.com",
+  "youtube.com",
+  "www.youtube-nocookie.com",
+  "youtube-nocookie.com",
+]);
+
+// 유튜브 embed URL만 통과시키고, 영상 ID + 시작 시간(start)만 남긴 정규형으로
+// 다시 만든다. 그 외 iframe src는 null(→ iframe 자체를 제거).
+export function canonicalYoutubeEmbed(src?: string): string | null {
+  if (!src) return null;
+  let u: URL;
+  try {
+    u = new URL(src);
+  } catch {
+    return null;
+  }
+  if (u.protocol !== "https:" || !YT_HOSTS.has(u.hostname)) return null;
+  const m = u.pathname.match(/^\/embed\/([\w-]{6,20})$/);
+  if (!m) return null;
+  const start = parseInt(u.searchParams.get("start") ?? "", 10);
+  const qs = Number.isFinite(start) && start > 0 ? `?start=${start}` : "";
+  return `https://www.youtube-nocookie.com/embed/${m[1]}${qs}`;
+}
+
 // 에디터가 만든 서식만 허용하는 화이트리스트 정화. style은 크기·색·정렬만.
+// 유튜브 임베드(div[data-youtube-video] > iframe)는 정규형 URL로만 허용.
 export function sanitizeBody(html: string): string {
   return sanitizeHtml(html, {
     allowedTags: [
@@ -34,12 +60,18 @@ export function sanitizeBody(html: string): string {
       "tr",
       "th",
       "td",
+      "div",
+      "iframe",
     ],
     allowedAttributes: {
       a: ["href", "target", "rel"],
       img: ["src", "alt", "width", "height"],
+      div: ["data-youtube-video"],
+      iframe: ["src", "width", "height", "allowfullscreen"],
       "*": ["style"],
     },
+    allowedIframeHostnames: ["www.youtube-nocookie.com"],
+    exclusiveFilter: (frame) => frame.tag === "iframe" && !frame.attribs.src,
     allowedStyles: {
       "*": {
         "font-size": [/^\d{1,3}px$/],
@@ -59,6 +91,14 @@ export function sanitizeBody(html: string): string {
           out.rel = "noopener nofollow";
         }
         return { tagName, attribs: out };
+      },
+      iframe: (tagName, attribs) => {
+        const src = canonicalYoutubeEmbed(attribs.src);
+        if (!src) return { tagName, attribs: {} as Record<string, string> };
+        return {
+          tagName,
+          attribs: { src, width: "640", height: "360", allowfullscreen: "true" },
+        };
       },
     },
   });

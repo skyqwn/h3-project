@@ -12,6 +12,7 @@ import "./slug.test";
 import "./image-src.test";
 import "./auth-session.test";
 import "./sanitize.test";
+import "./youtube.test";
 import "./require-agent.test";
 import "./about-content.test";
 

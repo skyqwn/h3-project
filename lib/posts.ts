@@ -21,6 +21,8 @@ export type PostFrontmatter = {
 };
 
 export type Post = PostFrontmatter & {
+  // 관리자가 넣은 줄바꿈을 보존한 제목(상세 페이지 h1 전용).
+  displayTitle: string;
   slug: string;
   locale: Locale;
   body: string;

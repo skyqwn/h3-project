@@ -29,12 +29,37 @@ function styleObj(style?: string): React.CSSProperties | undefined {
   return Object.keys(out).length ? (out as React.CSSProperties) : undefined;
 }
 
-const options: HTMLReactParserOptions = {
+function makeOptions(videoTitle: string): HTMLReactParserOptions {
+  const options: HTMLReactParserOptions = {
   replace: (node) => {
     if (!(node instanceof Element)) return undefined;
     const kids = () => domToReact(node.children as DOMNode[], options);
     const style = node.attribs?.style;
     switch (node.name) {
+      case "div": {
+        // 유튜브 임베드 래퍼(정화 단계에서 src는 이미 정규형으로 검증됨).
+        if (node.attribs["data-youtube-video"] === undefined) return undefined;
+        const iframe = node.children.find(
+          (c): c is Element => c instanceof Element && c.name === "iframe"
+        );
+        const src = iframe?.attribs.src;
+        if (!src) return <></>;
+        return (
+          <div className="my-8 aspect-video w-full overflow-hidden rounded-md border border-hairline-soft bg-surface-card">
+            <iframe
+              src={src}
+              title={videoTitle}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+              className="h-full w-full border-0"
+            />
+          </div>
+        );
+      }
+      case "iframe":
+        return <></>; // 래퍼 밖의 iframe은 렌더하지 않는다
       case "img": {
         const { src, alt } = node.attribs;
         const w = toNum(node.attribs.width);
@@ -157,9 +182,17 @@ const options: HTMLReactParserOptions = {
         return undefined; // li, strong, em, u, s, br, pre 등은 기본 렌더
     }
   },
-};
+  };
+  return options;
+}
 
 // 정화된 본문 HTML을 사이트 타이포그래피로 렌더한다.
-export function PostBody({ html }: { html: string }) {
-  return <>{parse(html, options)}</>;
+export function PostBody({
+  html,
+  videoTitle,
+}: {
+  html: string;
+  videoTitle: string;
+}) {
+  return <>{parse(html, makeOptions(videoTitle))}</>;
 }

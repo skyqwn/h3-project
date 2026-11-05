@@ -112,9 +112,10 @@ export function PostForm({
       )}
 
       <div>
-        <label className={label}>제목</label>
-        <input
-          className={input}
+        <label className={label}>제목 (Enter로 줄바꿈 · 상세 페이지 제목에만 적용)</label>
+        <textarea
+          className={`${input} resize-y`}
+          rows={2}
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="글 제목"
