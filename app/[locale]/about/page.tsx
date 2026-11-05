@@ -6,6 +6,7 @@ import { AboutStrengths } from "@/components/sections/AboutStrengths";
 import { AboutVision } from "@/components/sections/AboutVision";
 import { AboutLocationTeaser } from "@/components/sections/AboutLocationTeaser";
 import { AboutIntro } from "@/components/sections/AboutIntro";
+import { AboutPrinciples } from "@/components/sections/AboutPrinciples";
 import { AboutWork } from "@/components/sections/AboutWork";
 import { AboutQuestions } from "@/components/sections/AboutQuestions";
 import { CtaStrip } from "@/components/sections/CtaStrip";
@@ -38,6 +39,7 @@ export default async function AboutPage({
   return (
     <div className="about-page">
       <AboutIntro />
+      <AboutPrinciples />
       <AboutDomains />
       <AboutWork />
       <AboutStrengths />

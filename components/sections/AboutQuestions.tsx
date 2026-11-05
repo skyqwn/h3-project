@@ -10,7 +10,7 @@ export async function AboutQuestions() {
 
   return (
     <Section>
-      <SectionHeader index="05" eyebrow={t("eyebrow")} title={t("title")} />
+      <SectionHeader index="06" eyebrow={t("eyebrow")} title={t("title")} />
       <div className="border-t border-hairline">
         {QUESTIONS.map((key) => (
           <details key={key} className="group border-b border-hairline">

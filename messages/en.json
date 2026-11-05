@@ -216,6 +216,28 @@
         }
       }
     },
+    "principles": {
+      "eyebrow": "What we stand for",
+      "title": "Precise where it matters, safe and responsible with chemicals",
+      "body": "Building on our experience with chemical-resistant equipment, we work with our customers toward safer, cleaner manufacturing sites.",
+      "items": {
+        "tech": {
+          "label": "Technology",
+          "title": "Process equipment that reduces chemicals and waste",
+          "body": "H3-Tech draws on its experience in building chemical-resistant equipment to develop process systems that treat only the areas that need it, aiming to reduce chemical use and waste liquid."
+        },
+        "site": {
+          "label": "Sites",
+          "title": "Safe and responsible manufacturing",
+          "body": "Together with our customers, we work toward manufacturing sites where chemicals are handled safely and waste is managed responsibly."
+        },
+        "company": {
+          "label": "Company",
+          "title": "Honest, and a place to build a career",
+          "body": "We put honest business and the protection of customer information first, and strive to be a place where young engineers want to build their careers."
+        }
+      }
+    },
     "strengths": {
       "eyebrow": "Why H3-Tech",
       "title": "From drawings to site requirements",

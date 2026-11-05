@@ -14,7 +14,7 @@ export async function AboutVision() {
     <Section tone="dark" className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:items-start">
       <div>
         <SectionHeader
-          index="04"
+          index="05"
           eyebrow={t("eyebrow")}
           title={t("title")}
           tone="dark"

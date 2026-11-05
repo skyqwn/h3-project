@@ -10,7 +10,7 @@ export async function AboutStrengths() {
 
   return (
     <Section tone="soft">
-      <SectionHeader index="03" eyebrow={t("eyebrow")} title={t("title")} />
+      <SectionHeader index="04" eyebrow={t("eyebrow")} title={t("title")} />
       <p className="mb-8 max-w-[56ch] text-body-md text-body">{t("body")}</p>
 
       <Stagger as="ol" className="flex flex-col">

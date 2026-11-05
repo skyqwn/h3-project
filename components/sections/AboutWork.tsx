@@ -14,7 +14,7 @@ export async function AboutWork() {
 
   return (
     <Section tone="soft">
-      <SectionHeader index="02" eyebrow={t("eyebrow")} title={t("title")} />
+      <SectionHeader index="03" eyebrow={t("eyebrow")} title={t("title")} />
       <div className="grid gap-8 md:grid-cols-2">
         {PHOTOS.map(({ key, src }) => (
           <figure key={key} className="min-w-0">

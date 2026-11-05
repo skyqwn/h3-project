@@ -11,7 +11,7 @@ export async function AboutDomains() {
 
   return (
     <Section tone="canvas">
-      <SectionHeader index="01" eyebrow={t("eyebrow")} title={t("title")} />
+      <SectionHeader index="02" eyebrow={t("eyebrow")} title={t("title")} />
       <p className="mb-10 max-w-[56ch] text-body-md text-body">{t("body")}</p>
 
       <Stagger className="grid gap-x-10 gap-y-10 sm:grid-cols-3">
